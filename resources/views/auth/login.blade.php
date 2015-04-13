@@ -24,7 +24,7 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">Usuario</label>
 							<div class="col-sm-6">
-								<input type="email" class="form-control" name="email" value="{{ old('email') }}">
+								<input type="text" class="form-control" name="username" value="{{ old('email') }}">
 							</div>
 						</div>
 
