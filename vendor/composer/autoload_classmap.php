@@ -6,9 +6,23 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'CreateCompanyCfgsTable' => $baseDir . '/database/migrations/2015_04_14_154356_create_company_cfgs_table.php',
+    'CreateCteSendTosTable' => $baseDir . '/database/migrations/2015_04_14_152716_create_cte_send_tos_table.php',
+    'CreateCtesTable' => $baseDir . '/database/migrations/2015_04_14_151859_create_ctes_table.php',
+    'CreateCxcBalancesTable' => $baseDir . '/database/migrations/2015_04_14_144926_create_cxc_balances_table.php',
     'CreateCxcDMovsTable' => $baseDir . '/database/migrations/2015_04_13_153729_create_cxc_d_movs_table.php',
+    'CreateCxcInfosTable' => $baseDir . '/database/migrations/2015_04_14_145711_create_cxc_infos_table.php',
+    'CreateCxcPendingsTable' => $baseDir . '/database/migrations/2015_04_14_154714_create_cxc_pendings_table.php',
+    'CreateCxcRefsTable' => $baseDir . '/database/migrations/2015_04_14_153019_create_cxc_refs_table.php',
     'CreateMessageListsTable' => $baseDir . '/database/migrations/2015_04_13_155257_create_message_lists_table.php',
+    'CreateMonsTable' => $baseDir . '/database/migrations/2015_04_14_152407_create_mons_table.php',
+    'CreateMovTypesTable' => $baseDir . '/database/migrations/2015_04_14_161046_create_mov_types_table.php',
+    'CreateObservationsTable' => $baseDir . '/database/migrations/2015_04_14_161311_create_observations_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
+    'CreatePaymentTypesTable' => $baseDir . '/database/migrations/2015_04_14_162613_create_payment_types_table.php',
+    'CreateShipmentMovsTable' => $baseDir . '/database/migrations/2015_04_14_160609_create_shipment_movs_table.php',
+    'CreateShipmentsTable' => $baseDir . '/database/migrations/2015_04_14_160231_create_shipments_table.php',
+    'CreateThoUserAccessesTable' => $baseDir . '/database/migrations/2015_04_14_154938_create_tho_user_accesses_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'File_Iterator' => $vendorDir . '/phpunit/php-file-iterator/src/Iterator.php',
