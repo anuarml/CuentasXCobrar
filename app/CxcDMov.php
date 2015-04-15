@@ -31,5 +31,5 @@ class CxcDMov extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['id','offices'];
+	//protected $visible = ['id','offices'];
 }
