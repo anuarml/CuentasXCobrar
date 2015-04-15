@@ -1,7 +1,11 @@
 <?php namespace App\Http\Controllers\Auth;
 
 use App\Company;
+use App\User;
 use App\Http\Controllers\Controller;
+use App\Services\Login;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -37,6 +41,16 @@ class AuthController extends Controller {
 	}
 
 	/**
+	 * Get the failed login message.
+	 *
+	 * @return string
+	 */
+	protected function getFailedLoginMessage()
+	{
+		return 'Usuario y/o contraseña incorrecto.';
+	}
+
+	/**
 	 * Show the application login form.
 	 *
 	 * @return \Illuminate\Http\Response
@@ -45,10 +59,40 @@ class AuthController extends Controller {
 	{
 		$companies = Company::all();
 
-		//dd($companies->first()->offices->first()->Nombre);
-
-		//dd($companies->toArray());
-
 		return view('auth.login')->withCompanies($companies);
+	}
+
+	/**
+	 * Handle a login request to the application.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function postLogin(Request $request, Login $login)
+	{
+		$validator = $login->validator($request->all());
+
+		if ($validator->fails())
+		{
+			$this->throwValidationException(
+				$request, $validator
+			);
+		}
+
+		$credentials = $request->only('username', 'password');
+
+		if( User::invalidCredentials($credentials) )
+		{
+			return redirect($this->loginPath())
+					->withInput($request->except('password'))
+					->withErrors([
+						'username' => $this->getFailedLoginMessage(),
+					]);
+		}
+
+		$user = User::where('Usuario', $request->get('username') )->first();
+		\Auth::login($user);
+
+		return redirect()->intended($this->redirectPath());
 	}
 }
