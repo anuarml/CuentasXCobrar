@@ -22,6 +22,4 @@ Route::controllers([
 
 Route::get('Cxc', 'CxcController@index');
 
-Route::get('datosGenerales', function(){
-	return view('datosGenerales');
-});
+Route::get('datosGenerales', 'MovController@index');
