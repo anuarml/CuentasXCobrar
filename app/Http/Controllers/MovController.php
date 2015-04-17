@@ -8,7 +8,7 @@ class MovController extends Controller {
 
 	public function index()
 	{
-		return view('datosGenerales');
+		return view('nuevoMovimiento');
 	}
 
 }
