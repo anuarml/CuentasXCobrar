@@ -23,3 +23,9 @@ Route::controllers([
 Route::get('Cxc', 'CxcController@index');
 
 Route::get('nuevoMovimiento', 'MovController@index');
+
+Route::get('documentos', function(){
+	//$documents = array('' => , );
+	$arrayName = array('id' => 0, 'name' => "Item 0", "delete" => "<div class = 'deleterow'><div class='glyphicon glyphicon-remove'></div></div>" );
+    return response() -> json([$arrayName]);
+});
