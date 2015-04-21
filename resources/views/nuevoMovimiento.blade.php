@@ -95,7 +95,7 @@
 
 				    <div role="tabpanel" class="tab-pane" id="Documentos">
 				    	<br>
-				    	<button id="newDocumentRow" class='btn btn-lg btn-primary addnewrow'>Agregar <span class="glyphicon glyphicon-plus"></span></button>
+				    	<button id="newDocumentRow" class='btnz btn-primary addnewrow'>Agregar <span class="glyphicon glyphicon-plus"></span></button>
 				    	<hr>
 				    	<!--<button type="button" class="btn btn-primary">Agregar +</button>-->
 				    	<!--<table id="documentsTable" data-url="data1.json" data-height="299" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" >
@@ -112,10 +112,11 @@
 						    </tr>
 						    </thead>
 						</table>-->
-						<table id="documentsTable"  data-url="documentos" data-cache="false" data-height="299" data-show-refresh="true">
-						<!--<table id="documentsTable">-->
+						<!--<table id="documentsTable"  data-url="documentos" data-cache="false" data-height="299" data-show-refresh="true">
+						<table id="documentsTable">
 						    <thead>
 						        <tr>
+						        	<th data-field="apply" data-align="center">Aplica</th>
 						            <th data-field="consecutive" data-align="center">Consecutivo</th>
 							        <th data-field="amount" data-align="center">Importe</th>
 							        <th data-field="difference" data-align="center">Diferencia</th>
@@ -125,12 +126,33 @@
 							        <th data-field="delete" data-align="center"></th>
 						        </tr>
 						    </thead>
-						</table>
+						</table>-->
+						<div class = "table-responsive">
+							<table id="documentsTable" class="table table-bordered">
+						        <thead>
+						            <tr>
+						                <th>Aplica</th>
+						                <th>Consecutivo</th>
+						                <th>Importe</th>
+						                <th>Diferencia</th>
+						                <th>Diferencia(%)</th>
+						                <th>Concepto</th>
+						                <th>Referencia</th>
+						                <th></th>
+						                <th></th>
+						                <th></th>
+						            </tr>
+						        </thead>
+						        <tbody>
+						        	
+						        </tbody>
+						    </table>
+					    </div>
 				    </div>
 				    <div role="tabpanel" class="tab-pane" id="DesgloseCobro">
 
 				    </div>
-				  </div>
+				  </div> 
 				</div>
 			</div>
 		</div>
