@@ -8,15 +8,15 @@
 				<div role="tabpanel">
 	
 				  <!-- Nav tabs -->
-				  <ul class="nav nav-tabs" role="tablist">
-				    <li role="presentation" class="active"><a href="#DatosGenerales" aria-controls="DatosGenerales" role="tab" data-toggle="tab">Datos Generales</a></li>
-				    <li role="presentation"><a href="#Documentos" aria-controls="Documentos" role="tab" data-toggle="tab">Documentos</a></li>
-				    <li role="presentation"><a href="#DesgloseCobro" aria-controls="DesgloseCobro" role="tab" data-toggle="tab">Desglose Cobro</a></li>
+				  <ul class="nav nav-tabs" role="tablist">|
+				    <li role="presentation" class="active"><a href="#generalData" aria-controls="generalData" role="tab" data-toggle="tab">Datos Generales</a></li>
+				    <li role="presentation"><a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">Documentos</a></li>
+				    <li role="presentation"><a href="#breakdownCharge" aria-controls="breakdownCharge" role="tab" data-toggle="tab">Desglose Cobro</a></li>
 				  </ul>
 
 				  <!-- Tab panes -->
 				  <div class="tab-content">
-				    <div role="tabpanel" class="tab-pane active" id="DatosGenerales">						
+				    <div role="tabpanel" class="tab-pane active" id="generalData">						
 						<div class="container-fluid">
 							<div class="row">
 							    <div class="col-xs-12 col-sm-8 col-sm-offset-2">
@@ -93,7 +93,7 @@
 						</div>
 				    </div>
 
-				    <div role="tabpanel" class="tab-pane" id="Documentos">
+				    <div role="tabpanel" class="tab-pane" id="documents">
 				    	<br>
 				    	<button id="newDocumentRow" class='btnz btn-primary addnewrow'>Agregar <span class="glyphicon glyphicon-plus"></span></button>
 				    	<hr>
@@ -149,7 +149,7 @@
 						    </table>
 					    </div>
 				    </div>
-				    <div role="tabpanel" class="tab-pane" id="DesgloseCobro">
+				    <div role="tabpanel" class="tab-pane" id="breakdownCharge">
 
 				    </div>
 				  </div> 
