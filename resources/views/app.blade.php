@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Laravel</title>
+	<title>Assis - Cobranza</title>
 
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
@@ -36,25 +36,26 @@
 				<ul class="nav navbar-nav navbar-right">
 					@if (Auth::check())
 						<li>
-							<a style="display:inline-block" href="javascript:newTransaction()">
+							<!--{{url('cxc/movimiento/nuevo')}}-->
+							<a id="newMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/new.png')}}">
 							</a>
-							<a style="display:inline-block" href="javascript:newTransaction()">
+							<a id="openMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/open.png')}}">
 							</a>
-							<a style="display:inline-block" href="javascript:newTransaction()">
+							<a style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/save.png')}}">
 							</a>
-							<a style="display:inline-block" href="javascript:newTransaction()">
+							<a id="deleteMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/delete.png')}}">
 							</a>
-							<a style="display:inline-block" href="javascript:newTransaction()">
+							<a style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/print.png')}}">
 							</a>
-							<a style="display:inline-block" href="javascript:newTransaction()">
+							<a style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/affect.ico')}}">
 							</a>
-							<a style="display:inline-block" href="javascript:newTransaction()">
+							<a id="cancelMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/cancel.png')}}">
 							</a>
 							<a style="display:inline-block" href="{{ url('/auth/logout') }}">
@@ -69,9 +70,27 @@
 
 	@yield('content')
 
+	<div class="modal fade" id="confirmModal">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="confirmModalTitle">Cuentas por cobrar</h4>
+	      </div>
+	      <div class="modal-body" id="confirmModalBody">
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+	        <button type="button" class="btn btn-primary">Si</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script src="{{ asset('js/toolbar.js') }}"></script>
 	@yield('scripts')
 </body>
 </html>
