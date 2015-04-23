@@ -24,53 +24,41 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">Usuario</label>
 							<div class="col-sm-6">
-								<input type="email" class="form-control" name="email" value="{{ old('email') }}">
+								<input type="text" class="form-control" name="username" value="{{ old('username') }}" required>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-sm-4 control-label">Contraseña</label>
 							<div class="col-sm-6">
-								<input type="password" class="form-control" name="password">
+								<input type="password" class="form-control" name="password" required>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="slt_company">Empresa</label>
+							<label class="col-sm-4 control-label" for="company">Empresa</label>
 							<div class="col-sm-6">
-	        					<select class="form-control" id="slt_company">
+	        					<select class="form-control" id="company" name="company" required>
 	        						<option hidden></option>
 	        						@foreach($companies as $company)
-	        							<option>{{ $company->id }}</option>
+	        							<option value="{{ $company->id }}">{{ $company->id }}</option>
 	        						@endforeach
 	        					</select>
 	        				</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="slt_office">Sucursal</label>
+							<label class="col-sm-4 control-label" for="office">Sucursal</label>
 							<div class="col-sm-6">
-	        					<select class="form-control" id="slt_office">
+	        					<select class="form-control" id="office" name="office" required>
 	        						<option hidden></option>
 	        					</select>
 	        				</div>
 						</div>
 
 						<div class="form-group">
-							<div class="col-sm-6 col-sm-offset-4">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="remember"> Remember Me
-									</label>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<div class="col-sm-6 col-sm-offset-4">
-								<button type="submit" class="btn btn-primary">Login</button>
-
-								<a class="btn btn-link" href="{{ url('/password/email') }}">Forgot Your Password?</a>
+							<div class="col-sm-4 col-sm-offset-5">
+								<button type="submit" class="btn btn-primary btn-block">Login</button>
 							</div>
 						</div>
 					</form>
@@ -83,13 +71,13 @@
 
 @section('scripts')
 <script type="text/javascript">
-	var companies = JSON.parse('{!!$companies->toJson()!!}');
+	var companies = JSON.parse('{!! $companies->toJson() !!}');
 
-	$('#slt_company').change(updateOfficesList);
+	$('#company').change(updateOfficesList);
 
 	function updateOfficesList(){
-		$('#slt_office option').remove();
-		$('#slt_office').append('<option hidden></option>');
+		$('#office option').remove();
+		$('#office').append('<option hidden></option>');
 
 		for(var i=0;i<companies.length;i++){
 			if(companies[i].id == this.value){
@@ -98,12 +86,19 @@
 
 				for(var j=0;j<offices.length;j++){
 
-					$('#slt_office').append('<option value='+ offices[j].id +'>'+ offices[j].name +'</option>');
+					$('#office').append('<option value='+ offices[j].id +'>'+ offices[j].name +'</option>');
 				}
 				
 			}
 		}
 	}
+
+	var companyVal = $('#company').val('{{ old("company") }}');
+
+	if (companyVal) {
+		$('#company').change();
+		$('#office').val('{{ old("office") }}');
+	};
 
 </script>
 @endsection
