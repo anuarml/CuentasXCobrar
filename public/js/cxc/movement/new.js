@@ -111,7 +111,31 @@ function document(apply, consecutive, amount, difference, differencePercentage, 
 
 $("#newDocumentRow").on("click", function(){
 	
-	$('#documentsTable tbody').append("<tr><td style='text-align: center;' class='apply'></td><td style='text-align: center;' class='consecutive'></td><td style='text-align: center;' class='amount'></td><td style='text-align: center;' class='difference' ></td><td style='text-align: center;' class='differencePercentage'></td><td style='text-align: center;' class='concept'></td><td style='text-align: center;' class='reference'></td><td style='text-align: center;'><div class='deleterows'><div class='glyphicon glyphicon-remove'></div></div></td><td style='text-align: center;'><div class='editrow'><div class='glyphicon glyphicon-pencil'></div></div></td><td style='text-align: center;'><div class = 'calculator' align= 'center'><div class='fa fa-calculator'></div></div></td></tr>");
+	$('#documentsTable tbody').append(
+		"<tr>"+
+			"<td style='text-align: center;' class='apply'></td>"+
+			"<td style='text-align: center;' class='consecutive'></td>"+
+			"<td style='text-align: center;' class='amount'></td>"+
+			"<td style='text-align: center;' class='difference'></td>"+
+			"<td style='text-align: center;' class='differencePercentage'></td>"+
+			"<td style='text-align: center;' class='concept'></td>"+
+			"<td style='text-align: center;' class='reference'></td>"+
+			"<td style='text-align: center;'>"+
+				"<div class='deleterows'>"+
+					"<div class='glyphicon glyphicon-remove'></div>"+
+				"</div>"+
+			"</td>"+
+			"<td style='text-align: center;'>"+
+				"<div class='editrow'>"+
+					"<div class='glyphicon glyphicon-pencil'></div>"+
+				"</div>"+
+			"</td>"+
+			"<td style='text-align: center;'>"+
+				"<div class = 'calculator' align= 'center'>"+
+					"<div class='fa fa-calculator'></div>"+
+				"</div>"+
+			"</td>"+
+		"</tr>");
 	
 	$("#documentsTable tbody tr:last .deleterows").on("click", function(){
 		var $killrow = $(this).parent('td').parent('tr');
