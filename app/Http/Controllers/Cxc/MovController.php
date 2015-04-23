@@ -10,7 +10,7 @@ class MovController extends Controller {
 
 	public function getNuevo(){
 		
-		return view('datosGenerales');
+		return view('nuevoMovimiento');
 	}
 
 	public function postNuevo(){

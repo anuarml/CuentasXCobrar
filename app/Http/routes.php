@@ -19,3 +19,4 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 	'cxc/movimiento' => 'Cxc\MovController',
 ]);
+
