@@ -109,7 +109,7 @@ function document(apply, consecutive, amount, difference, differencePercentage, 
 	this.reference;
 }*/
 
-$(".addnewrow").on("click", function(){
+$("#newDocumentRow").on("click", function(){
 	
 	$('#documentsTable tbody').append("<tr><td style='text-align: center;' class='apply'></td><td style='text-align: center;' class='consecutive'></td><td style='text-align: center;' class='amount'></td><td style='text-align: center;' class='difference' ></td><td style='text-align: center;' class='differencePercentage'></td><td style='text-align: center;' class='concept'></td><td style='text-align: center;' class='reference'></td><td style='text-align: center;'><div class='deleterows'><div class='glyphicon glyphicon-remove'></div></div></td><td style='text-align: center;'><div class='editrow'><div class='glyphicon glyphicon-pencil'></div></div></td><td style='text-align: center;'><div class = 'calculator' align= 'center'><div class='fa fa-calculator'></div></div></td></tr>");
 	
@@ -122,7 +122,7 @@ $(".addnewrow").on("click", function(){
 	});
 
 	$("#documentsTable tbody tr:last .apply").on("click", function(e){
-		$(e.target).append("<select class='form-control' id='apply'><option>a</option><option>b</option></select> ");
+		$(e.target).append("<select class='form-control' id='documentApply'><option>a</option><option>b</option></select> ");
 		$("#apply").focus();
 	});
 
@@ -153,6 +153,37 @@ $(".addnewrow").on("click", function(){
 		$(this).empty();
 	})*/
 
-	;}
+	}
 );
+
+var numberOfCharges = 1;
+
+$("#newChargeRow").on("click", function(){
+	
+	if(numberOfCharges > 5) return;
+	
+	$('#charges').append(
+		"<div class='form-group'>" +	    	
+			"<div class='col-sm-4'>" +
+				"<label for='chargeAmount'>Importe " + numberOfCharges + "</label>" +
+				"<div class='input-group'>"+
+					"<div class='input-group-addon'>$</div>"+
+					"<input type='decimal' class='form-control input-sm' id='chargeAmount' min='0' step='any'>"+
+				"</div>"+
+			"</div>" +
+			"<div class='col-sm-4'>" +
+				"<label for='wayOfPayment'>Forma Cobro " + numberOfCharges + "</label>"+
+				"<select id='wayOfPayment' class='form-control input-sm'>"+
+					"<option></option>" +
+				"</select>" +
+			"</div>" +
+			"<div class='col-sm-4'>" +
+				"<label for='chargeReference'>Referencia " + numberOfCharges + "</label>"+
+				"<input type='text' class='form-control input-sm' id='chargeReference'>"+
+			"</div>" + 
+		"</div>" + "<hr>");
+
+	numberOfCharges++;
+
+});
 /*<select class='form-control'><option>Parangaricutirimicuaro</option></select>*/
