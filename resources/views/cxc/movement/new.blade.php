@@ -138,6 +138,8 @@
 						                <th>Diferencia(%)</th>
 						                <th>Concepto</th>
 						                <th>Referencia</th>
+						                <th hidden>Descuento</th>
+						                <th hidden>Sugerencia</th>
 						                <th></th>
 						                <th></th>
 						                <th></th>

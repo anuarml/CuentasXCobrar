@@ -120,6 +120,8 @@ $("#newDocumentRow").on("click", function(){
 			"<td style='text-align: center;' class='differencePercentage'></td>"+
 			"<td style='text-align: center;' class='concept'></td>"+
 			"<td style='text-align: center;' class='reference'></td>"+
+			"<td style='text-align: center;' class='discountPPP' hidden></td>"+
+			"<td style='text-align: center;' class='suggestPPP' hidden></td>"+
 			"<td style='text-align: center;'>"+
 				"<div class='deleterows'>"+
 					"<div class='glyphicon glyphicon-remove'></div>"+
@@ -147,22 +149,66 @@ $("#newDocumentRow").on("click", function(){
 
 	$("#documentsTable tbody tr:last .apply").on("click", function(e){
 		$(e.target).append("<select class='form-control' id='documentApply'><option>a</option><option>b</option></select> ");
-		$("#apply").focus();
+		$("#documentApply").focus();
 	});
 
 	$("#documentsTable tbody tr:last .apply").on("focusout", function(e){
 		console.log($(this) + "gorgojo");
-		$("#apply option:selected").text();
+		$("#documentApply option:selected").text();
 		$(this).empty();
 	});
 
 	$("#documentsTable tbody tr:last .consecutive").on("click", function(e){
-		/*$(e.target).append("<select class='form-control' id='apply'><option></option></select> ");
-		$("#apply").focus();*/
-		window.location("/cxc/documento/buscar")
+		
+		if($("#documentsTable tbody tr:last .consecutive").children().length > 0) return;
+
+		$(e.target).append(
+			"<div class='input-group'>"+
+				"<div class='input-group-addon searchConsecutive'>...</div>"+
+				"<input type='number' class='form-control input-sm' id='consecutive' min='0' step='any'>"+
+			"</div>");
+
+		$("#documentsTable tbody tr:last .searchConsecutive").on("click", function(e){
+			/*$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
+			$("#documentAmount").focus();*/
+			alert("Hola");
+		});
+
+		$("#consecutive").focus();
+
+
+		//window.location("/cxc/documento/buscar");
 	});
 
+	/*$("#documentsTable tbody tr:last .consecutive").on("focusout", function(e){
+		console.log($(this) + "gorgojo");
+		$("#consecutive").text();
+		$(this).empty();
+	});*/
+
 	
+
+	$("#documentsTable tbody tr:last .amount").on("click", function(e){
+		$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
+		$("#documentAmount").focus();
+	});
+
+	$("#documentsTable tbody tr:last .amount").on("focusout", function(e){
+		console.log($(this) + "gorgojo");
+		$("#documentAmount").text();
+		$(this).empty();
+	});
+
+	$("#documentsTable tbody tr:last .discountPPP").on("click", function(e){
+		$(e.target).append("<input type='number' class='form-control' id='discountPPP' min='0' step='any'>");
+		$("#discountPPP").focus();
+	});
+
+	$("#documentsTable tbody tr:last .discountPPP").on("focusout", function(e){
+		console.log($(this) + "gorgojo");
+		$("#discountPPP").text();
+		$(this).empty();
+	});
 
 	/*$(".apply").on("click", function(e){
 		//$(this).remove();
@@ -192,7 +238,7 @@ $("#newChargeRow").on("click", function(){
 				"<label for='chargeAmount'>Importe " + numberOfCharges + "</label>" +
 				"<div class='input-group'>"+
 					"<div class='input-group-addon'>$</div>"+
-					"<input type='decimal' class='form-control input-sm' id='chargeAmount' min='0' step='any'>"+
+					"<input type='number' class='form-control input-sm' id='chargeAmount' min='0' step='any'>"+
 				"</div>"+
 			"</div>" +
 			"<div class='col-sm-4'>" +
