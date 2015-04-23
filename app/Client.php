@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class cte extends Model {
+class Client extends Model {
 
 		/**
 	 * The database table used by the model.
@@ -31,9 +31,9 @@ class cte extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['client','name', 'rfc', 'agent', 'collector', 'def_currency'];
+	protected $visible = ['client','name', 'erfc', 'agent', 'collector', 'def_currency'];
 
-	protected $appends = ['client','name', 'rfc'];
+	protected $appends = ['client','name', 'erfc', 'agent', 'collector', 'def_currency'];
 
 	public function getClientAttribute(){
 		return $this->Cliente;
@@ -43,7 +43,7 @@ class cte extends Model {
 		return $this->Nombre;
 	}
 
-	public function getRfcAttribute(){
+	public function getErfcAttribute(){
 		return $this->RFC;
 	}
 

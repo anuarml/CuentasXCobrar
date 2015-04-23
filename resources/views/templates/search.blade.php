@@ -7,9 +7,11 @@
 	<title>Assis - Cobranza</title>
 
 	<link rel="icon" type="image/jpg" href="{{ asset('/img/money.jpg') }}" />
+	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
 	<!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+	<link href="{{ asset('/css/bootstrap-table.min.css') }}" rel="stylesheet">
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -19,54 +21,49 @@
 	<![endif]-->
 </head>
 <body>
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="sr-only">Toggle Navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">Assis</a>
-				<a class="navbar-brand" href="{{ url('/') }}">Cobranza</a>
-			</div>
+	
+		<div class="row">
+			<div class="col-sm-8 col-sm-offset-2">
+				<div class="panel panel-default">
+					<div class="panel-heading">Buscar {{ $searchType }}</div>
+					<div class="panel-body">
+						@if (count($errors) > 0)
+							<div class="alert alert-danger">
+								Resuelve los siguientes problemas.<br><br>
+								<ul>
+									@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+							</div>
+						@endif
 
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right">
-					@if (Auth::check())
-						<li>
-							<!--{{url('cxc/movimiento/nuevo')}}-->
-							<a id="newMov" style="display:inline-block" href="#">
-								<img height="30px" src="{{asset('img/new.png')}}">
-							</a>
-							<a id="openMov" style="display:inline-block" href="#">
-								<img height="30px" src="{{asset('img/open.png')}}">
-							</a>
-							<a style="display:inline-block" href="#">
-								<img height="30px" src="{{asset('img/save.png')}}">
-							</a>
-							<a id="deleteMov" style="display:inline-block" href="#">
-								<img height="30px" src="{{asset('img/delete.png')}}">
-							</a>
-							<a style="display:inline-block" href="#">
-								<img height="30px" src="{{asset('img/print.png')}}">
-							</a>
-							<a style="display:inline-block" href="#">
-								<img height="30px" src="{{asset('img/affect.ico')}}">
-							</a>
-							<a id="cancelMov" style="display:inline-block" href="#">
-								<img height="30px" src="{{asset('img/cancel.png')}}">
-							</a>
-							<a style="display:inline-block" href="{{ url('/auth/logout') }}">
-								<img height="30px" src="{{asset('img/logout.png')}}">
-							</a>
-						</li>
-					@endif
-				</ul>
+						<form class="form-horizontal" role="form" method="POST" action="{{ url('/cxc/cliente/buscar') }}">
+							<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+							<div class="form-group">
+								<label class="col-sm-4 control-label">{{ $searchType }}</label>
+								<div class="col-sm-6">
+									<div class="input-group">
+										<input type="search" class="form-control" name="search" value="{{ old('search') }}">
+										<span class="input-group-btn">
+								        	<button type="submit" class="btn btn-default" aria-label="Search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+								    	</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-sm-5 col-sm-offset-4">
+									<button type="button" class="btn btn-danger btn-block">Cancelar</button>
+									<button type="button" class="btn btn-success btn-block">Seleccionar</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
-	</nav>
 
 	@yield('content')
 
@@ -90,7 +87,6 @@
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	<script src="{{ asset('js/toolbar.js') }}"></script>
 	@yield('scripts')
 </body>
 </html>
