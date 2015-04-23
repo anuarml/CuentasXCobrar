@@ -11,21 +11,12 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+Route::get('/', 'MenuController@index');
 
-Route::get('home', 'HomeController@index');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
+	'cxc/movimiento' => 'Cxc\MovController',
 ]);
 
-Route::get('Cxc', 'CxcController@index');
-
-Route::get('nuevoMovimiento', 'MovController@index');
-
-Route::get('documentos', function(){
-	//$documents = array('' => , );
-	$arrayName = array('id' => 0, 'name' => "Item 0", "delete" => "<div class = 'deleterow'><div class='glyphicon glyphicon-remove'></div></div>" );
-    return response() -> json([$arrayName]);
-});

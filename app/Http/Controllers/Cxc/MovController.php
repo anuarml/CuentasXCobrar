@@ -1,4 +1,6 @@
-<?php namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers\Cxc;
+
+use App\Http\Controllers\Controller;
 
 class MovController extends Controller {
 	
@@ -6,10 +8,13 @@ class MovController extends Controller {
 		$this->middleware('auth');
 	}
 
-	public function index()
-	{
+	public function getNuevo(){
+		
 		return view('nuevoMovimiento');
 	}
 
+	public function postNuevo(){
+
+	}
 }
 
