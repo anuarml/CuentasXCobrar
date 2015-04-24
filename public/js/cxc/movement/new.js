@@ -123,7 +123,8 @@ $("#newDocumentRow").on("click", function(){
 			"<td style='text-align: center;' class='discountPPP' hidden></td>"+
 			"<td style='text-align: center;' class='suggestPPP' hidden></td>"+
 			"<td style='text-align: center;'>"+
-				"<div class='deleterows'>"+
+				"<div class='deleteDocument'>"+
+					/*"<button type='button' class='btn btn-link btn-sm'><span class='glyphicon glyphicon-remove'></span></button>" +*/
 					"<div class='glyphicon glyphicon-remove'></div>"+
 				"</div>"+
 			"</td>"+
@@ -139,12 +140,13 @@ $("#newDocumentRow").on("click", function(){
 			"</td>"+
 		"</tr>");
 	
-	$("#documentsTable tbody tr:last .deleterows").on("click", function(){
+	$("#documentsTable tbody tr:last .deleteDocument").on("click", function(){
 		var $killrow = $(this).parent('td').parent('tr');
-		    $killrow.addClass("danger");
+		    /*$killrow.addClass("danger");
 			$killrow.fadeOut(1000, function(){
 		    	$(this).remove();
-			});
+			});*/
+			$killrow.remove();
 	});
 
 	$("#documentsTable tbody tr:last .apply").on("click", function(e){
@@ -160,31 +162,32 @@ $("#newDocumentRow").on("click", function(){
 
 	$("#documentsTable tbody tr:last .consecutive").on("click", function(e){
 		
-		if($("#documentsTable tbody tr:last .consecutive").children().length > 0) return;
+		if($(e.currentTarget).children().length > 0) return;
+		else{
+			$(e.target).append(
+				"<div class='input-group'>"+
+					"<span class='input-group-btn'><button type='button' class='btn btn-default btn-sm' id='searchConsecutive'>...</button></span>"+
+					"<input type='text' class='form-control input-sm' id='consecutive' readonly>"+
+				"</div>");
+		}
 
-		$(e.target).append(
-			"<div class='input-group'>"+
-				"<div class='input-group-addon searchConsecutive'>...</div>"+
-				"<input type='number' class='form-control input-sm' id='consecutive' min='0' step='any'>"+
-			"</div>");
-
-		$("#documentsTable tbody tr:last .searchConsecutive").on("click", function(e){
+		$("#searchConsecutive").on("click", function(e){
 			/*$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
 			$("#documentAmount").focus();*/
-			alert("Hola");
+			window.location("/cxc/documento/buscar");
 		});
 
-		$("#consecutive").focus();
+		$("#searchConsecutive").focus();
 
 
 		//window.location("/cxc/documento/buscar");
 	});
 
-	/*$("#documentsTable tbody tr:last .consecutive").on("focusout", function(e){
+	$("#documentsTable tbody tr:last .consecutive").on("focusout", function(e){
 		console.log($(this) + "gorgojo");
 		$("#consecutive").text();
 		$(this).empty();
-	});*/
+	});
 
 	
 
