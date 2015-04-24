@@ -31,11 +31,11 @@ class Client extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['client','name', 'erfc', 'agent', 'collector', 'def_currency'];
+	protected $visible = ['id','name', 'erfc', 'agent', 'collector', 'def_currency'];
 
-	protected $appends = ['client','name', 'erfc', 'agent', 'collector', 'def_currency'];
+	protected $appends = ['id','name', 'erfc', 'agent', 'collector', 'def_currency'];
 
-	public function getClientAttribute(){
+	public function getIdAttribute(){
 		return $this->Cliente;
 	}
 

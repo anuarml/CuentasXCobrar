@@ -12,8 +12,9 @@ class ClientController extends Controller {
 	public function getBuscar(){
 		
 		$searchType = 'Cliente';
+		$dataURL = '/cxc/cliente/clientes';
 
-		return view('cxc.client.search', compact('searchType'));
+		return view('cxc.search', compact('searchType','dataURL'));
 	}
 
 	public function getClientes(){

@@ -21,51 +21,41 @@
 	<![endif]-->
 </head>
 <body>
-	
+	<div class="container-fluid">
 		<div class="row">
-			<div class="col-sm-8 col-sm-offset-2">
-				<div class="panel panel-default">
-					<div class="panel-heading">Buscar {{ $searchType }}</div>
-					<div class="panel-body">
-						@if (count($errors) > 0)
-							<div class="alert alert-danger">
-								Resuelve los siguientes problemas.<br><br>
-								<ul>
-									@foreach ($errors->all() as $error)
-										<li>{{ $error }}</li>
-									@endforeach
-								</ul>
-							</div>
-						@endif
+			<div class="col-sm-10 col-sm-offset-1">
+				<div class="row">
+					<div class="panel panel-default">
+						<div class="panel-heading">Buscar {{ $searchType }}</div>
+						<div class="panel-body">
 
-						<form class="form-horizontal" role="form" method="POST" action="{{ url('/cxc/cliente/buscar') }}">
-							<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-							<div class="form-group">
-								<label class="col-sm-4 control-label">{{ $searchType }}</label>
-								<div class="col-sm-6">
-									<div class="input-group">
-										<input type="search" class="form-control" name="search" value="{{ old('search') }}">
-										<span class="input-group-btn">
-								        	<button type="submit" class="btn btn-default" aria-label="Search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-								    	</span>
-									</div>
-								</div>
+							<div class="col-sm-4 col-sm-offset-2">
+								<button type="button" class="btn btn-danger btn-block">Cancelar</button>
 							</div>
-
-							<div class="form-group">
-								<div class="col-sm-5 col-sm-offset-4">
-									<button type="button" class="btn btn-danger btn-block">Cancelar</button>
-									<button type="button" class="btn btn-success btn-block">Seleccionar</button>
-								</div>
+							<div class="visible-xs-block">
+								<br>
 							</div>
-						</form>
+							<div class="col-sm-4">
+								<button type="button" class="btn btn-success btn-block">Seleccionar</button>
+							</div>
+							
+							<div class="clearfix"></div>
+
+							<div class="row">
+								<table id="searchTable" data-toggle="table" data-url="{{ $dataURL }}" data-search="true" data-show-columns="true" data-click-to-select="true">
+									<thead>
+										<tr>
+											@yield('table-header')
+										</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
-	@yield('content')
+	</div>
 
 	<div class="modal fade" id="confirmModal">
 	  <div class="modal-dialog modal-sm">
@@ -87,6 +77,7 @@
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
 	@yield('scripts')
 </body>
 </html>
