@@ -109,6 +109,17 @@ function document(apply, consecutive, amount, difference, differencePercentage, 
 	this.reference;
 }*/
 
+// Javascript to enable link to tab
+var url = document.location.toString();
+if (url.match('#')) {
+    $('.nav-tabs a[href=#'+url.split('#')[1]+']').tab('show') ;
+} 
+
+// Change hash for page-reload
+$('.nav-tabs a').on('shown', function (e) {
+    window.location.hash = e.target.hash;
+})
+
 $("#newDocumentRow").on("click", function(){
 	
 	$('#documentsTable tbody').append(
@@ -128,7 +139,7 @@ $("#newDocumentRow").on("click", function(){
 					"<div class='glyphicon glyphicon-remove'></div>"+
 				"</div>"+
 			"</td>"+
-			"<td style='text-align: center;'>"+
+			/*"<td style='text-align: center;'>"+
 				"<div class='editrow'>"+
 					"<div class='glyphicon glyphicon-pencil'></div>"+
 				"</div>"+
@@ -137,7 +148,7 @@ $("#newDocumentRow").on("click", function(){
 				"<div class = 'calculator' align= 'center'>"+
 					"<div class='fa fa-calculator'></div>"+
 				"</div>"+
-			"</td>"+
+			"</td>"+*/
 		"</tr>");
 	
 	$("#documentsTable tbody tr:last .deleteDocument").on("click", function(){
@@ -174,7 +185,7 @@ $("#newDocumentRow").on("click", function(){
 		$("#searchConsecutive").on("click", function(e){
 			/*$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
 			$("#documentAmount").focus();*/
-			window.location("/cxc/documento/buscar");
+			//window.location= "/cxc/documento/buscar";
 		});
 
 		$("#searchConsecutive").focus();
@@ -192,15 +203,54 @@ $("#newDocumentRow").on("click", function(){
 	
 
 	$("#documentsTable tbody tr:last .amount").on("click", function(e){
-		$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
-		$("#documentAmount").focus();
+		if($(e.currentTarget).children().length > 0) return;
+		else{
+			$(e.target).append(
+				"<div class='input-group'>"+
+					"<span class='input-group-btn'>"+
+						"<button type='button' class='btn btn-default' id='calculator'>"+
+							"<span class='fa fa-calculator'></span>"+
+						"</button>"+
+					"</span>"+
+					"<input type='number' class='form-control' id='documentAmount' min='0' step='any'>" +
+				"</div>"
+				);
+		}
+
+		$("#calculator").on("click", function(e){
+			alert("hola");
+			//window.location="calculadora";
+		});
+
+		$(this).focus();
+
 	});
 
 	$("#documentsTable tbody tr:last .amount").on("focusout", function(e){
-		console.log($(this) + "gorgojo");
-		$("#documentAmount").text();
-		$(this).empty();
+			console.log($("#documentAmount").is(":focus"));
+			console.log($("#calculator").is(":focus"));
+			console.log($(this) + "gorgojo");
+			$("#documentAmount").text();
+			$(this).empty();
+		/*if(!($("#documentAmount").is(":focus")) && !($("#calculator").is(":focus"))){
+			console.log($(this) + "gorgojo");
+			$("#documentAmount").text();
+			$(this).empty();
+		}*/
+		
 	});
+
+	/*$("#documentAmount,#calculator").on("focusout", function(e){
+		console.log($("#documentAmount").is(":focus"));
+			console.log($("#calculator").is(":focus"));
+		if(!($("#calculator").is(":focus"))){
+			console.log($(this) + "gorgojo");
+
+			$("#documentAmount").text();
+			$(this).empty();
+		}
+		alert("hola");
+	});*/
 
 	$("#documentsTable tbody tr:last .discountPPP").on("click", function(e){
 		$(e.target).append("<input type='number' class='form-control' id='discountPPP' min='0' step='any'>");
