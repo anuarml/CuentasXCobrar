@@ -8,15 +8,15 @@
 				<div role="tabpanel">
 	
 				  <!-- Nav tabs -->
-				  <ul class="nav nav-tabs" role="tablist">|
-				    <li role="presentation" class="active"><a href="#generalData" aria-controls="generalData" role="tab" data-toggle="tab">Datos Generales</a></li>
-				    <li role="presentation"><a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">Documentos</a></li>
-				    <li role="presentation"><a href="#breakdownCharge" aria-controls="breakdownCharge" role="tab" data-toggle="tab">Desglose Cobro</a></li>
+				  <ul class="nav nav-tabs" role="tablist">
+				    <li role="presentation" class="active"><a href="#datosGenerales" aria-controls="datosGenerales" role="tab" data-toggle="tab">Datos Generales</a></li>
+				    <li role="presentation"><a href="#documentos" aria-controls="documentos" role="tab" data-toggle="tab">Documentos</a></li>
+				    <li role="presentation"><a href="#desgloseCobro" aria-controls="desgloseCobro" role="tab" data-toggle="tab">Desglose Cobro</a></li>
 				  </ul>
 
 				  <!-- Tab panes -->
 				  <div class="tab-content">
-				    <div role="tabpanel" class="tab-pane active" id="generalData">						
+				    <div role="tabpanel" class="tab-pane active" id="datosGenerales">						
 						<div class="container-fluid">
 							<div class="row">
 							    <div class="col-xs-12 col-sm-8 col-sm-offset-2">
@@ -93,9 +93,9 @@
 						</div>
 				    </div>
 
-				    <div role="tabpanel" class="tab-pane" id="documents">
+				    <div role="tabpanel" class="tab-pane" id="documentos">
 				    	<br>
-				    	<button id="newDocumentRow" class='btnz btn-primary addnewrow'>Agregar <span class="glyphicon glyphicon-plus"></span></button>
+				    	<button id="newDocumentRow" class='btnz btn-primary'>Agregar <span class="glyphicon glyphicon-plus"></span></button>
 				    	<hr>
 				    	<!--<button type="button" class="btn btn-primary">Agregar +</button>-->
 				    	<!--<table id="documentsTable" data-url="data1.json" data-height="299" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" >
@@ -138,8 +138,10 @@
 						                <th>Diferencia(%)</th>
 						                <th>Concepto</th>
 						                <th>Referencia</th>
-						                <th></th>
-						                <th></th>
+						                <th hidden>Descuento</th>
+						                <th hidden>Sugerencia</th>
+						                <!--<th></th>-->
+						                <!--<th></th>-->
 						                <th></th>
 						            </tr>
 						        </thead>
@@ -149,8 +151,51 @@
 						    </table>
 					    </div>
 				    </div>
-				    <div role="tabpanel" class="tab-pane" id="breakdownCharge">
-
+				    <div role="tabpanel" class="tab-pane" id="desgloseCobro">
+				    	<br>
+				    	<button id="newChargeRow" class='btnz btn-primary'>Agregar <span class="glyphicon glyphicon-plus"></span></button>
+				    	<hr>
+				    	<form id="charges" class="form-horizontal"></form>
+				    	<hr>
+				    	<form class="form-horizontal">
+				    		<div class='form-group'>
+				    			<div class='col-sm-3'>
+				    				<label for="proBalance">Saldo a Favor</label>
+				    				<div class='input-group'>
+				    					<div class='input-group-addon'>$</div>
+				    					<input type='number' class='form-control input-sm' id='proBalance' min='0' step='any'>
+				    				</div>
+				    			</div>
+				    			<div class='col-sm-3'>
+				    				<label for="change">Cambio</label>
+				    				<div class='input-group'>
+				    					<div class='input-group-addon'>$</div>
+				    					<input type='number' class='form-control input-sm' id='change' min='0' step='any'>
+				    				</div>
+				    			</div>
+				    			<div class='col-sm-2'>
+				    				<label for="totalCharge">Cobro Total</label>
+				    				<div class='input-group'>
+				    					<div class='input-group-addon'>$</div>
+				    					<input type='number' class='form-control input-sm' id='totalCharge' min='0' step='any' readonly>
+				    				</div>
+				    			</div>
+				    			<div class='col-sm-2'>
+				    				<label for="totalAmount">Importe Total</label>
+				    				<div class='input-group'>
+				    					<div class='input-group-addon'>$</div>
+				    					<input type='number' class='form-control input-sm' id='totalAmount' min='0' step='any' readonly>
+				    				</div>
+				    			</div>
+				    			<div class='col-sm-2'>
+				    				<label for="difference">Por Cobrar</label>
+				    				<div class='input-group'>
+				    					<div class='input-group-addon'>$</div>
+				    					<input type='number' class='form-control input-sm' id='difference' min='0' step='any' readonly>
+				    				</div>
+				    			</div>
+				    		</div>
+				    	</form>
 				    </div>
 				  </div> 
 				</div>
@@ -160,5 +205,5 @@
 @endsection
 
 @section('scripts')
-<script type="text/javascript" src="js/nuevoMovimiento.js"></script>
+<script type="text/javascript" src="{{ asset('js/cxc/movement/new.js') }}"></script>
 @endsection
