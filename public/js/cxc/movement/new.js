@@ -185,7 +185,7 @@ $("#newDocumentRow").on("click", function(){
 		$("#searchConsecutive").on("click", function(e){
 			/*$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
 			$("#documentAmount").focus();*/
-			//window.location= "/cxc/documento/buscar";
+			window.location= "/cxc/documento/buscar";
 		});
 
 		$("#searchConsecutive").focus();
@@ -218,11 +218,11 @@ $("#newDocumentRow").on("click", function(){
 		}
 
 		$("#calculator").on("click", function(e){
-			alert("hola");
-			//window.location="calculadora";
+			//alert("hola");
+			window.location="calculadora";
 		});
 
-		$(this).focus();
+		//$(this).focus();
 
 	});
 
