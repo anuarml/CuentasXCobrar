@@ -11,13 +11,14 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+Route::get('/', 'MenuController@index');
 
-Route::get('home', 'HomeController@index');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
+	'cxc/movimiento' => 'Cxc\MovController',
+	'cxc/documento' => 'Cxc\DocumentController',
+	'utileries' => 'UtileriesController',
 ]);
 
-Route::get('Cxc', 'CxcController@index');
