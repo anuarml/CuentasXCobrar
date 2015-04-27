@@ -1,0 +1,50 @@
+<?php namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class CteSendTo extends Model {
+
+		/**
+	 * The database table used by the model.
+	 *
+	 * @var string
+	 */
+	protected $table = 'Empresa';
+
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $fillable = [];
+
+	/**
+	 * The attributes excluded from the model's JSON form.
+	 *
+	 * @var array
+	 */
+	//protected $hidden = [];
+
+
+	/**
+	 * The attributes included from the model's JSON form.
+	 *
+	 * @var array
+	 */
+	protected $visible = ['id','name', 'address'];
+
+	protected $appends = ['id','name', 'address'];
+
+	public function getIdAttribute(){
+		return $this->ID;
+	}
+
+	public function getNameAttribute(){
+		return $this->Nombre;
+	}
+
+	public function getAddressAttribute(){
+		return $this->Direccion;
+	}
+
+}

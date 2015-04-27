@@ -30,6 +30,36 @@ class CxcD extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['ID','Importe','Aplica','AplicaID'];
+	protected $visible = ['office','id','row','apply', 'apply_id', 'amount', 'p_p_discount'];
+	
+	protected $appends = ['office','id','row','apply', 'apply_id', 'amount', 'p_p_discount'];
 
+	public function getOfficeAttribute(){
+		return $this->Sucursal;
+	}
+
+	public function getIdAttribute(){
+		return $this->ID;
+	}
+
+	public function getRowAttribute(){
+		return $this->Renglon;
+	}
+
+	public function getApplyAttribute(){
+		return $this->Aplica;
+	}
+
+	public function getApplyIdAttribute(){
+		return $this->AplicaID;
+	}
+
+	public function getAmountAttribute(){
+		return $this->Importe;
+	}
+
+	public function getPPDiscountAttribute(){
+		return $this->DescuentoRecargos;
+	}
 }
+
