@@ -4,6 +4,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cxc extends Model {
 
+	public $timestamps = false;
+
+	protected $primaryKey = 'ID';
 	/**
 	 * The database table used by the model.
 	 *
@@ -36,16 +39,16 @@ class Cxc extends Model {
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
 							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'tho_web_assigned', 'balance', 'name'];
 
-	protected $appends = ['office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'mov', 'emission_date', 'amount',
+	protected $appends = ['id','office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'mov', 'emission_date', 'amount',
 							'taxes', 'currency', 'change_type', 'client_currency', 'cliet_change', 'user', 'status', 'cta_dinero', 'cashier',
 							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown', 'payment_type1',
 							'payment_type2', 'payment_type3', 'payment_type4', 'payment_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
 							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'tho_web_assigned'];
-
+					
 	public function getIdAttribute(){
 		return $this->ID;
-	}						
-	
+	}
+
 	public function getOfficeIdAttribute(){
 		return $this->Sucursal;
 	}
@@ -54,9 +57,17 @@ class Cxc extends Model {
 		return $this->SucursalOrigen;
 	}
 
+
+
 	public function getClientIdAttribute(){
 		return $this->Cliente;
 	}
+
+	public function setClientIdAttribute($clientID){
+		return $this->Cliente = $clientID;
+	}
+
+
 
 	public function getClientSendToAttribute(){
 		return $this->ClienteEnviarA;
