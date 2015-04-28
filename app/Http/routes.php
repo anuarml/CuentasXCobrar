@@ -13,10 +13,10 @@
 
 Route::get('/', 'MenuController@index');
 
+Route::get('/cxc/movimiento/mov/{movID}/buscar/{searchType}','Cxc\MovController@search');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
 	'cxc/movimiento' => 'Cxc\MovController',
 	'cxc/cliente' => 'Cxc\ClientController',
 ]);

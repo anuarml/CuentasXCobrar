@@ -9,20 +9,18 @@ class ClientController extends Controller {
 		$this->middleware('auth');
 	}
 
-	public function getBuscar(){
-		
-		$searchType = 'Cliente';
-		$dataURL = '/cxc/cliente/clientes';
-
-		return view('cxc.search', compact('searchType','dataURL'));
-	}
-
 	public function getClientes(){
 		
 		$clients = Client::all();
 
-		//dd($clients); 
 		return response()->json($clients);
+	}
+
+	public static function showClientSearch($searchType, $movID){
+		
+		$dataURL = '/cxc/cliente/clientes';
+		
+		return view('cxc.client.search', compact('searchType','dataURL','movID'));
 	}
 }
 

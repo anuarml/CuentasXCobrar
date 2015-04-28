@@ -28,15 +28,21 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">Buscar {{ $searchType }}</div>
 						<div class="panel-body">
-
-							<div class="col-sm-4 col-sm-offset-2">
-								<button type="button" class="btn btn-danger btn-block">Cancelar</button>
+							@if (count($errors) > 0)
+								<div class="alert alert-danger">
+									Resuelve los siguientes problemas.<br><br>
+									<ul>
+										@foreach ($errors->all() as $error)
+											<li>{{ $error }}</li>
+										@endforeach
+									</ul>
+								</div>
+							@endif
+							<div class="col-xs-6 col-xs-offset-0 col-sm-4 col-sm-offset-2">
+								<a href="/cxc/movimiento/nuevo" class="btn btn-danger btn-block" role="button">Cancelar</a>
 							</div>
-							<div class="visible-xs-block">
-								<br>
-							</div>
-							<div class="col-sm-4">
-								<button type="button" class="btn btn-success btn-block">Seleccionar</button>
+							<div class="col-xs-6 col-sm-4">
+								<button id="selectButton" type="button" class="btn btn-success btn-block">Seleccionar</button>
 							</div>
 							
 							<div class="clearfix"></div>
@@ -57,12 +63,14 @@
 		</div>
 	</div>
 
+	@yield('action')
+
 	<div class="modal fade" id="confirmModal">
 	  <div class="modal-dialog modal-sm">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="confirmModalTitle">Cuentas por cobrar</h4>
+	        <h4 class="modal-title" id="confirmModalTitle">Buscar {{ $searchType }}</h4>
 	      </div>
 	      <div class="modal-body" id="confirmModalBody">
 	      </div>
@@ -74,10 +82,30 @@
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 
+	<div class="modal fade" id="alertModal">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="alertModalTitle">Buscar {{ $searchType }}</h4>
+	      </div>
+	      <div class="modal-body" id="alertModalBody">
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
+	<script type="text/javascript">
+		
+		$('#searchTable').attr('data-height',$( window ).height() - 90 );
+	</script>
 	@yield('scripts')
 </body>
 </html>
