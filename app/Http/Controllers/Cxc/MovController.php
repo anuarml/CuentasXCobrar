@@ -11,7 +11,7 @@ class MovController extends Controller {
 
 	public function getNuevo(){
 		
-		return view('nuevoMovimiento');
+		return view('cxc.movement.new');
 	}
 
 	public function postNuevo(){

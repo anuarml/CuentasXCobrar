@@ -19,5 +19,7 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'cxc/movimiento' => 'Cxc\MovController',
 	'cxc/cliente' => 'Cxc\ClientController',
+	'cxc/documento' => 'Cxc\DocumentController',
+	'utileries' => 'UtileriesController',
 ]);
 
