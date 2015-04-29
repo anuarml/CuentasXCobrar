@@ -16,6 +16,9 @@ class MovController extends Controller {
 
 	public function postNuevo(){
 
+		$movID = ;
+
+		return redirect('cxc/movimiento/mov/'.$movID);
 	}
 
 	public function postSaveClient($movID){
@@ -37,8 +40,13 @@ class MovController extends Controller {
 		return redirect('cxc/movimiento/mov/'.$movID);
 	}
 
-	public function getMov($id){
-		return $id;
+	public function getMov($movID){
+
+		$mov = Cxc::with('details')->findOrFail($movID);
+
+		//dd($mov->toJson());
+
+		return view('cxc.movement.new',compact('mov'));
 	}
 
 	public function search($movID, $searchType){
