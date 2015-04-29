@@ -31,9 +31,9 @@ class cte extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['client','name', 'rfc', 'agent', 'collector', 'def_currency'];
+	protected $visible = ['client','name', 'RFC', 'agent', 'collector', 'def_currency'];
 
-	protected $appends = ['client','name', 'rfc'];
+	protected $appends = ['client','name', 'RFC', 'agent', 'collector', 'def_currency'];
 
 	public function getClientAttribute(){
 		return $this->Cliente;
@@ -41,10 +41,6 @@ class cte extends Model {
 
 	public function getNameAttribute(){
 		return $this->Nombre;
-	}
-
-	public function getRfcAttribute(){
-		return $this->RFC;
 	}
 
 	public function getAgentAttribute(){

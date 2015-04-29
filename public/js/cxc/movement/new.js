@@ -293,44 +293,76 @@ function document(apply, consecutive, amount, difference, differencePercentage, 
 	this.reference;
 }*/
 //console.log(window.charges);
-
 $("#newChargeRow").on("click", function(){
 	
 	if(numberOfCharges > 5 ) return;
-	
+
 	var indexNumber = charges.indexOf(null);
 	var chargeNumber = indexNumber + 1
-	console.log(indexNumber);
+	//console.log(indexNumber);
 
-	$('#charges').append(
-		"<div class='form-group' id='charge"+chargeNumber+"'>" +	    	
-			"<div class='col-sm-4'>" +
-				"<label for='chargeAmount'>Importe " + chargeNumber + "</label>" +
-				"<div class='input-group'>"+
-					"<div class='input-group-addon'>$</div>"+
-					"<input type='number' class='form-control input-sm' id='chargeAmount' min='0' step='any'>"+
-				"</div>"+
-			"</div>" +
-			"<div class='col-sm-4'>" +
-				"<label for='wayOfPayment'>Forma Cobro " + chargeNumber + "</label>"+
-				"<select id='wayOfPayment' class='form-control input-sm'>"+
-					"<option></option>" +
-				"</select>" +
-			"</div>" +
-			"<div class='col-sm-3'>" +
-				"<label for='chargeReference'>Referencia " + chargeNumber + "</label>"+
-				"<input type='text' class='form-control input-sm' id='chargeReference'>"+
-			"</div>" + 
-			"<div class='col-sm-1' id='deleteCharge"+chargeNumber+"'><br>" +
-				"<span class='glyphicon glyphicon-remove' style='font-size:30px; text-align:center; display: block;'></span>"+
-			"</div>" +
-			"<hr>" + 
-		"</div>");
+	//if(chargeNumber<=1){
+		$('#charges').append(
+			"<div class='form-group' id='charge"+chargeNumber+"'>" +	    	
+				"<div class='col-sm-4'>" +
+					/*"<label for='chargeAmount'>Importe " + chargeNumber + "</label>" +*/
+					"<label for='chargeAmount'>Importe</label>" +
+					"<div class='input-group'>"+
+						"<div class='input-group-addon'>$</div>"+
+						"<input type='number' class='form-control input-sm' id='chargeAmount' min='0' step='any'>"+
+					"</div>"+
+				"</div>" +
+				"<div class='col-sm-4'>" +
+					/*"<label for='wayOfPayment'>Forma Cobro " + chargeNumber + "</label>"+*/
+					"<label for='wayOfPayment'>Forma Cobro</label>"+
+					"<select id='wayOfPayment' class='form-control input-sm'>"+
+						"<option></option>" +
+					"</select>" +
+				"</div>" +
+				"<div class='col-sm-3'>" +
+					/*"<label for='chargeReference'>Referencia " + chargeNumber+ "</label>"+*/
+					"<label for='chargeReference'>Referencia</label>"+
+					"<input type='text' class='form-control input-sm' id='chargeReference'>"+
+				"</div>" + 
+				"<div class='col-sm-1' id='deleteCharge"+chargeNumber+"'><br>" +
+					"<span class='glyphicon glyphicon-remove' style='font-size:30px; text-align:center; display: block;'></span>"+
+				"</div>" +
+				"<hr>" + 
+			"</div>");
+
+	/*}else{
+		console.log("#charge"+(chargeNumber-1))
+		console.log(numberOfCharges);
+		$("#charge"+(chargeNumber-1)).after(
+			"<div class='form-group' id='charge"+chargeNumber+"'>" +	    	
+				"<div class='col-sm-4'>" +
+					"<label for='chargeAmount'>Importe " + chargeNumber + "</label>" +
+					"<div class='input-group'>"+
+						"<div class='input-group-addon'>$</div>"+
+						"<input type='number' class='form-control input-sm' id='chargeAmount' min='0' step='any'>"+
+					"</div>"+
+				"</div>" +
+				"<div class='col-sm-4'>" +
+					"<label for='wayOfPayment'>Forma Cobro " + chargeNumber + "</label>"+
+					"<select id='wayOfPayment' class='form-control input-sm'>"+
+						"<option></option>" +
+					"</select>" +
+				"</div>" +
+				"<div class='col-sm-3'>" +
+					"<label for='chargeReference'>Referencia " + chargeNumber + "</label>"+
+					"<input type='text' class='form-control input-sm' id='chargeReference'>"+
+				"</div>" + 
+				"<div class='col-sm-1' id='deleteCharge"+chargeNumber+"'><br>" +
+					"<span class='glyphicon glyphicon-remove' style='font-size:30px; text-align:center; display: block;'></span>"+
+				"</div>" +
+				"<hr>" + 
+			"</div>");
+	}*/
 
 	$("#charges div:last#deleteCharge"+chargeNumber).on("click", function(){
 		charges[indexNumber] = null;
 		numberOfCharges--;
-		console.log("despues: "+numberOfCharges);
+		//console.log("despues: "+numberOfCharges);
 		var $killrow = $(this).parent('div');
 			$killrow.remove();
 	});
@@ -341,9 +373,10 @@ $("#newChargeRow").on("click", function(){
 		var $killrow = $(this).parent('div');
 			$killrow.remove();
 	});*/
+
 	charges[indexNumber] = numberOfCharges;
 	numberOfCharges++;
-	console.log("antes: "+numberOfCharges);
+	//console.log("antes: "+numberOfCharges);
 
 
 });
