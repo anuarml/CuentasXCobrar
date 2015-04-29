@@ -15,11 +15,11 @@ class MovController extends Controller {
 		return view('cxc.movement.new');
 	}
 
-	public function getGuardarNuevo(){
+	public function postGuardarNuevo(){
 
-		$cxcArray = Cxc::findOrFail(123)->toArray();
-
-		$cxcDArray = CxcD::where('id','123')->get()->toArray();
+		//$cxcArray = Input Json from the view.
+		//$cxcArray = Cxc::findOrFail(123)->toArray();
+		//$cxcDArray = CxcD::where('id','123')->get()->toArray();
 
 		$cxc = new Cxc;
 		$cxc->fill(array_except($cxcArray, ['ID']));
@@ -32,6 +32,11 @@ class MovController extends Controller {
 		}
 
 		return redirect('cxc/movimiento/mov/'.$cxc->id);
+	}
+
+	public function postDelete($movID){
+		$cxc = Cxc::findOrFail($movID);
+		$cxc->delete();
 	}
 
 	public function postSaveClient($movID){
