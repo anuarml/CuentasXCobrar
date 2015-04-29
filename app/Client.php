@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class cte extends Model {
+class Client extends Model {
 
 		/**
 	 * The database table used by the model.
@@ -35,7 +35,8 @@ class cte extends Model {
 
 	protected $appends = ['client','name', 'RFC', 'agent', 'collector', 'def_currency'];
 
-	public function getClientAttribute(){
+
+	public function getIdAttribute(){
 		return $this->Cliente;
 	}
 
