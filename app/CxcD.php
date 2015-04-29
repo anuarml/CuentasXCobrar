@@ -34,6 +34,7 @@ class CxcD extends Model {
 	
 	protected $appends = ['office','row','apply', 'apply_id', 'amount', 'p_p_discount'];
 
+
 	public function getOfficeAttribute(){
 		return $this->Sucursal;
 	}
