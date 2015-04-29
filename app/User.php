@@ -74,6 +74,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->hasMany('App\Shipment','Agente','DefAgente');
 	}
 
+	public function defCurrency(){
+		return $this->hasOne('App\Currency','Moneda','DefMoneda');
+	}
+
 	public static function invalidCredentials(array $credentials){
 		
 		$invalidCredentials = 1;

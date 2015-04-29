@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Cxc;
 
 use App\Cxc;
+use App\CxcD;
 use App\Http\Controllers\Controller;
 
 class MovController extends Controller {
@@ -14,11 +15,28 @@ class MovController extends Controller {
 		return view('cxc.movement.new');
 	}
 
-	public function postNuevo(){
+	public function postGuardarNuevo(){
 
-		$movID = ;
+		//$cxcArray = Input Json from the view.
+		//$cxcArray = Cxc::findOrFail(123)->toArray();
+		//$cxcDArray = CxcD::where('id','123')->get()->toArray();
 
-		return redirect('cxc/movimiento/mov/'.$movID);
+		$cxc = new Cxc;
+		$cxc->fill(array_except($cxcArray, ['ID']));
+		$cxc->save();
+
+		foreach ($cxcDArray as $cxcda) {
+		    $cxcD = new CxcD;
+			$cxcD->fill($cxcda);
+			$cxc->details()->save($cxcD);
+		}
+
+		return redirect('cxc/movimiento/mov/'.$cxc->id);
+	}
+
+	public function postDelete($movID){
+		$cxc = Cxc::findOrFail($movID);
+		$cxc->delete();
 	}
 
 	public function postSaveClient($movID){

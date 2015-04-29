@@ -4,6 +4,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class CxcD extends Model {
 
+	public $timestamps = false;
+	protected $primaryKey = 'ID';
 	/**
 	 * The database table used by the model.
 	 *
@@ -16,7 +18,7 @@ class CxcD extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = [];
+	protected $fillable = ['office','row','apply', 'apply_id', 'amount', 'p_p_discount'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -34,29 +36,51 @@ class CxcD extends Model {
 	
 	protected $appends = ['office','row','apply', 'apply_id', 'amount', 'p_p_discount'];
 
-
 	public function getOfficeAttribute(){
 		return $this->Sucursal;
 	}
+	public function setOfficeAttribute($office){
+		return $this->Sucursal = $office;
+	}
+
 
 	public function getRowAttribute(){
 		return $this->Renglon;
 	}
+	public function setRowAttribute($row){
+		return $this->Renglon = $row;
+	}
+
 
 	public function getApplyAttribute(){
 		return $this->Aplica;
 	}
+	public function setApplyAttribute($apply){
+		return $this->Aplica = $apply;
+	}
+
 
 	public function getApplyIdAttribute(){
 		return $this->AplicaID;
 	}
+	public function setApplyIdAttribute($applyID){
+		return $this->AplicaID = $applyID;
+	}
+
 
 	public function getAmountAttribute(){
 		return $this->Importe;
 	}
+	public function setAmountAttribute($amount){
+		return $this->Importe = $amount;
+	}
+
 
 	public function getPPDiscountAttribute(){
 		return $this->DescuentoRecargos;
+	}
+	public function setPPDiscountAttribute($ppDiscount){
+		return $this->DescuentoRecargos = $ppDiscount;
 	}
 }
 
