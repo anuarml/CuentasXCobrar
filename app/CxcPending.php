@@ -33,13 +33,9 @@ class CxcPending extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['mov','mov_id', 'balance', 'total_amount', 'expiration', 'emission_date'];
+	protected $visible = ['Mov','mov_id', 'balance', 'total_amount', 'expiration', 'emission_date'];
 
-	protected $appends = ['mov','mov_id', 'balance', 'total_amount', 'expiration', 'emission_date'];
-
-	public function getMovAttribute(){
-		return $this->Mov;
-	}
+	protected $appends = ['mov_id', 'balance', 'total_amount', 'expiration', 'emission_date'];
 
 	public function getMovIdAttribute(){
 		return $this->MovID;

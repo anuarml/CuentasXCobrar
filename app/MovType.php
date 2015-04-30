@@ -31,12 +31,8 @@ class MovType extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['mov'];
+	protected $visible = ['Mov'];
 
-	protected $appends = ['mov'];
-
-	public function getMovAttribute(){
-		return $this->Mov;
-	}
+	protected $appends = [];
 
 }

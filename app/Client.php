@@ -9,7 +9,7 @@ class Client extends Model {
 	 *
 	 * @var string
 	 */
-	protected $table = 'cte';
+	protected $table = 'Cte';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -31,9 +31,9 @@ class Client extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['client','name', 'RFC', 'agent', 'collector', 'def_currency'];
+	protected $visible = ['id','name', 'RFC', 'agent', 'collector', 'def_currency'];
 
-	protected $appends = ['client','name', 'RFC', 'agent', 'collector', 'def_currency'];
+	protected $appends = ['id','name', 'agent', 'collector', 'def_currency'];
 
 
 	public function getIdAttribute(){
@@ -53,6 +53,6 @@ class Client extends Model {
 	}
 
 	public function getDefCurrencyAttribute(){
-		return $this->defMoneda;
+		return $this->DefMoneda;
 	}
 }

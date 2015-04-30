@@ -205,5 +205,6 @@
 @endsection
 
 @section('scripts')
+<script type="text/javascript" src="{{ asset('js/cxc/Mov.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/cxc/movement/new.js') }}"></script>
 @endsection
