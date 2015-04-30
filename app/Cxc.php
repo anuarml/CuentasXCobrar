@@ -23,7 +23,7 @@ class Cxc extends Model {
 							'taxes', 'currency', 'change_type', 'client_currency', 'client_change_type', 'user', 'status', 'CtaDinero', 'cashier',
 							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown', 'charge_type1',
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
-							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'tho_web_assigned', 'balance', 'name'];
+							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'tho_web_assigned', 'balance'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -41,13 +41,13 @@ class Cxc extends Model {
 							'taxes', 'currency', 'change_type', 'client_currency', 'client_change_type', 'user', 'status', 'CtaDinero', 'cashier',
 							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown', 'charge_type1',
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
-							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'tho_web_assigned', 'balance', 'name'];
+							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'balance', 'tho_web_assigned' ];
 
-	protected $appends = ['office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'emission_date', 'amount',
+	protected $appends = ['office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'mov_id', 'emission_date', 'amount',
 							'taxes', 'currency', 'change_type', 'client_currency', 'client_change_type', 'user', 'status', 'cashier',
-							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown', 'payment_type1',
-							'payment_type2', 'payment_type3', 'payment_type4', 'payment_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
-							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'tho_web_assigned'];
+							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown','charge_type1',
+							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
+							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'balance', 'tho_web_assigned' ];
 
 	
 	public function getOfficeIdAttribute(){
@@ -375,14 +375,6 @@ class Cxc extends Model {
 	}
 	public function setBalanceAttribute($balance){
 		return $this->Saldo = $balance;
-	}
-
-
-	public function getNameAttribute(){
-		return $this->Nombre;
-	}
-	public function setNameAttribute($name){
-		return $this->Nombre = $name;
 	}
 
 

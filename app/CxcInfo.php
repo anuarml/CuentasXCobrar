@@ -31,16 +31,12 @@ class CxcInfo extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['mov','mov_id', 'expiration', 'delinquent_days', 'balance'];
+	protected $visible = ['Mov','mov_id', 'expiration', 'delinquent_days', 'balance'];
 
-	protected $appends = ['mov','mov_id', 'expiration', 'delinquent_days', 'balance'];
-
-	public function getMovAttribute(){
-		return $this->Mov;
-	}
+	protected $appends = ['mov_id', 'expiration', 'delinquent_days', 'balance'];
 
 	public function getMovIdAttribute(){
-		return $this->MOVID;
+		return $this->MovID;
 	}
 
 	public function getExpirationAttribute(){
@@ -48,7 +44,7 @@ class CxcInfo extends Model {
 	}
 
 	public function getDelinquentDaysAttribute(){
-		return $this->DIASMORATORIOS;
+		return $this->DiasMoratorios;
 	}
 
 	public function getBalanceAttribute(){

@@ -40,11 +40,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $visible = ['username'];
+	protected $visible = ['username', 'name', 'account', 'cashier', 'can_cancel', 'agent', 'shipments', 'def_currency'];
 
 	protected $with = [];
 
-	protected $appends = ['username'];
+	protected $appends = ['username', 'name', 'account', 'cashier', 'can_cancel', 'agent'];
 
 	public function getUsernameAttribute(){
 		return $this->Usuario;

@@ -9,7 +9,7 @@ class CteSendTo extends Model {
 	 *
 	 * @var string
 	 */
-	protected $table = 'Empresa';
+	protected $table = 'CteEnviarA';
 
 	/**
 	 * The attributes that are mass assignable.

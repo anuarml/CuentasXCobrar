@@ -9,7 +9,7 @@ class ThoUserAccess extends Model {
 	 *
 	 * @var string
 	 */
-	protected $table = 'Empresa';
+	protected $table = 'ThoUsuarioAcceso';
 
 	/**
 	 * The attributes that are mass assignable.

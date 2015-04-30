@@ -31,13 +31,10 @@ class CxcRef extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['mov','mov_id', 'emission_date', 'expiration_date', 'balance'];
+	protected $visible = ['Mov','mov_id', 'emission_date', 'expiration_date', 'balance'];
 
-	protected $appends = ['mov','mov_id', 'emission_date', 'expiration_date', 'balance'];
+	protected $appends = ['mov_id', 'emission_date', 'expiration_date', 'balance'];
 
-	public function getMovAttribute(){
-		return $this->Mov;
-	}
 
 	public function getMovIdAttribute(){
 		return $this->MovID;

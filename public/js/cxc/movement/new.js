@@ -161,7 +161,7 @@ $("#newDocumentRow").on("click", function(){
 	});
 
 	$("#documentsTable tbody tr:last .apply").on("click", function(e){
-		$(e.target).append("<select class='form-control' id='documentApply'><option>a</option><option>b</option></select> ");
+		$(e.target).append("<select class='form-control' id='documentApply'><option>a</option><option>b</option></select>");
 		$("#documentApply").focus();
 	});
 
