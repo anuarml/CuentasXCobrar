@@ -71,6 +71,8 @@ class MovController extends Controller {
 
 		if($searchType == 'cliente'){
 			return ClientController::showClientSearch($searchType, $movID);
+		}else if ($searchType == 'documento') {
+			return DocumentController::showDocumentSearch($searchType, $movID);
 		}
 	}
 }
