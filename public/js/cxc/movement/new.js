@@ -120,6 +120,12 @@ $('.nav-tabs a').on('shown', function (e) {
     window.location.hash = e.target.hash;
 })
 
+$("#searchClient").on("click", function(e){
+	/*$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
+	$("#documentAmount").focus();*/
+	window.location= "357/buscar/cliente";
+});
+
 $("#newDocumentRow").on("click", function(){
 	
 	$('#documentsTable tbody').append(
@@ -177,7 +183,11 @@ $("#newDocumentRow").on("click", function(){
 		else{
 			$(e.target).append(
 				"<div class='input-group'>"+
-					"<span class='input-group-btn'><button type='button' class='btn btn-default btn-sm' id='searchConsecutive'>...</button></span>"+
+					"<span class='input-group-btn'>"+
+						"<button type='button' class='btn btn-default btn-sm' id='searchConsecutive'>"+
+							"<span class='glyphicon glyphicon-search'></span>"+
+						"</button>"+
+					"</span>"+
 					"<input type='text' class='form-control input-sm' id='consecutive' readonly>"+
 				"</div>");
 		}

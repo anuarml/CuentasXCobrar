@@ -16,7 +16,7 @@ class ClientController extends Controller {
 		return response()->json($clients);
 	}
 
-	public static function showClientSearch($searchType, $movID){
+	public static function showClientSearch($movID, $searchType){
 		
 		$dataURL = '/cxc/cliente/clientes';
 		
@@ -24,3 +24,4 @@ class ClientController extends Controller {
 	}
 }
 
+	
