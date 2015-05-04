@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class CxcD extends Model {
 
 	public $timestamps = false;
-	protected $primaryKey = 'ID';
+	protected $primaryKey = 'Renglon';
 	/**
 	 * The database table used by the model.
 	 *

@@ -13,7 +13,9 @@
 
 Route::get('/', 'MenuController@index');
 
-Route::get('/cxc/movimiento/mov/{movID}/buscar/{searchType}','Cxc\MovController@search');
+//Route::get('/cxc/movimiento/mov/{movID}/buscar/{searchType}','Cxc\MovController@search');
+Route::get('/cxc/movimiento/mov/{movID}/buscar/{searchType}','Cxc\ClientController@showClientSearch');
+Route::get('/cxc/movimiento/mov/{movID}/buscar/{searchType}/{row}','Cxc\DocumentController@showDocumentSearch');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
