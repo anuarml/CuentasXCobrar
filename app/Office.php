@@ -30,7 +30,7 @@ class Office extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['id','name'];
+	protected $visible = ['id','name', 'company'];
 
 	/**
 	 * The attributes included with get*Attribute() method.

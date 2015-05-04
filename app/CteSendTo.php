@@ -9,7 +9,7 @@ class CteSendTo extends Model {
 	 *
 	 * @var string
 	 */
-	protected $table = 'Empresa';
+	protected $table = 'CteEnviarA';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -31,13 +31,9 @@ class CteSendTo extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['id','name', 'address'];
+	protected $visible = ['ID','name', 'address'];
 
-	protected $appends = ['id','name', 'address'];
-
-	public function getIdAttribute(){
-		return $this->ID;
-	}
+	protected $appends = ['ID','name', 'address'];
 
 	public function getNameAttribute(){
 		return $this->Nombre;

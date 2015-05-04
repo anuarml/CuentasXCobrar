@@ -2,14 +2,14 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class cte extends Model {
+class Client extends Model {
 
 		/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
-	protected $table = 'cte';
+	protected $table = 'Cte';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -31,20 +31,17 @@ class cte extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['client','name', 'rfc', 'agent', 'collector', 'def_currency'];
+	protected $visible = ['id','name', 'RFC', 'agent', 'collector', 'def_currency'];
 
-	protected $appends = ['client','name', 'rfc'];
+	protected $appends = ['id','name', 'agent', 'collector', 'def_currency'];
 
-	public function getClientAttribute(){
+
+	public function getIdAttribute(){
 		return $this->Cliente;
 	}
 
 	public function getNameAttribute(){
 		return $this->Nombre;
-	}
-
-	public function getRfcAttribute(){
-		return $this->RFC;
 	}
 
 	public function getAgentAttribute(){
@@ -56,6 +53,6 @@ class cte extends Model {
 	}
 
 	public function getDefCurrencyAttribute(){
-		return $this->defMoneda;
+		return $this->DefMoneda;
 	}
 }

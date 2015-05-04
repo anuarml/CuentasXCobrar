@@ -161,7 +161,7 @@ $("#newDocumentRow").on("click", function(){
 	});
 
 	$("#documentsTable tbody tr:last .apply").on("click", function(e){
-		$(e.target).append("<select class='form-control' id='documentApply'><option>a</option><option>b</option></select> ");
+		$(e.target).append("<select class='form-control' id='documentApply'><option>a</option><option>b</option></select>");
 		$("#documentApply").focus();
 	});
 
@@ -280,33 +280,104 @@ $("#newDocumentRow").on("click", function(){
 );
 
 var numberOfCharges = 1;
-
+var charges = [null,null,null,null,null];
+/*window.charges = [1,null,null,null,null];*/
+/*var numberOfDocuments = 0;
+function document(apply, consecutive, amount, difference, differencePercentage, concept, reference){
+	this.apply;
+	this.consecutive;
+	this.amount;
+	this.difference;
+	this.differencePercentage;
+	this.concept;
+	this.reference;
+}*/
+//console.log(window.charges);
 $("#newChargeRow").on("click", function(){
 	
-	if(numberOfCharges > 5) return;
-	
-	$('#charges').append(
-		"<div class='form-group'>" +	    	
-			"<div class='col-sm-4'>" +
-				"<label for='chargeAmount'>Importe " + numberOfCharges + "</label>" +
-				"<div class='input-group'>"+
-					"<div class='input-group-addon'>$</div>"+
-					"<input type='number' class='form-control input-sm' id='chargeAmount' min='0' step='any'>"+
-				"</div>"+
-			"</div>" +
-			"<div class='col-sm-4'>" +
-				"<label for='wayOfPayment'>Forma Cobro " + numberOfCharges + "</label>"+
-				"<select id='wayOfPayment' class='form-control input-sm'>"+
-					"<option></option>" +
-				"</select>" +
-			"</div>" +
-			"<div class='col-sm-4'>" +
-				"<label for='chargeReference'>Referencia " + numberOfCharges + "</label>"+
-				"<input type='text' class='form-control input-sm' id='chargeReference'>"+
-			"</div>" + 
-		"</div>" + "<hr>");
+	if(numberOfCharges > 5 ) return;
 
+	var indexNumber = charges.indexOf(null);
+	var chargeNumber = indexNumber + 1
+	//console.log(indexNumber);
+
+	//if(chargeNumber<=1){
+		$('#charges').append(
+			"<div class='form-group' id='charge"+chargeNumber+"'>" +	    	
+				"<div class='col-sm-4'>" +
+					/*"<label for='chargeAmount'>Importe " + chargeNumber + "</label>" +*/
+					"<label for='chargeAmount'>Importe</label>" +
+					"<div class='input-group'>"+
+						"<div class='input-group-addon'>$</div>"+
+						"<input type='number' class='form-control input-sm' id='chargeAmount' min='0' step='any'>"+
+					"</div>"+
+				"</div>" +
+				"<div class='col-sm-4'>" +
+					/*"<label for='wayOfPayment'>Forma Cobro " + chargeNumber + "</label>"+*/
+					"<label for='wayOfPayment'>Forma Cobro</label>"+
+					"<select id='wayOfPayment' class='form-control input-sm'>"+
+						"<option></option>" +
+					"</select>" +
+				"</div>" +
+				"<div class='col-sm-3'>" +
+					/*"<label for='chargeReference'>Referencia " + chargeNumber+ "</label>"+*/
+					"<label for='chargeReference'>Referencia</label>"+
+					"<input type='text' class='form-control input-sm' id='chargeReference'>"+
+				"</div>" + 
+				"<div class='col-sm-1' id='deleteCharge"+chargeNumber+"'><br>" +
+					"<span class='glyphicon glyphicon-remove' style='font-size:30px; text-align:center; display: block;'></span>"+
+				"</div>" +
+				"<hr>" + 
+			"</div>");
+
+	/*}else{
+		console.log("#charge"+(chargeNumber-1))
+		console.log(numberOfCharges);
+		$("#charge"+(chargeNumber-1)).after(
+			"<div class='form-group' id='charge"+chargeNumber+"'>" +	    	
+				"<div class='col-sm-4'>" +
+					"<label for='chargeAmount'>Importe " + chargeNumber + "</label>" +
+					"<div class='input-group'>"+
+						"<div class='input-group-addon'>$</div>"+
+						"<input type='number' class='form-control input-sm' id='chargeAmount' min='0' step='any'>"+
+					"</div>"+
+				"</div>" +
+				"<div class='col-sm-4'>" +
+					"<label for='wayOfPayment'>Forma Cobro " + chargeNumber + "</label>"+
+					"<select id='wayOfPayment' class='form-control input-sm'>"+
+						"<option></option>" +
+					"</select>" +
+				"</div>" +
+				"<div class='col-sm-3'>" +
+					"<label for='chargeReference'>Referencia " + chargeNumber + "</label>"+
+					"<input type='text' class='form-control input-sm' id='chargeReference'>"+
+				"</div>" + 
+				"<div class='col-sm-1' id='deleteCharge"+chargeNumber+"'><br>" +
+					"<span class='glyphicon glyphicon-remove' style='font-size:30px; text-align:center; display: block;'></span>"+
+				"</div>" +
+				"<hr>" + 
+			"</div>");
+	}*/
+
+	$("#charges div:last#deleteCharge"+chargeNumber).on("click", function(){
+		charges[indexNumber] = null;
+		numberOfCharges--;
+		//console.log("despues: "+numberOfCharges);
+		var $killrow = $(this).parent('div');
+			$killrow.remove();
+	});
+	
+	/*$("#charges div:last").on("click", function(){
+		numberOfCharges--;
+		console.log("despues: "+numberOfCharges);
+		var $killrow = $(this).parent('div');
+			$killrow.remove();
+	});*/
+
+	charges[indexNumber] = numberOfCharges;
 	numberOfCharges++;
+	//console.log("antes: "+numberOfCharges);
+
 
 });
 /*<select class='form-control'><option>Parangaricutirimicuaro</option></select>*/

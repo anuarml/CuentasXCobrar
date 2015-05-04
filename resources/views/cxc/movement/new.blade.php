@@ -26,7 +26,7 @@
 											<div class="col-sm-6 ">
 												<div class="form-group">
 													<label for="Client">Cliente:</label>
-							                        <input type="text" name="Client" id="Client" class="form-control"tabindex="1">
+							                        <input type="text" name="Client" id="Client" class="form-control"tabindex="1" value="{{isset($mov)?$mov->client_id:''}}">
 												</div>
 											</div>
 											<div class="col-sm-6 ">
@@ -205,5 +205,6 @@
 @endsection
 
 @section('scripts')
+<script type="text/javascript" src="{{ asset('js/cxc/Mov.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/cxc/movement/new.js') }}"></script>
 @endsection
