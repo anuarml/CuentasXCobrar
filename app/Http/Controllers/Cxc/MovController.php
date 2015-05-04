@@ -67,13 +67,13 @@ class MovController extends Controller {
 		return view('cxc.movement.new',compact('mov'));
 	}
 
-	public function search($movID, $searchType){
+	/*public function search($movID, $searchType){
 
 		if($searchType == 'cliente'){
 			return ClientController::showClientSearch($searchType, $movID);
 		}else if ($searchType == 'documento') {
 			return DocumentController::showDocumentSearch($searchType, $movID);
 		}
-	}
+	}*/
 }
 

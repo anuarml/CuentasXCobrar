@@ -185,7 +185,7 @@ $("#newDocumentRow").on("click", function(){
 		$("#searchConsecutive").on("click", function(e){
 			/*$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
 			$("#documentAmount").focus();*/
-			window.location= "/cxc/documento/buscar";
+			window.location= "357/buscar/documento/2048";
 		});
 
 		$("#searchConsecutive").focus();

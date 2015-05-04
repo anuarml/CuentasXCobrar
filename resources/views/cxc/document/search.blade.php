@@ -2,18 +2,17 @@
 
 @section('table-header')
     <th data-field="state" data-radio="true"></th>
-    <th data-field="mov_id" data-align="center" data-sortable="true">Cliente</th>
-    <th data-field="balance" data-align="center" data-sortable="true">Nombre</th>
-    <th data-field="total_amount" data-align="center" data-sortable="true">RFC</th>
-    <th data-field="expiration" data-align="center" data-sortable="true">Vencimiento</th>
-    <th data-field="emission_date" data-align="center" data-sortable="true">Emisión</th>
+    <th data-field="mov_id" data-align="center" data-sortable="true">MovID</th>
+    <th data-field="balance" data-align="center" data-sortable="true">Saldo</th>
+    <th data-field="total_amount" data-align="center" data-sortable="true">Importe Total</th>
+    <th data-field="expiration" data-align="center" data-sortable="true">Emisión</th>
+    <th data-field="emission_date" data-align="center" data-sortable="true">Vencimiento</th>
 @endsection
 
 @section('action')
-	<form id="clientForm" class="form-horizontal" role="form" method="POST" action="{{ url('/cxc/movimiento/save-client/'.$movID) }}">
+	<form id="documentForm" class="form-horizontal" role="form" method="POST" action="{{ url('/cxc/movimiento/save-document/'.$movID) }}">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
-		<input type="hidden" name="clientID" id="clientID" value="">
-		<input type="hidden" name="clientID" id="clientID" value="">
+		<input type="hidden" name="movID" id="movID" value="">
 	</form>
 @endsection
 
@@ -28,10 +27,8 @@
 				return;
 			}
 			
-			$('#clientID').val(selections[0].id);
-			$('#clientForm').submit();
+			$('#movID').val(selections[0].mov_id);
+			$('#documentForm').submit();
 		});
 	</script>
 @endsection
-
-['Mov','mov_id', 'balance', 'total_amount', 'expiration', 'emission_date'];
