@@ -13,14 +13,14 @@ class DocumentController extends Controller {
 		$this->middleware('auth');
 	}
 
-	public function getBuscar(){
+	/*public function getBuscar(){
 		
 		return view('cxc.document.search');
 	}
 
 	public function postBuscar(){
 
-	} 
+	} */
 
 	public function getDocumentos($movID, $row){
 		/*$apply = Mov;

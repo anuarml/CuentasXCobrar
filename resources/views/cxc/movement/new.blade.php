@@ -25,8 +25,15 @@
 										<div class="row">
 											<div class="col-sm-6 ">
 												<div class="form-group">
-													<label for="Client">Cliente:</label>
-							                        <input type="text" name="Client" id="Client" class="form-control"tabindex="1" value="{{isset($mov)?$mov->client_id:''}}">
+													<label class="control-label" for="Client">Cliente:</label>
+													<div class='input-group'>
+														<span class='input-group-btn'>
+															<button type='button' class='btn btn-default' id='searchClient'>
+																<span class='glyphicon glyphicon-search'></span>
+															</button>
+														</span>
+														<input type="text" name="Client" id="Client" class="form-control"tabindex="1" value="{{isset($mov)?$mov->client_id:''}}">
+													</div>
 												</div>
 											</div>
 											<div class="col-sm-6 ">
@@ -40,7 +47,14 @@
 											<div class="col-sm-6 ">
 												<div class="form-group">
 													<label for="ClientOffice">Sucursal Cliente:</label>
-							                        <input type="text" name="ClientOffice" id="ClientOffice" class="form-control"tabindex="1">
+													<div class='input-group'>
+														<span class='input-group-btn'>
+															<button type='button' class='btn btn-default' id='searchClientOffice'>
+																<span class='glyphicon glyphicon-search'></span>
+															</button>
+														</span>
+							                        	<input type="text" name="ClientOffice" id="ClientOffice" class="form-control" tabindex="1">
+													</div>
 												</div>
 											</div>
 											<div class="col-sm-6 ">
@@ -78,13 +92,28 @@
 											<div class="col-sm-6 ">
 												<div class="form-group">
 													<label for="Reference">Referencia:</label>
-													<input type="text" name="Reference" id="Reference" class="form-control " tabindex="2">
+													<div class='input-group'>
+														<span class='input-group-btn'>
+															<button type='button' class='btn btn-default' id='searchMovReference'>
+																<span class='glyphicon glyphicon-search'></span>
+															</button>
+														</span>
+							                        	<input type="text" name="Reference" id="Reference" class="form-control " tabindex="2">
+													</div>
 												</div>
 											</div>
 										</div>
 										<div class="form-group">
 											<label id="Observationss" for="Observations">Observaciones:</label>
-											<input type="text" name="Observations" id="Observations" class="form-control " tabindex="3">
+											<div class='input-group'>
+												<span class='input-group-btn'>
+													<button type='button' class='btn btn-default' id='searchMovObservations'>
+														<span class='glyphicon glyphicon-search'></span>
+													</button>
+												</span>
+					                        	<input type="text" name="Observations" id="Observations" class="form-control" tabindex="3">
+											</div>
+											
 										</div>
 											
 									</form>
