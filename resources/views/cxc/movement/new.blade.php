@@ -52,8 +52,7 @@
 															<button type='button' class='btn btn-default' id='searchClientOffice'>
 																<span class='glyphicon glyphicon-search'></span>
 															</button>
-														</span>
-							                        	<input type="text" name="ClientOffice" id="ClientOffice" class="form-control" tabindex="1">
+														</span>							                        	<input type="text" name="ClientOffice" id="ClientOffice" class="form-control" tabindex="1">
 													</div>
 												</div>
 											</div>

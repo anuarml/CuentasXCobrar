@@ -2,7 +2,10 @@
 
 use App\Cxc;
 use App\CxcD;
+use App\CxcRef;
 use App\Http\Controllers\Controller;
+
+
 
 class MovController extends Controller {
 	
@@ -113,5 +116,41 @@ class MovController extends Controller {
 			return DocumentController::showDocumentSearch($searchType, $movID);
 		}
 	}*/
+
+	public function getMovimientoReferencia($movID){
+		
+		$cxc = Cxc::findOrFail($movID);
+		$client = $cxc->client_id;
+
+		$clientOffices = CxcRef::where('Cliente', $client);
+
+		return response()->json($clientOffices);
+	}
+
+	public static function showMovementReferenceSearch($movID){
+		$searchType = 'movimiento-referencia';
+		$dataURL = '/cxc/movimiento/movimiento-referencia/'.$movID;
+		
+		return view('cxc.movement.searchMovReference', compact('searchType','dataURL','movID'));
+	}
+
+	public function postMovementReference($movID){
+		
+		$cxc = Cxc::findOrFail($movID);
+
+		$validator = \Validator::make(\Input::only('movReferenceID'), [
+			'movReferenceID' => 'required',
+		]);
+
+		if($validator->fails()){
+			return Response::back()->withErrors(['movReferenceID','Se requiere seleccionar una referencia.']);
+		}
+
+		$cxc->client_id = \Input::get('movReferenceID');
+
+		$cxc->save();
+
+		return redirect('cxc/movimiento/mov/'.$movID);
+	}
 }
 
