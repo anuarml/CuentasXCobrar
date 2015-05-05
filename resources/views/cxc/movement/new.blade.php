@@ -32,14 +32,14 @@
 																<span class='glyphicon glyphicon-search'></span>
 															</button>
 														</span>
-														<input type="text" name="Client" id="Client" class="form-control"tabindex="1" value="{{isset($mov)?$mov->client_id:''}}">
+														<input type="text" name="Client" id="Client" class="form-control"tabindex="1" value="{{isset($mov)?$mov->client_id:''}}" readonly>
 													</div>
 												</div>
 											</div>
 											<div class="col-sm-6 ">
 												<div class="form-group">
 													<label for="ClientName">Nombre Cliente:</label>
-													<input type="text" name="ClientName" id="ClientName" class="form-control" tabindex="2">
+													<input type="text" name="ClientName" id="ClientName" class="form-control" tabindex="2" readonly>
 												</div>
 											</div>
 										</div>
@@ -52,14 +52,15 @@
 															<button type='button' class='btn btn-default' id='searchClientOffice'>
 																<span class='glyphicon glyphicon-search'></span>
 															</button>
-														</span>							                        	<input type="text" name="ClientOffice" id="ClientOffice" class="form-control" tabindex="1">
+														</span>							                        	
+														<input type="text" name="ClientOffice" id="ClientOffice" class="form-control" tabindex="1" readonly>
 													</div>
 												</div>
 											</div>
 											<div class="col-sm-6 ">
 												<div class="form-group">
 													<label for="ClientBalance">Saldo Cliente:</label>
-													<input type="text" name="ClientBalance" id="ClientBalance" class="form-control " tabindex="2">
+													<input type="text" name="ClientBalance" id="ClientBalance" class="form-control " tabindex="2" readonly>
 												</div>
 											</div>
 										</div>
@@ -77,7 +78,7 @@
 											<div class="col-sm-6 ">
 												<div class="form-group">
 													<label for="EmissionDate">Fecha Emisión:</label>
-													<input type="text" name="EmissionDate" id="EmissionDate" class="form-control " tabindex="2">
+													<input type="text" name="EmissionDate" id="EmissionDate" class="form-control " tabindex="2" readonly>
 												</div>
 											</div>
 										</div>
