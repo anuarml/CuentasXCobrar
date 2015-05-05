@@ -132,6 +132,12 @@ $("#searchClientOffice").on("click", function(e){
 	window.location= "357/buscar/sucursal-cliente";
 });
 
+$("#searchMovReference").on("click", function(e){
+	/*$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
+	$("#documentAmount").focus();*/
+	window.location= "357/buscar/referencia-movimiento";
+});
+
 $("#newDocumentRow").on("click", function(){
 	
 	$('#documentsTable tbody').append(
