@@ -8,7 +8,7 @@
 @endsection
 
 @section('action')
-	<form id="clientOfficeForm" class="form-horizontal" role="form" method="POST" action="{{ url('/cxc/movimiento/save-clientOffice/'.$movID) }}">
+	<form id="clientOfficeForm" class="form-horizontal" role="form" method="POST" action="{{ url('/cxc/movimiento/save-client-office/'.$movID) }}">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 		<input type="hidden" name="clientOfficeID" id="clientOfficeID" value="">
 	</form>

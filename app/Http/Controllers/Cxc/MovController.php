@@ -58,6 +58,44 @@ class MovController extends Controller {
 		return redirect('cxc/movimiento/mov/'.$movID);
 	}
 
+	public function postSaveDocument($movID){
+		
+		$cxc = Cxc::findOrFail($movID);
+
+		$validator = \Validator::make(\Input::only('movID'), [
+			'movID' => 'required',
+		]);
+
+		if($validator->fails()){
+			return Response::back()->withErrors(['movID','Se requiere seleccionar un documento.']);
+		}
+
+		$cxc->client_id = \Input::get('movID');
+
+		$cxc->save();
+
+		return redirect('cxc/movimiento/mov/'.$movID);
+	}
+
+	public function postSaveClientOffice($movID){
+		
+		$cxc = Cxc::findOrFail($movID);
+
+		$validator = \Validator::make(\Input::only('clientOfficeID'), [
+			'clientOfficeID' => 'required',
+		]);
+
+		if($validator->fails()){
+			return Response::back()->withErrors(['clientOfficeID','Se requiere seleccionar una sucursal de cliente.']);
+		}
+
+		$cxc->client_id = \Input::get('clientOfficeID');
+
+		$cxc->save();
+
+		return redirect('cxc/movimiento/mov/'.$movID);
+	}
+
 	public function getMov($movID){
 
 		$mov = Cxc::with('details')->findOrFail($movID);
