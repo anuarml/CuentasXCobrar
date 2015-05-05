@@ -14,7 +14,8 @@
 Route::get('/', 'MenuController@index');
 
 //Route::get('/cxc/movimiento/mov/{movID}/buscar/{searchType}','Cxc\MovController@search');
-Route::get('/cxc/movimiento/mov/{movID}/buscar/{searchType}','Cxc\ClientController@showClientSearch');
+Route::get('/cxc/movimiento/mov/{movID}/buscar/cliente','Cxc\ClientController@showClientSearch');
+Route::get('/cxc/movimiento/mov/{movID}/buscar/sucursal-cliente','Cxc\ClientController@showClientOfficeSearch');
 Route::get('/cxc/movimiento/mov/{movID}/buscar/{searchType}/{row}','Cxc\DocumentController@showDocumentSearch');
 
 Route::controllers([
