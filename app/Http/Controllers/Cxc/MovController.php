@@ -133,5 +133,24 @@ class MovController extends Controller {
 		
 		return view('cxc.movement.searchMovReference', compact('searchType','dataURL','movID'));
 	}
+
+	public function postMovementReference($movID){
+		
+		$cxc = Cxc::findOrFail($movID);
+
+		$validator = \Validator::make(\Input::only('movReferenceID'), [
+			'movReferenceID' => 'required',
+		]);
+
+		if($validator->fails()){
+			return Response::back()->withErrors(['movReferenceID','Se requiere seleccionar una referencia.']);
+		}
+
+		$cxc->client_id = \Input::get('movReferenceID');
+
+		$cxc->save();
+
+		return redirect('cxc/movimiento/mov/'.$movID);
+	}
 }
 
