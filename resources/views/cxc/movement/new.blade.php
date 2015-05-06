@@ -3,7 +3,7 @@
 @section('content')
 
 	<div class="container">
-		<form id="cxcMovForm" role="form" action="prueba" method="POST">
+		<form id="cxcMovForm" role="form" action="{{ url('cxc/movimiento/guardar-nuevo') }}" method="POST">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 			<div class="row">
 				<div class="col-md-10 col-md-offset-1">
@@ -66,7 +66,7 @@
 											<div class="col-sm-6 ">
 												<div class="form-group">
 													<label for="emission_date">Fecha Emisión:</label>
-													<input type="date" name="emission_date" id="emission_date" class="form-control " value="{{isset($mov)?$mov->emission_date:Carbon\Carbon::now()->toDateString()}}" tabindex="2">
+													<input type="date" name="emission_date" id="emission_date" class="form-control " value="{{isset($mov)?$mov->emission_date->toDateString():Carbon\Carbon::now()->toDateString()}}" tabindex="2">
 												</div>
 											</div>
 										</div>
@@ -171,7 +171,6 @@
 					</div>
 				</div>
 			</div>
-			<input type="submit" value="Guardar">
 		</form>
 	</div>
 @endsection

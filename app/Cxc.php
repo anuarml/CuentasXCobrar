@@ -5,7 +5,10 @@ use Illuminate\Database\Eloquent\Model;
 class Cxc extends Model {
 
 	public $timestamps = false;
+
 	protected $primaryKey = 'ID';
+
+	protected $dates = ['FechaEmision'];
 
 	/**
 	 * The database table used by the model.

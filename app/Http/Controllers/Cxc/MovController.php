@@ -17,24 +17,33 @@ class MovController extends Controller {
 
 	public function postGuardarNuevo(){
 
-		//$cxcArray = Input Json from the view.
-		//$cxcArray = Cxc::findOrFail(123)->toArray();
-		//$cxcDArray = CxcD::where('id','123')->get()->toArray();
-
 		$cxcArray = \Input::except('documentsJson');
 		$cxcDArray = json_decode(\Input::get('documentsJson'));
 
+		$user = \Auth::user();
+
 		$cxc = new Cxc;
-		$cxc->fill( array_except( $cxcArray ) );
+		$cxc->fill($cxcArray);
+		$cxc->company = \Session::get('company');
+		$cxc->office_id = \Session::get('office');
+		$cxc->currency = $user->defCurrency->currency;
 		$cxc->save();
 
+		$ROW_MULTIPLIER = 2048;
+		$rowNum = 1;
+
 		foreach ($cxcDArray as $cxcDA) {
-		    $cxcD = new CxcD;
-			$cxcD->fill($cxcDA);
-			$cxc->details()->save($cxcD);
+
+			if($cxcDA != null && $cxcDA->apply != null) {
+
+			    $cxcD = new CxcD;
+				$cxcD->fill((array)$cxcDA);
+				$cxcD->row = $rowNum++ * $ROW_MULTIPLIER;
+				$cxc->details()->save($cxcD);
+			}
 		}
 
-		return redirect('cxc/movimiento/mov/'.$cxc->id);
+		return redirect('cxc/movimiento/mov/'.$cxc->ID);
 	}
 
 	public function postDelete($movID){
@@ -75,31 +84,6 @@ class MovController extends Controller {
 		if($searchType == 'cliente'){
 			return ClientController::showClientSearch($searchType, $movID);
 		}
-	}
-
-	public function postPrueba(){
-		//dd([Cxc::find(330)->toArray(),\Input::all()]);
-		//dd();
-
-		$cxcArray = \Input::except('documentsJson');
-		$cxcDArray = json_decode(\Input::get('documentsJson'));
-
-		$user = \Auth::user();
-
-		$cxc = new Cxc;
-		$cxc->fill($cxcArray);
-		$cxc->company = \Session::get('company');
-		$cxc->currency = $user->defCurrency->currency;
-		$cxc->save();
-
-		//convertir a array un objeto
-		foreach ($cxcDArray as $cxcDA) {
-		    $cxcD = new CxcD;
-			$cxcD->fill((array)$cxcDA);
-			$cxc->details()->save($cxcD);
-		}
-
-		return redirect('cxc/movimiento/mov/'.$cxc->id);
 	}
 }
 

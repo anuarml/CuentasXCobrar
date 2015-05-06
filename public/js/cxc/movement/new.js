@@ -12,12 +12,27 @@ $('.nav-tabs a').on('shown', function (e) {
 var documentsNumber = 0;
 $("#newDocumentRow").on("click", function(){
 
-	aCxcD.push(new cxcD);
+	var emptyPlace = aCxcD.indexOf(null);
+	var insertedDocumentPlace;
+
+	// No hay un espacio en null.
+	if(emptyPlace == -1) {
+		// Se agrega al final.
+		insertedDocumentPlace = aCxcD.length;
+		aCxcD.push(new cxcD);
+	}
+	else {
+
+		// Se agrega en el espacio vacio.
+		aCxcD[emptyPlace] = new cxcD;
+		insertedDocumentPlace = emptyPlace;
+	}
 	console.log(aCxcD);
 	console.log(documentsNumber);
-	
+	console.log($($('#documentsTable tbody').prop('children')[0]).index());
+
 	$('#documentsTable tbody').append(
-		"<tr id='document-"+documentsNumber+"'>"+
+		"<tr id='document-"+insertedDocumentPlace+"'>"+
 			"<td style='text-align: center;' class='apply'></td>"+
 			"<td style='text-align: center;' class='consecutive'></td>"+
 			"<td style='text-align: center;' class='amount'></td>"+
