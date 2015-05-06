@@ -114,21 +114,42 @@
 												</div>
 											</div>
 										</div>
-										<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 ">
+												<div class="form-group">
+													<label for="Observations">Observaciones:</label>
+													<!--<input type="text" name="Concept" id="Concept" class="form-control " tabindex="2">-->
+													<input list="Observations" name="browser" id="inpObservations" class="form-control" tabindex="3">
+													<datalist id="Observations" >
+													  <option value="Internet Explorer">
+													</datalist>
+												</div>
+											</div>
+											<div class="col-sm-6 ">
+												<div class="form-group">
+													<label for="Currency">Moneda:</label>
+													<!--<input type="text" name="Concept" id="Concept" class="form-control " tabindex="2">-->
+													<select class="form-control" id="Currency" name="Currency" tabindex="3">
+													  <option hidden></option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<!--<div class="form-group">
 											<label for="Observations">Observaciones:</label>
-											<!--<div class='input-group'>
+											<div class='input-group'>
 												<span class='input-group-btn'>
 													<button type='button' class='btn btn-default' id='searchMovObservations'>
 														<span class='glyphicon glyphicon-search'></span>
 													</button>
 												</span>
 					                        	<input type="text" name="Observations" id="Observations" class="form-control" tabindex="3">
-											</div>-->
+											</div>
 											<input list="Observations" name="browser" id="inpObservations" class="form-control" tabindex="3">
 											<datalist id="Observations" >
 											  <option value="Internet Explorer">
 											</datalist>
-										</div>
+										</div>-->
 									</form>
 								</div>
 							</div>
