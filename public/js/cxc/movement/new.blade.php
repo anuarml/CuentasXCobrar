@@ -10,9 +10,7 @@ $('.nav-tabs a').on('shown', function (e) {
 })
 
 $("#searchClient").on("click", function(e){
-	/*$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
-	$("#documentAmount").focus();*/
-	window.location= "357/buscar/cliente";
+	window.location= "/buscar/cliente";
 });
 
 $("#searchClientOffice").on("click", function(e){

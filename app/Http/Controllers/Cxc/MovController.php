@@ -3,6 +3,7 @@
 use App\Cxc;
 use App\CxcD;
 use App\CxcRef;
+use App\Client;
 use App\Http\Controllers\Controller;
 
 
@@ -14,8 +15,16 @@ class MovController extends Controller {
 	}
 
 	public function getNuevo(){
+
+		$clientName = '';
+
+		if(\Session::has('selected_client_id')) {
+
+			$userID = \Session::get('selected_client_id');
+			$clientName = Client::find($userID)->name;
+		}
 		
-		return view('cxc.movement.new');
+		return view('cxc.movement.new', compact('clientName'));
 	}
 
 	public function postGuardarNuevo(){
@@ -54,9 +63,9 @@ class MovController extends Controller {
 		$cxc->delete();
 	}
 
-	public function postSaveClient($movID){
+	public function postSaveClient(){
 		
-		$cxc = Cxc::findOrFail($movID);
+		//$cxc = Cxc::findOrFail($movID);
 
 		$validator = \Validator::make(\Input::only('clientID'), [
 			'clientID' => 'required',
@@ -66,11 +75,13 @@ class MovController extends Controller {
 			return Response::back()->withErrors(['clientID','Se requiere seleccionar un cliente.']);
 		}
 
-		$cxc->client_id = \Input::get('clientID');
+		//$cxc->client_id = \Input::get('clientID');
 
-		$cxc->save();
+		\Session::flash('selected_client_id', \Input::get('clientID'));
 
-		return redirect('cxc/movimiento/mov/'.$movID);
+		//$cxc->save();
+
+		return redirect('cxc/movimiento/nuevo');
 	}
 
 	public function postSaveDocument($movID){

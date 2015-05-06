@@ -18,11 +18,11 @@ class ClientController extends Controller {
 		return response()->json($clients);
 	}
 
-	public static function showClientSearch($movID){
+	public static function showClientSearch(){
 		$searchType = 'cliente';
 		$dataURL = '/cxc/cliente/clientes';
 		
-		return view('cxc.client.search', compact('searchType','dataURL','movID'));
+		return view('cxc.client.search', compact('searchType','dataURL'));
 	}
 
 	public function getSucursalCliente($movID){
