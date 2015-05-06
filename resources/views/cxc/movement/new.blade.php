@@ -6,7 +6,6 @@
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
 				<div role="tabpanel">
-	
 				  <!-- Nav tabs -->
 				  <ul class="nav nav-tabs" role="tablist">
 				    <li role="presentation" class="active"><a href="#datosGenerales" aria-controls="datosGenerales" role="tab" data-toggle="tab">Datos Generales</a></li>
@@ -75,6 +74,7 @@
 													</select>
 												</div>
 											</div>
+
 											<div class="col-sm-6 ">
 												<div class="form-group">
 													<label for="EmissionDate">Fecha Emisión:</label>
