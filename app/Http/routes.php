@@ -18,6 +18,7 @@ Route::get('/cxc/movimiento/mov/{movID}/buscar/cliente','Cxc\ClientController@sh
 Route::get('/cxc/movimiento/mov/{movID}/buscar/sucursal-cliente','Cxc\ClientController@showClientOfficeSearch');
 Route::get('/cxc/movimiento/mov/{movID}/buscar/referencia-movimiento','Cxc\MovController@showMovementReferenceSearch');
 Route::get('/cxc/movimiento/mov/{movID}/buscar/{searchType}/{row}','Cxc\DocumentController@showDocumentSearch');
+Route::get('/cxc/movimiento/mov/{movID}/consultar/saldo-cliente','Cxc\ClientController@showClientBalance');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
