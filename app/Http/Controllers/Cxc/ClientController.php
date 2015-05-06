@@ -41,6 +41,19 @@ class ClientController extends Controller {
 		
 		return view('cxc.client.searchClientOffice', compact('searchType','dataURL','movID'));
 	}
+
+		
+		$cxc = Cxc::findOrFail($movID);
+		$client = $cxc->client_id;
+
+		$clientOffices = CteSendTo::where('ID', $client);
+
+		return response()->json($clientOffices);
+	}
+
+	public static function showClientBalance($movID){
+		
+	}
 }
 
 	
