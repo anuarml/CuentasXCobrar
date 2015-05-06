@@ -42,6 +42,7 @@ class ClientController extends Controller {
 		return view('cxc.client.searchClientOffice', compact('searchType','dataURL','movID'));
 	}
 
+	public function getSaldoCliente($movID){
 		
 		$cxc = Cxc::findOrFail($movID);
 		$client = $cxc->client_id;
@@ -53,6 +54,9 @@ class ClientController extends Controller {
 
 	public static function showClientBalance($movID){
 		
+		$dataURL = '/cxc/cliente/saldo-cliente/'.$movID;
+		
+		return view('cxc.client.showClientBalance', compact('dataURL','movID'));
 	}
 }
 
