@@ -31,7 +31,7 @@
 																<span class='glyphicon glyphicon-search'></span>
 															</button>
 														</span>
-														<input type="text" name="Client" id="Client" class="form-control"tabindex="1" value="{{isset($mov)?$mov->client_id:''}}" readonly>
+														<input type="text" name="Client" id="Client" class="form-control" tabindex="1" value="{{isset($mov)?$mov->client_id:''}}" readonly>
 													</div>
 												</div>
 											</div>
@@ -59,7 +59,15 @@
 											<div class="col-sm-6 ">
 												<div class="form-group">
 													<label for="ClientBalance">Saldo Cliente:</label>
-													<input type="text" name="ClientBalance" id="ClientBalance" class="form-control " tabindex="2" readonly>
+													<div class='input-group'>
+														<span class='input-group-btn'>
+															<button type='button' class='btn btn-default' id='showClientBalance'>
+																<span>...</span>
+															</button>
+														</span>							                        	
+														<input type="text" name="ClientBalance" id="ClientBalance" class="form-control" tabindex="2" readonly>
+													</div>
+													<!--<input type="text" name="ClientBalance" id="ClientBalance" class="form-control " tabindex="2" readonly>-->
 												</div>
 											</div>
 										</div>
@@ -86,7 +94,10 @@
 											<div class="col-sm-6 ">
 												<div class="form-group">
 													<label for="Concept">Concepto:</label>
-													<input type="text" name="Concept" id="Concept" class="form-control " tabindex="2">
+													<!--<input type="text" name="Concept" id="Concept" class="form-control " tabindex="2">-->
+													<select class="form-control" id="Concept" name="Concept" tabindex="1">
+													  <option hidden></option>
+													</select>
 												</div>
 											</div>
 											<div class="col-sm-6 ">
@@ -104,18 +115,20 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label id="Observationss" for="Observations">Observaciones:</label>
-											<div class='input-group'>
+											<label for="Observations">Observaciones:</label>
+											<!--<div class='input-group'>
 												<span class='input-group-btn'>
 													<button type='button' class='btn btn-default' id='searchMovObservations'>
 														<span class='glyphicon glyphicon-search'></span>
 													</button>
 												</span>
 					                        	<input type="text" name="Observations" id="Observations" class="form-control" tabindex="3">
-											</div>
-											
+											</div>-->
+											<input list="Observations" name="browser" id="inpObservations" class="form-control" tabindex="3">
+											<datalist id="Observations" >
+											  <option value="Internet Explorer">
+											</datalist>
 										</div>
-											
 									</form>
 								</div>
 							</div>
