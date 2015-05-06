@@ -39,7 +39,7 @@
 								</div>
 							@endif
 							<div class="col-xs-6 col-xs-offset-0 col-sm-4 col-sm-offset-2">
-								<a href="/cxc/movimiento/nuevo" class="btn btn-danger btn-block" role="button">Cancelar</a>
+								<a href="{{ url('/cxc/movimiento/nuevo') }}" class="btn btn-danger btn-block" role="button">Cancelar</a>
 							</div>
 							<div class="col-xs-6 col-sm-4">
 								<button id="selectButton" type="button" class="btn btn-success btn-block">Seleccionar</button>
@@ -48,7 +48,7 @@
 							<div class="clearfix"></div>
 
 							<div class="row">
-								<table id="searchTable" data-toggle="table" data-url="{{ $dataURL }}" data-search="true" data-show-columns="true" data-click-to-select="true">
+								<table id="searchTable" data-toggle="table" data-url="{{ url($dataURL) }}" data-search="true" data-show-columns="true" data-click-to-select="true">
 									<thead>
 										<tr>
 											@yield('table-header')

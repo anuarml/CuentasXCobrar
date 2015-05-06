@@ -1,114 +1,3 @@
-/*var refresh = false;
-
-$("#documentsTable").bootstrapTable().on('load-success.bs.table', function (e, data) {
-	console.log(refresh);
-	if(!refresh){
-		$('#documentsTable').bootstrapTable('refresh');
-		refresh = true;
-	}
-	
-	$(".deleterow").on("click", function(){
-	var $killrow = $(this).parent('td').parent('tr');
-	    $killrow.addClass("danger");
-		$killrow.fadeOut(1000, function(){
-	    $(this).remove();
-	});});
-});
-
-$(".addnewrow").on("click", function(){
-	$('#documentsTable tr:last').after("<tr><td style='text-align: center;'>100</td><td style='text-align: center;'>NEW</td><td style='text-align: center;'>NEW</td><td style='text-align: center;'>NEW</td><td style='text-align: center;'>NEW</td><td style='text-align: center;'>NEW</td><td style='text-align: center;'><div class='deleterows'><div class='glyphicon glyphicon-remove'></div></div></td><tr>");
-	$(".deleterows").on("click", function(){
-		var $killrow = $(this).parent('td').parent('tr');
-		    $killrow.addClass("danger");
-			$killrow.fadeOut(1000, function(){
-		    $(this).remove();
-	});});}
-);*/
-
-/*$(function () {
-    documents= [ {
-        "Consecutivo":"v4_294",
-        "Importe":"6-18-2014 22:51:59",
-        "Diferencia":"hi@h.com",
-        "Diferencia(%)":"xxxx",
-        "Concepto":2895,
-        "Referencia": "wololo",
-        "Delete": "<div class = 'deleterow'><div class='glyphicon glyphicon-remove'></div></div>"
-    }];
-
-    function createdocumentsTable(documents){
-        documentsTable = $('#documentsTable').bootstrapTable({
-            data : documents,
-            striped : true,  
-            height : 400,
-            columns : [ {
-                field : 'Consecutivo',
-                title : 'Consecutivo',
-                align : 'middle',
-                valign : 'middle',
-                sortable : false
-            }, {
-                field : 'Importe',
-                title : 'Importe',
-                align : 'middle',
-                valign : 'middle',
-                sortable : false
-            }, {
-                field : 'Diferencia',
-                title : 'Diferencia',
-                align : 'middle',
-                valign : 'middle',
-                sortable : false
-            }, {
-            	field : 'Diferencia(%)',
-                title : 'Diferencia(%)',
-                align : 'middle',
-                valign : 'middle',
-                sortable : false
-            }, {
-            	field : 'Concepto',
-                title : 'Concepto',
-                align : 'middle',
-                valign : 'middle',
-                sortable : false
-            }, {
-            	field : 'Referencia',
-                title : 'Referencia',
-                align : 'middle',
-                valign : 'middle',
-                sortable : false
-            }, {
-            	field : 'Delete',
-                title : 'Delete',
-                align : 'middle',
-                valign : 'middle',
-                sortable : false
-            } ]
-        });
-    }
-    createdocumentsTable(documents);
-});*/
-
-/*$("#documentsTable").bootstrapTable().on('load-success.bs.table', function (e, data) {	
-	$(".deleterow").on("click", function(){
-	var $killrow = $(this).parent('td').parent('tr');
-	    $killrow.addClass("danger");
-		$killrow.fadeOut(1000, function(){
-	    $(this).remove();
-	});});
-});*/
-/*var documents = [];
-var numberOfDocuments = 0;
-function document(apply, consecutive, amount, difference, differencePercentage, concept, reference){
-	this.apply;
-	this.consecutive;
-	this.amount;
-	this.difference;
-	this.differencePercentage;
-	this.concept;
-	this.reference;
-}*/
-
 // Javascript to enable link to tab
 var url = document.location.toString();
 if (url.match('#')) {
@@ -144,10 +33,32 @@ $("#showClientBalance").on("click", function(e){
 	window.location= "357/consultar/saldo-cliente";
 });
 
+
+var documentsNumber = 0;
+
 $("#newDocumentRow").on("click", function(){
-	
+
+	var emptyPlace = aCxcD.indexOf(null);
+	var insertedDocumentPlace;
+
+	// No hay un espacio en null.
+	if(emptyPlace == -1) {
+		// Se agrega al final.
+		insertedDocumentPlace = aCxcD.length;
+		aCxcD.push(new cxcD);
+	}
+	else {
+
+		// Se agrega en el espacio vacio.
+		aCxcD[emptyPlace] = new cxcD;
+		insertedDocumentPlace = emptyPlace;
+	}
+	console.log(aCxcD);
+	console.log(documentsNumber);
+	console.log($($('#documentsTable tbody').prop('children')[0]).index());
+
 	$('#documentsTable tbody').append(
-		"<tr>"+
+		"<tr id='document-"+insertedDocumentPlace+"'>"+
 			"<td style='text-align: center;' class='apply'></td>"+
 			"<td style='text-align: center;' class='consecutive'></td>"+
 			"<td style='text-align: center;' class='amount'></td>"+
@@ -176,12 +87,21 @@ $("#newDocumentRow").on("click", function(){
 		"</tr>");
 	
 	$("#documentsTable tbody tr:last .deleteDocument").on("click", function(){
+
 		var $killrow = $(this).parent('td').parent('tr');
-		    /*$killrow.addClass("danger");
-			$killrow.fadeOut(1000, function(){
-		    	$(this).remove();
-			});*/
-			$killrow.remove();
+	    /*$killrow.addClass("danger");
+		$killrow.fadeOut(1000, function(){
+	    	$(this).remove();
+		});*/
+		var documentNum = $killrow.attr('id').split('-')[1];
+		console.log(documentNum);
+		aCxcD[documentNum] = null;
+		//aCxcD.splice( documentsNumber, 1);
+		console.log(aCxcD);
+
+		$killrow.remove();
+
+		documentsNumber--;
 	});
 
 	$("#documentsTable tbody tr:last .apply").on("click", function(e){
@@ -303,9 +223,8 @@ $("#newDocumentRow").on("click", function(){
 		console.log($(this) + "gorgojo");
 		$(this).empty();
 	})*/
-
-	}
-);
+	documentsNumber++;
+});
 
 var numberOfCharges = 1;
 var charges = [null,null,null,null,null];
@@ -334,23 +253,23 @@ $("#newChargeRow").on("click", function(){
 			"<div class='form-group' id='charge"+chargeNumber+"'>" +	    	
 				"<div class='col-sm-4'>" +
 					/*"<label for='chargeAmount'>Importe " + chargeNumber + "</label>" +*/
-					"<label for='chargeAmount'>Importe</label>" +
+					"<label for='amount"+chargeNumber+"'>Importe</label>" +
 					"<div class='input-group'>"+
 						"<div class='input-group-addon'>$</div>"+
-						"<input type='number' class='form-control input-sm' id='chargeAmount' min='0' step='any'>"+
+						"<input type='number' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' min='0' step='any'>"+
 					"</div>"+
 				"</div>" +
 				"<div class='col-sm-4'>" +
 					/*"<label for='wayOfPayment'>Forma Cobro " + chargeNumber + "</label>"+*/
-					"<label for='wayOfPayment'>Forma Cobro</label>"+
-					"<select id='wayOfPayment' class='form-control input-sm'>"+
+					"<label for='charge_type"+chargeNumber+"'>Forma Cobro</label>"+
+					"<select id='charge_type"+chargeNumber+"' name='charge_type"+chargeNumber+"' class='form-control input-sm'>"+
 						"<option></option>" +
 					"</select>" +
 				"</div>" +
 				"<div class='col-sm-3'>" +
 					/*"<label for='chargeReference'>Referencia " + chargeNumber+ "</label>"+*/
-					"<label for='chargeReference'>Referencia</label>"+
-					"<input type='text' class='form-control input-sm' id='chargeReference'>"+
+					"<label for='reference"+chargeNumber+"'>Referencia</label>"+
+					"<input type='text' class='form-control input-sm' id='reference"+chargeNumber+"' name='reference"+chargeNumber+"'>"+
 				"</div>" + 
 				"<div class='col-sm-1' id='deleteCharge"+chargeNumber+"'><br>" +
 					"<span class='glyphicon glyphicon-remove' style='font-size:30px; text-align:center; display: block;'></span>"+
