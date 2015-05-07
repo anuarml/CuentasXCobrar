@@ -17,19 +17,19 @@ $("#searchClient").on("click", function(e){
 $("#searchClientOffice").on("click", function(e){
 	/*$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
 	$("#documentAmount").focus();*/
-	window.location= "357/buscar/sucursal-cliente";
+	window.location= "mov/331/buscar/sucursal-cliente";
 });
 
 $("#searchMovReference").on("click", function(e){
 	/*$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
 	$("#documentAmount").focus();*/
-	window.location= "357/buscar/referencia-movimiento";
+	window.location= "mov/331/buscar/referencia-movimiento";
 });
 
 $("#showClientBalance").on("click", function(e){
 	/*$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
 	$("#documentAmount").focus();*/
-	window.location= "357/consultar/saldo-cliente";
+	window.location= "mov/331/consultar/saldo-cliente";
 });
 
 
