@@ -43,14 +43,12 @@ class CxcD extends Model {
 		return $this->Sucursal = $office;
 	}
 
-
 	public function getRowAttribute(){
 		return $this->Renglon;
 	}
 	public function setRowAttribute($row){
 		return $this->Renglon = $row;
 	}
-
 
 	public function getApplyAttribute(){
 		return $this->Aplica;

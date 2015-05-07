@@ -11,6 +11,8 @@ class CxcPending extends Model {
 	 */
 	protected $table = 'CxcPendiente';
 
+	protected $dates =['Vencimiento', 'FechaEmision'];
+
 	/**
 	 * The attributes that are mass assignable.
 	 *
@@ -31,13 +33,13 @@ class CxcPending extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['Mov','mov_id', 'balance', 'total_amount', 'expiration', 'emission_date'];
+	protected $visible = ['Mov','MovID', 'balance', 'total_amount', 'expiration', 'emission_date'];
 
-	protected $appends = ['mov_id', 'balance', 'total_amount', 'expiration', 'emission_date'];
+	protected $appends = ['balance', 'total_amount', 'expiration', 'emission_date'];
 
-	public function getMovIdAttribute(){
+	/*public function getMovIdAttribute(){
 		return $this->MovID;
-	}
+	}*/
 
 	public function getBalanceAttribute(){
 		return $this->Saldo;
@@ -48,10 +50,10 @@ class CxcPending extends Model {
 	}
 
 	public function getExpirationAttribute(){
-		return $this->Vencimiento;
+		return $this->Vencimiento->__toString();
 	}
 
 	public function getEmissionDateAttribute(){
-		return $this->FechaEmision;
+		return $this->FechaEmision->__toString();
 	}
 }

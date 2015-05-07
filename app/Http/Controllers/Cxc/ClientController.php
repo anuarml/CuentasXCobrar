@@ -4,6 +4,7 @@ use App\Client;
 use App\Http\Controllers\Controller;
 use App\Cxc;
 use App\CteSendTo;
+use App\CxcInfo;
 
 class ClientController extends Controller {
 	
@@ -29,9 +30,10 @@ class ClientController extends Controller {
 		
 		$cxc = Cxc::findOrFail($movID);
 		$client = $cxc->client_id;
-
-		$clientOffices = CteSendTo::where('ID', $client);
-
+		//dd($client = $cxc->client_id);
+		
+		$clientOffices = CteSendTo::where('Cliente', $client)->get();
+		//dd($clientOffices);
 		return response()->json($clientOffices);
 	}
 
@@ -45,11 +47,13 @@ class ClientController extends Controller {
 	public function getSaldoCliente($movID){
 		
 		$cxc = Cxc::findOrFail($movID);
+		$company = $cxc->company;
 		$client = $cxc->client_id;
-
-		$clientOffices = CteSendTo::where('ID', $client);
-
-		return response()->json($clientOffices);
+		$currency = $cxc->currency;
+		//dd([$company,]);
+		$clientBalance = CxcInfo::where('Empresa', $company) -> where ('Cliente', $client) -> where ('Moneda', $currency)->get();
+		//dd($clientBalance);
+		return response()->json($clientBalance);
 	}
 
 	public static function showClientBalance($movID){

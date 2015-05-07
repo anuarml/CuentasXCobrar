@@ -2,7 +2,7 @@
 
 @section('table-header')
     <th data-field="state" data-radio="true"></th>
-    <th data-field="id" data-align="right" data-sortable="true">ID</th>
+    <th data-field="ID" data-align="right" data-sortable="true">ID</th>
     <th data-field="name" data-align="center" data-sortable="true">Nombre</th>
     <th data-field="address" data-sortable="true">Direccion</th>
 @endsection
@@ -25,7 +25,7 @@
 				return;
 			}
 			
-			$('#clientOfficeID').val(selections[0].id);
+			$('#clientOfficeID').val(selections[0].ID);
 			$('#clientOfficeForm').submit();
 		});
 	</script>
