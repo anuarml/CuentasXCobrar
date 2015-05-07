@@ -5,8 +5,9 @@
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>Assis - Cobranza</title>
+		<title>Aplicacion Intelisis</title>
 
+		<link rel="icon" type="image/jpg" href="{{ asset('/img/intelisis.jpg') }}" />
 		<link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
 		<link href="{{ asset('/css/simple-sidebar.css') }}" rel="stylesheet">
 	</head>
@@ -17,7 +18,7 @@
 	            <ul class="sidebar-nav">
 	                <li class="sidebar-brand">
 	                    <a href="#">
-	                        Assis - Cobranza
+	                        Menu
 	                    </a>
 	                </li>
 	                <li>
