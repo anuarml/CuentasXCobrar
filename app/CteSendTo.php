@@ -33,7 +33,7 @@ class CteSendTo extends Model {
 	 */
 	protected $visible = ['ID','name', 'address'];
 
-	protected $appends = ['ID','name', 'address'];
+	protected $appends = ['name', 'address'];
 
 	public function getNameAttribute(){
 		return $this->Nombre;

@@ -11,6 +11,7 @@ class CxcInfo extends Model {
 	 */
 	protected $table = 'CxcInfo';
 
+	protected $dates =['Vencimiento'];
 	/**
 	 * The attributes that are mass assignable.
 	 *
@@ -31,16 +32,12 @@ class CxcInfo extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['Mov','mov_id', 'expiration', 'delinquent_days', 'balance'];
+	protected $visible = ['Mov','MovID', 'expiration', 'delinquent_days', 'balance'];
 
-	protected $appends = ['mov_id', 'expiration', 'delinquent_days', 'balance'];
-
-	public function getMovIdAttribute(){
-		return $this->MovID;
-	}
+	protected $appends = ['expiration', 'delinquent_days', 'balance'];
 
 	public function getExpirationAttribute(){
-		return $this->Vencimiento;
+		return $this->Vencimiento->__toString();
 	}
 
 	public function getDelinquentDaysAttribute(){

@@ -4,12 +4,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class CxcRef extends Model {
 
-		/**
+	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
 	protected $table = 'CxcRef';
+	protected $dates =['FechaEmision', 'Vencimiento'];
 
 	/**
 	 * The attributes that are mass assignable.
@@ -31,21 +32,16 @@ class CxcRef extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['Mov','mov_id', 'emission_date', 'expiration_date', 'balance'];
+	protected $visible = ['Mov','MovID', 'emission_date', 'expiration_date', 'balance'];
 
-	protected $appends = ['mov_id', 'emission_date', 'expiration_date', 'balance'];
-
-
-	public function getMovIdAttribute(){
-		return $this->MovID;
-	}
+	protected $appends = ['emission_date', 'expiration_date', 'balance'];
 
 	public function getEmissionDateAttribute(){
-		return $this->FechaEmision;
+		return $this->FechaEmision->__toString();
 	}
 
 	public function getExpirationDateAttribute(){
-		return $this->Vencimiento;
+		return $this->Vencimiento->__toString();
 	}
 
 	public function getBalanceAttribute(){
