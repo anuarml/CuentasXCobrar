@@ -34,14 +34,14 @@
 																<span class='glyphicon glyphicon-search'></span>
 															</button>
 														</span>
-														<input type="text" name="client_id" id="client_id" class="form-control" tabindex="1" value="{{isset($mov)?$mov->client_id:''}}" readonly>
+														<input type="text" name="client_id" id="client_id" class="form-control" tabindex="1" value="{{ \Session::get('selected_client_id') }}" readonly>
 													</div>
 												</div>
 											</div>
 											<div class="col-sm-6 ">
 												<div class="form-group">
 													<label for="ClientName">Nombre Cliente:</label>
-													<input type="text" id="ClientName" class="form-control" tabindex="2" readonly>
+													<input type="text" id="ClientName" value="{{ $clientName }}" class="form-control" tabindex="2" readonly>
 												</div>
 											</div>
 										</div>
@@ -239,5 +239,7 @@
 
 @section('scripts')
 <script type="text/javascript" src="{{ asset('js/cxc/movement/documents.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/cxc/movement/new.js') }}"></script>
+<!--<script type="text/javascript" src="{{ asset('js/cxc/movement/new.blade.php') }}"></script>-->
+@include('js/cxc/movement/new')
+
 @endsection
