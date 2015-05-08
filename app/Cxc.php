@@ -22,7 +22,7 @@ class Cxc extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['details','office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'Mov', 'mov_id','emission_date', 'amount',
+	protected $fillable = ['details','office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'Mov', 'MovID','emission_date', 'amount',
 							'taxes', 'currency', 'change_type', 'client_currency', 'client_change_type', 'user', 'status', 'CtaDinero', 'cashier',
 							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown', 'charge_type1',
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
@@ -40,13 +40,13 @@ class Cxc extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['details','ID','office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'Mov', 'mov_id','emission_date', 'amount',
+	protected $visible = ['client','details','ID','office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'Mov', 'MovID','emission_date', 'amount',
 							'taxes', 'currency', 'change_type', 'client_currency', 'client_change_type', 'user', 'status', 'CtaDinero', 'cashier',
 							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown', 'charge_type1',
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
 							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'balance', 'tho_web_assigned' ];
 
-	protected $appends = ['office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'mov_id', 'emission_date', 'amount',
+	protected $appends = ['office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'emission_date', 'amount',
 							'taxes', 'currency', 'change_type', 'client_currency', 'client_change_type', 'user', 'status', 'cashier',
 							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown','charge_type1',
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
@@ -91,15 +91,6 @@ class Cxc extends Model {
 	public function setCompanyAttribute($company){
 		return $this->Empresa = $company;
 	}
-
-
-	public function getMovIdAttribute(){
-		return $this->MovID;
-	}
-	public function setMovIdAttribute($movID){
-		return $this->MovID = $movID;
-	}
-
 
 	public function getEmissionDateAttribute(){
 		return $this->FechaEmision;
@@ -395,6 +386,10 @@ class Cxc extends Model {
 
 	public function details(){
 		return $this->hasMany('App\CxcD','ID','ID');
+	}
+
+	public function client(){
+		return $this->belongsTo('App\Client', 'Cliente', 'Cliente');
 	}
 
 }

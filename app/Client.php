@@ -33,7 +33,7 @@ class Client extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['id','name', 'RFC', 'agent', 'collector', 'def_currency'];
+	protected $visible = ['balance','id','name', 'RFC', 'agent', 'collector', 'def_currency'];
 
 	protected $appends = ['id','name', 'agent', 'collector', 'def_currency'];
 
@@ -57,4 +57,14 @@ class Client extends Model {
 	public function getDefCurrencyAttribute(){
 		return $this->DefMoneda;
 	}
+
+	/*
+	 * Relations with other models.
+	 */
+
+	public function balance(){
+
+		return $this->hasMany('App\CxcBalance','Cliente','Cliente');
+	}
+
 }

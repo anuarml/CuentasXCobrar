@@ -3,7 +3,9 @@
 use App\Cxc;
 use App\CxcD;
 use App\CxcRef;
+use App\Concept;
 use App\Client;
+use App\MovType;
 use App\Http\Controllers\Controller;
 
 
@@ -36,13 +38,46 @@ class MovController extends Controller {
 
 		$cxc = new Cxc;
 		$cxc->fill($cxcArray);
-		$cxc->company = \Session::get('company');
-		$cxc->office_id = \Session::get('office');
+		$cxc->company = $user->getSelectedCompany();
+		$cxc->office_id = $user->getSelectedOffice();
 		$cxc->currency = $user->defCurrency->currency;
 		$cxc->save();
 
 		$ROW_MULTIPLIER = 2048;
 		$rowNum = 1;
+
+		foreach ($cxcDArray as $cxcDA) {
+
+			if($cxcDA != null && $cxcDA->apply != null) {
+
+			    $cxcD = new CxcD;
+				$cxcD->fill((array)$cxcDA);
+				$cxcD->row = $rowNum++ * $ROW_MULTIPLIER;
+				$cxc->details()->save($cxcD);
+			}
+		}
+
+		return redirect('cxc/movimiento/mov/'.$cxc->ID);
+	}
+
+	public function postActualizar($movID){
+
+		$cxcArray = \Input::except('documentsJson');
+		$cxcDArray = json_decode(\Input::get('documentsJson'));
+
+		$user = \Auth::user();
+
+		$cxc = findOrFail($movID);
+		$cxc->fill($cxcArray);
+		$cxc->company = $user->getSelectedCompany();
+		$cxc->office_id = $user->getSelectedOffice();
+		$cxc->currency = $user->defCurrency->currency;
+		$cxc->save();
+
+		$ROW_MULTIPLIER = 2048;
+		$rowNum = 1;
+
+		//Borrar todos los detalles y luego insertarlos de nuevo.
 
 		foreach ($cxcDArray as $cxcDA) {
 
@@ -124,11 +159,14 @@ class MovController extends Controller {
 
 	public function getMov($movID){
 
-		$mov = Cxc::with('details')->findOrFail($movID);
+		$mov = Cxc::with('details')->with('client')->findOrFail($movID);
+		$user = \Auth::user();
 
-		//dd($mov->toJson());
+		$clientBalance = $mov->client->balance()->where('Empresa', $user->getSelectedCompany())->get()->toArray();
+		
+		$movTypeList = MovType::getMovTypeList();
 
-		return view('cxc.movement.new',compact('mov'));
+		return view('cxc.movement.mov',compact('mov','clientBalance','movTypeList'));
 	}
 
 	/*public function search($movID, $searchType){
@@ -174,6 +212,32 @@ class MovController extends Controller {
 		$cxc->save();
 
 		return redirect('cxc/movimiento/mov/'.$movID);
+	}
+
+	public function getConceptList($movType){
+
+		$conceptList = [];
+
+		$user = \Auth::user();
+		$company = $user->getSelectedCompany();
+		$userID = $user->id;
+
+		$stmt = \DB::getPdo()->prepare('EXEC spThoConceptosCxcWeb ?, ?, ?');
+
+		$stmt->bindParam(1, $company);
+		$stmt->bindParam(2, $movType);
+		$stmt->bindParam(3, $userID);
+
+		$stmt->execute();
+
+		if($result = $stmt->fetchAll(\PDO::FETCH_OBJ)){
+	    	$conceptList = $result;
+	    }
+	    else{
+	    	$conceptList = Concept::where('Modulo','CXC')->get();
+	    }
+
+		return response()->json($conceptList);
 	}
 }
 
