@@ -20,11 +20,14 @@ Route::get('/cxc/movimiento/mov/{movID}/buscar/referencia-movimiento','Cxc\MovCo
 Route::get('/cxc/movimiento/mov/{movID}/buscar/{searchType}/{row}','Cxc\DocumentController@showDocumentSearch');
 Route::get('/cxc/movimiento/mov/{movID}/consultar/saldo-cliente','Cxc\ClientController@showClientBalance');
 
+Route::get('/embarques','Shipment\ShipmentController@showShipmentDocuments');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'cxc/movimiento' => 'Cxc\MovController',
 	'cxc/cliente' => 'Cxc\ClientController',
 	'cxc/documento' => 'Cxc\DocumentController',
 	'utileries' => 'UtileriesController',
+	'embarques' => 'Shipment\ShipmentController',
 ]);
 
