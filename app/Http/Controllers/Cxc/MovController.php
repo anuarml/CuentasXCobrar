@@ -5,7 +5,9 @@ use App\CxcD;
 use App\CxcRef;
 use App\Concept;
 use App\Client;
+use App\Mon;
 use App\MovType;
+use App\PaymentType;
 use App\Http\Controllers\Controller;
 
 
@@ -162,11 +164,15 @@ class MovController extends Controller {
 		$mov = Cxc::with('details')->with('client')->findOrFail($movID);
 		$user = \Auth::user();
 
-		$clientBalance = $mov->client->balance()->where('Empresa', $user->getSelectedCompany())->get()->toArray();
-		
+		$clientBalance = $mov->client->balance()->where('Empresa', $user->getSelectedCompany())->where('Moneda','Pesos')->get()->first();
+		//dd($clientBalance);
 		$movTypeList = MovType::getMovTypeList();
 
-		return view('cxc.movement.mov',compact('mov','clientBalance','movTypeList'));
+		$currencyList = Mon::getCurrencyList();
+
+		$paymentTypeList = PaymentType::getPaymentTypeList();
+
+		return view('cxc.movement.mov',compact('mov','clientBalance','movTypeList','currencyList','paymentTypeList'));
 	}
 
 	/*public function search($movID, $searchType){
