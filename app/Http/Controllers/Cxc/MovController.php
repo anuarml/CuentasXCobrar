@@ -151,7 +151,7 @@ class MovController extends Controller {
 	}
 
 	public static function showMovementReferenceSearch($movID){
-		$searchType = 'movimiento-referencia';
+		$searchType = 'referencia';
 		$dataURL = '/cxc/movimiento/movimiento-referencia/'.$movID;
 		
 		return view('cxc.movement.searchMovReference', compact('searchType','dataURL','movID'));

@@ -26,7 +26,7 @@ class ShipmentController extends Controller {
 		$user = 'ADMIN';
 		$shipmentID = 3;
 		$status = 'CONCLUIDO';
-		$agent = 'Secreto';
+		$agent = 1;
 		$module = 'Cxc';
 
 
@@ -42,10 +42,11 @@ class ShipmentController extends Controller {
 				$leftJoin -> where('ThoAsignadoWeb', '=', $shipmentID);
 				$leftJoin -> where('Cxc.Estatus', '=', $status);
 
-			})->get();
+			});
 		//dd($cxc);
 
-		$shipmentMov = ShipmentMov::where('AsignadoID', $shipmentID)->get();
+		//$shipmentMov = ShipmentMov::where('AsignadoID', $shipmentID)->query;
+		$shipmentMov = \DB::table('EmbarqueMov') -> where('AsignadoID', $shipmentID);
 		//dd($shipmentMov);
 
 		$shipmentMov2 = \DB::table('Embarque') -> join('EmbarqueMov', 'Embarque.ID', '=', 'EmbarqueMov.AsignadoID') -> leftJoin('CxcPendiente', function($leftJoin) use ($shipmentID, $company, $agent, $module){
@@ -62,7 +63,7 @@ class ShipmentController extends Controller {
 				$leftJoin -> where('Embarque.Agente', '=', $agent);
 				$leftJoin -> where('EmbarqueMov.Modulo', '=', $module);
 
-			})->get();
+			});
 		//dd($shipmentMov2);
 
 		$cxc2 = \DB::table('Cxc') -> join('CxcD', function($join) use ($company, $user, $shipmentID, $status){
@@ -75,15 +76,24 @@ class ShipmentController extends Controller {
 			$join -> where('ThoAsignadoWeb', '=', $shipmentID);
 			$join -> where('Cxc.Estatus', '=', $status);
 
-		})->get();
+		});
 
 		//dd($cxc2);
 
-		$amount = 
+		/*$assignedDocuments = $cxc -> leftJoin($shipmentMov, function($leftJoin){
+			
+			$leftJoin -> on('aplica', '=', 'EmbarqueMov.Mov');
+			$leftJoin -> on('AplicaID', '=', 'EmbarqueMov.MovID');
+
+		})->get(); */
+
+		//dd([$shipmentMov,$cxc]);
+		
+		dd($assignedDocuments);
 
 		//$shipmentDocuments = CxcInfo::where('Empresa', $company) -> where ('Cliente', $client) -> where ('Moneda', $currency)->get();
 
-		return response()->json($shipmentDocumentst);
+		//return response()->json($shipmentDocumentst);
 	}
 
 	public static function showShipmentDocuments(){
