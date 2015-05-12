@@ -22,12 +22,14 @@ Route::get('/cxc/movimiento/mov/{movID}/consultar/saldo-cliente','Cxc\ClientCont
 
 Route::get('/embarques','Shipment\ShipmentController@showShipmentDocuments');
 
+Route::get('/cxc/movimiento/mov/{movID}/calculadora/{row}','UtileriesController@showCalculator');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'cxc/movimiento' => 'Cxc\MovController',
 	'cxc/cliente' => 'Cxc\ClientController',
 	'cxc/documento' => 'Cxc\DocumentController',
-	'utileries' => 'UtileriesController',
-	'embarques' => 'Shipment\ShipmentController',
+	//'utileries' => 'UtileriesController',
+	//'embarques' => 'Shipment\ShipmentController',
 ]);
 

@@ -132,7 +132,7 @@ $("#newDocumentRow").on("click", function(){
 		$("#searchConsecutive").on("click", function(e){
 			/*$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
 			$("#documentAmount").focus();*/
-			window.location= "357/buscar/documento/2048";
+			window.location= "mov/331/buscar/documento/2048";
 		});
 
 		$("#searchConsecutive").focus();
@@ -166,7 +166,7 @@ $("#newDocumentRow").on("click", function(){
 
 		$("#calculator").on("click", function(e){
 			//alert("hola");
-			window.location="calculadora";
+			window.location="/cxc/movimiento/mov/331/calculadora/2048";
 		});
 
 		//$(this).focus();
