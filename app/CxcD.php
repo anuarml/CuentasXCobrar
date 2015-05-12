@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class CxcD extends Model {
 
 	public $timestamps = false;
-	protected $primaryKey = 'ID';
+	protected $primaryKey = 'Renglon';
 	/**
 	 * The database table used by the model.
 	 *
@@ -43,14 +43,12 @@ class CxcD extends Model {
 		return $this->Sucursal = $office;
 	}
 
-
 	public function getRowAttribute(){
 		return $this->Renglon;
 	}
 	public function setRowAttribute($row){
 		return $this->Renglon = $row;
 	}
-
 
 	public function getApplyAttribute(){
 		return $this->Aplica;
