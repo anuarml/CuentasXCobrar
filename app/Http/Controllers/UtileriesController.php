@@ -7,12 +7,16 @@ use Illuminate\Http\Request;
 
 class UtileriesController extends Controller {
 
-	public function getCalculator(){
-		
-		return view('calculator');
+	public function __construct(){
+		$this->middleware('auth');
 	}
 
-	public function postCalculator(){
+	/*public function getCalculator(){
+		
+		return view('calculator');
+	}*/
 
+	public function showCalculator(){
+		return view('utileries.calculator');
 	} 
 }
