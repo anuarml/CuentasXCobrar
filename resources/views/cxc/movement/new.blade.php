@@ -235,11 +235,14 @@
 			</div>
 		</form>
 	</div>
+	@include('utileries/calculator')
 @endsection
 
 @section('scripts')
 <script type="text/javascript" src="{{ asset('js/cxc/movement/documents.js') }}"></script>
 <!--<script type="text/javascript" src="{{ asset('js/cxc/movement/new.blade.php') }}"></script>-->
+<script src="{{ asset('js/decimal.min.js') }}"></script>
+@include('js/utileries/calculator')
 @include('js/cxc/movement/new')
 
 @endsection

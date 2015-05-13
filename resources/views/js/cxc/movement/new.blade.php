@@ -155,7 +155,7 @@ $("#newDocumentRow").on("click", function(){
 			$(e.target).append(
 				"<div class='input-group'>"+
 					"<span class='input-group-btn'>"+
-						"<button type='button' class='btn btn-default' id='calculator'>"+
+						"<button type='button' class='btn btn-default' data-toggle='modal' data-target='#calculatorModal' id='btnCalculator'>"+
 							"<span class='fa fa-calculator'></span>"+
 						"</button>"+
 					"</span>"+
@@ -164,9 +164,9 @@ $("#newDocumentRow").on("click", function(){
 				);
 		}
 
-		$("#calculator").on("click", function(e){
+		$("#btnCalculator").on("click", function(e){
 			//alert("hola");
-			window.location="/cxc/movimiento/mov/331/calculadora/2048";
+			//window.location="/cxc/movimiento/mov/331/calculadora/2048";
 		});
 
 		//$(this).focus();
@@ -175,7 +175,7 @@ $("#newDocumentRow").on("click", function(){
 
 	$("#documentsTable tbody tr:last .amount").on("focusout", function(e){
 			console.log($("#documentAmount").is(":focus"));
-			console.log($("#calculator").is(":focus"));
+			console.log($("#btnCalculator").is(":focus"));
 			console.log($(this) + "gorgojo");
 			$("#documentAmount").text();
 			$(this).empty();

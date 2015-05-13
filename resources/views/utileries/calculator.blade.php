@@ -1,20 +1,13 @@
-<!DOCTYPE html>
-<html lang="es">
-	<head>
 
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-
-		<title>Calculadora</title>
-
-		<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
-		<link href="{{ asset('/css/calculatorStyle.css') }}" rel="stylesheet">
-
-	</head>
-
-	<body>
-		<div id="calculator">
+<div class="modal fade" id="calculatorModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Calculadora</h4>
+      </div>
+      <div class="modal-body">
+        <div id="calculator" class="col-sm-offset-2" >
             <!-- Screen and clear key -->
             <div class="top">
                 <span class="clear">C</span>
@@ -42,14 +35,7 @@
                 <span class="eval">=</span>
             </div>
         </div>
-
-        
-        <!-- Scripts -->
-		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-		<script src="{{ asset('js/decimal.min.js') }}"></script>
-		@include('js/utileries/calculator')
-		
-	</body>
-
-</html>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

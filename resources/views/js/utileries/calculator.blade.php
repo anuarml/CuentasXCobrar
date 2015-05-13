@@ -65,12 +65,14 @@ for(var i = 0; i < keys.length; i++) {
 					input.innerHTML = eval(equation);
 				}
 				
-				var oCalculadora = {};
+				/*var oCalculadora = {};
 				oCalculadora.calculatorPressed = true;
 				oCalculadora.value = parseFloat(input.innerHTML);
 				oStorage.store('oCalculadora', oCalculadora);
-				console.log(oCalculadora.calculatorPressed);
-				window.location	= "detallesDocumento.html";
+				console.log(oCalculadora.calculatorPressed);*/
+				var documentAmount = document.getElementById("documentAmount");
+				documentAmount.value = input.innerHTML;
+				window.location	= "{{ url('cxc/movimiento/mov/331#documentos') }}";
 			}
 				
 			decimalAdded = false;
