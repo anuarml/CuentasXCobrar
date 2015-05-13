@@ -8,7 +8,7 @@ var isPercentage = false;
 var equation;
 var firstbtnVal;
 var pressedBtn = false;
-var documentAmoun; 
+var documentAmount; 
 
 var input = document.querySelector('.screen');
 /*input.innerHTML = 

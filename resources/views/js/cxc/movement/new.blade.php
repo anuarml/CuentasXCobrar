@@ -166,9 +166,9 @@ $("#newDocumentRow").on("click", function(){
 
 		$("#btnCalculator").on("click", function(e){
 			//alert("hola");
-			documentAmoun = document.getElementById("documentAmount");
-			console.log(documentAmoun.value);
-			input.innerHTML = documentAmoun.value;
+			documentAmount = document.getElementById("documentAmount");
+			console.log(documentAmount.value);
+			input.innerHTML = documentAmount.value;
 			//window.location="/cxc/movimiento/mov/331/calculadora/2048";
 		});
 
