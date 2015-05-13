@@ -8,14 +8,15 @@ var isPercentage = false;
 var equation;
 var firstbtnVal;
 var pressedBtn = false;
+var documentAmoun; 
 
 var input = document.querySelector('.screen');
-input.innerHTML = 
+/*input.innerHTML = 
 	@if(\Session::has('calculatorAmount'))
 		{{\Session::get('calculatorAmount')}};
 	@else 
 		0;
-	@endif
+	@endif*/
 //console.log("weon");
 // Add onclick event to all the keys and perform operations
 for(var i = 0; i < keys.length; i++) {
@@ -70,8 +71,8 @@ for(var i = 0; i < keys.length; i++) {
 				oCalculadora.value = parseFloat(input.innerHTML);
 				oStorage.store('oCalculadora', oCalculadora);
 				console.log(oCalculadora.calculatorPressed);*/
-				var documentAmount = document.getElementById("documentAmount");
-				documentAmount.value = input.innerHTML;
+				/*var documentAmount = document.getElementById("documentAmount");
+				documentAmount.value = input.innerHTML;*/
 				window.location	= "{{ url('cxc/movimiento/mov/331#documentos') }}";
 			}
 				

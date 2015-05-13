@@ -181,6 +181,7 @@
 							        	
 							        </tbody>
 							    </table>
+							    @include('utileries/calculator')
 						    </div>
 					    </div>
 					    <div role="tabpanel" class="tab-pane" id="desgloseCobro">
@@ -235,7 +236,7 @@
 			</div>
 		</form>
 	</div>
-	@include('utileries/calculator')
+	
 @endsection
 
 @section('scripts')
