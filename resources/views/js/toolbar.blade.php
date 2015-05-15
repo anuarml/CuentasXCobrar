@@ -29,6 +29,7 @@ var toolbar = {
 	},
 
 	printMov : function(){
+		generateText();
 		//$('#cxcMovForm').serializeArray());
 		//var mov = $('#cxcMovForm').serializeArray();
 		//console.log($('#amount1').val());
@@ -49,13 +50,16 @@ var toolbar = {
 		/*var canvas = document.getElementById("pruebaImagen");
 		var contextCanvas = canvas.getContext("2d");
 		var img = document.getElementById("logoAssis");
-		contextCanvas.drawImage(img,10,10);*/
-		generateText();
+		contextCanvas.drawImage(img,10,10);*/	
+	},
+
+	openMov : function(){
+		window.location = "abrir";
 	}
 };
 
 $('#newMov').click(toolbar.confirmSaveChanges);
-$('#openMov').click(toolbar.confirmSaveChanges);
+$('#openMov').click(toolbar.openMov);
 $('#deleteMov').click(toolbar.confirmDeleteMov);
 $('#cancelMov').click(toolbar.confirmCancelMov);
 $('#printMov').click(toolbar.printMov);

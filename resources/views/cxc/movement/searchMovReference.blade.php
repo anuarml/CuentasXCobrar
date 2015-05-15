@@ -27,7 +27,7 @@
 				return;
 			}
 			
-			$('#movReferenceID').val(selections[0].mov_id);
+			$('#movReferenceID').val(selections[0].MovID);
 			$('#movReferenceForm').submit();
 		});
 	</script>
