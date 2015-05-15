@@ -1,10 +1,10 @@
-function verifyMov(movToVerify){
-	//var selectedMov = $('#Mov').val();
+function verifyMov(/*movToVerify*/){
+	var selectedMov = $('#Mov').val();
 	//console.log(movToVerify);
 	//console.log(selectedMov);
-	switch(movToVerify){
+	switch(selectedMov){
 		case 'Anticipo':
-			console.log(movToVerify);
+			console.log(selectedMov);
 			//$('#documentos').empty();
 			//$('#documentos').remove();
 			//console.log($('#documentos'));

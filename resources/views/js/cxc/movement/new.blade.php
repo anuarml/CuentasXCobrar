@@ -34,9 +34,10 @@ $("#showClientBalance").on("click", function(e){
 
 $("#Mov").on("change", function(e){
 	this.disabled = true;
-	var movToVerify = $("#Mov").val();
-	console.log(movToVerify);
-	verifyMov(movToVerify);
+	//var movToVerify = $("#Mov").val();
+	//console.log(movToVerify);
+	//verifyMov(movToVerify);
+	verifyMov();
 });
 
 var documentsNumber = 0;
