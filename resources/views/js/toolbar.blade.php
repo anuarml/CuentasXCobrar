@@ -90,18 +90,6 @@ function generateText(){
     var actualDate = new Date();
     var date = actualDate.getDate() + "/" + (actualDate.getMonth() + 1) + "/" + actualDate.getFullYear();
 	var hour = actualDate.getHours() + ":" + actualDate.getMinutes() + ":" + actualDate.getSeconds();
-	/*var client = oTransaction.client;
-	var documents = client.documents;
-	var charge = oTransaction.charge;
-	var payments = charge.payments;
-	var nDocumentsLenght = documents.length;
-	var nPaymentsLenght = payments.length;
-	var userCompany = oUser.company;
-	var userOffice = oUser.office.name;
-	var userName = oUser.name;
-	var total = charge.totalAmount;
-	var change = charge.change;*/
-	
 	//var mov = $('#cxcMovForm').serializeArray();
 
 	/*var userName = '{{--$user->name--}}';
@@ -154,13 +142,6 @@ function generateText(){
 	}*/
 
 	for(var i=1;i<6;i++){
-		//$('#amount1').val();
-		/*if($('#amount'+i).val()){
-			TextOfTicket += putSpaces(1,'Cobro'+i);
-			TextOfTicket += putSpaces(2,$('#charge_type'+i).val());
-			TextOfTicket += putSpaces(2,'$'+$('#amount'+i).val(),'right');
-				
-		}*/
 		var amount = $('#amount'+i).val();
 		if(amount){
 			var chargeName = 'Cobro'+i;
