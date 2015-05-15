@@ -151,10 +151,23 @@ class MovController extends Controller {
 	}
 
 	public static function showMovementReferenceSearch($movID){
-		$searchType = 'movimiento-referencia';
+		$searchType = 'referencia';
 		$dataURL = '/cxc/movimiento/movimiento-referencia/'.$movID;
 		
 		return view('cxc.movement.searchMovReference', compact('searchType','dataURL','movID'));
+	}
+
+	public function getListaMovimientos(){
+		$movList = Cxc::all();
+
+		return response()->json($movList);
+	}
+
+	public static function showMovementSearch(){
+		$searchType = 'movimiento';
+		$dataURL = '/cxc/movimiento/lista-movimientos/';
+		
+		return view('cxc.movement.open', compact('searchType','dataURL'));
 	}
 
 	/*public function postSaveMovementReference($movID){

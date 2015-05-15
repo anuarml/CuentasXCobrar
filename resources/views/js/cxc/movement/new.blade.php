@@ -32,6 +32,13 @@ $("#showClientBalance").on("click", function(e){
 	window.location= "mov/331/consultar/saldo-cliente";
 });
 
+$("#Mov").on("change", function(e){
+	this.disabled = true;
+	//var movToVerify = $("#Mov").val();
+	//console.log(movToVerify);
+	//verifyMov(movToVerify);
+	verifyMov();
+});
 
 var documentsNumber = 0;
 
@@ -132,7 +139,7 @@ $("#newDocumentRow").on("click", function(){
 		$("#searchConsecutive").on("click", function(e){
 			/*$(e.target).append("<input type='number' class='form-control' id='documentAmount' min='0' step='any'>");
 			$("#documentAmount").focus();*/
-			window.location= "357/buscar/documento/2048";
+			window.location= "mov/331/buscar/documento/2048";
 		});
 
 		$("#searchConsecutive").focus();
@@ -155,7 +162,7 @@ $("#newDocumentRow").on("click", function(){
 			$(e.target).append(
 				"<div class='input-group'>"+
 					"<span class='input-group-btn'>"+
-						"<button type='button' class='btn btn-default' id='calculator'>"+
+						"<button type='button' class='btn btn-default' data-toggle='modal' data-target='#calculatorModal' id='btnCalculator'>"+
 							"<span class='fa fa-calculator'></span>"+
 						"</button>"+
 					"</span>"+
@@ -164,9 +171,12 @@ $("#newDocumentRow").on("click", function(){
 				);
 		}
 
-		$("#calculator").on("click", function(e){
+		$("#btnCalculator").on("click", function(e){
 			//alert("hola");
-			window.location="calculadora";
+			documentAmount = document.getElementById("documentAmount");
+			console.log(documentAmount.value);
+			input.innerHTML = documentAmount.value;
+			//window.location="/cxc/movimiento/mov/331/calculadora/2048";
 		});
 
 		//$(this).focus();
@@ -175,7 +185,7 @@ $("#newDocumentRow").on("click", function(){
 
 	$("#documentsTable tbody tr:last .amount").on("focusout", function(e){
 			console.log($("#documentAmount").is(":focus"));
-			console.log($("#calculator").is(":focus"));
+			console.log($("#btnCalculator").is(":focus"));
 			console.log($(this) + "gorgojo");
 			$("#documentAmount").text();
 			$(this).empty();
