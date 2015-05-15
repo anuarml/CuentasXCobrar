@@ -39,4 +39,8 @@ class ThoUserAccess extends Model {
 		return $this->Empresa;
 	}*/
 
+	public function getTableName(){
+		return $this->table;
+	}
+
 }

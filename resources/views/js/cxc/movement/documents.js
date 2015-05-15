@@ -1,6 +1,7 @@
 var aCxcD = [];
 
-function cxcD(doc){
+
+function CxcD(doc){
 	if(!doc) doc = {};
 
 	this.row = doc.row || null;

@@ -46,7 +46,7 @@
 							<a id="openMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/open.png')}}">
 							</a>
-							<a style="display:inline-block" href="#">
+							<a id="saveMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/save.png')}}">
 							</a>
 							<a id="deleteMov" style="display:inline-block" href="#">
@@ -93,7 +93,8 @@
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	<script src="{{ asset('js/toolbar.js') }}"></script>
+	<!--<script src="{{ asset('js/toolbar.js') }}"></script>-->
+	@include('js.toolbar')
 	<script src="{{ asset('/js/bootstrap-table.min.js') }}"></script>
 	
 	@yield('scripts')

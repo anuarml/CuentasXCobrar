@@ -4,7 +4,7 @@
 
 	<div class="container">
 		<!--<form id="cxcMovForm" role="form" action="{{ url('cxc/movimiento/guardar-nuevo') }}" method="POST">-->
-		{!! Form::model( $mov, array('url' => array('cxc/movimiento/actualizar/'.$mov->ID), 'id'=>'cxcMovForm' ) ) !!}
+		{!! Form::model( $mov, array('url' => array('cxc/movimiento/guardar'), 'id'=>'cxcMovForm' ) ) !!}
 			<!--<input type="hidden" name="_token" value="{{ csrf_token() }}">-->
 			<div class="row">
 				<div class="col-md-10 col-md-offset-1">
@@ -37,7 +37,7 @@
 															</button>
 														</span>
 														<!--<input type="text" name="client_id" id="client_id" class="form-control" tabindex="1" value="{{ \Session::get('selected_client_id') }}" readonly>-->
-														{!! Form::text('client_id', null, array('class'=>'form-control', 'readonly'=>'true')) !!}
+														{!! Form::text('client_id', \Session::get('selected_client_id'), array('class'=>'form-control', 'readonly'=>'true')) !!}
 													</div>
 												</div>
 											</div>
@@ -200,7 +200,7 @@
 							        </thead>
 							        <tbody>
 							        	@foreach($mov->details as $document)
-							        	<tr id='document-"+insertedDocumentPlace+"'>
+							        	<!--<tr id='document-"+insertedDocumentPlace+"'>
 										<td style='text-align: center;' class='apply'>{{$document->apply}}</td>
 										<td style='text-align: center;' class='consecutive'>{{$document->apply_id}}</td>
 										<td style='text-align: center;' class='amount'>{{$document->amount}}</td>
@@ -214,7 +214,7 @@
 											<div class='deleteDocument'>
 												<div class='glyphicon glyphicon-remove'></div>
 											</div>
-										</td>
+										</td>-->
 										@endforeach
 									</tr>
 							        </tbody>
@@ -308,6 +308,7 @@
 
 @section('scripts')
 <script type="text/javascript" src="{{ asset('js/cxc/movement/documents.js') }}"></script>
+@include('js/cxc/movement/new')
 <script type="text/javascript">
 	var mov = $('#Mov');
 	var concept = '{{$mov->concept}}';
@@ -316,7 +317,7 @@
 	$($('#concept').prop('firstElementChild')).attr('hidden','true');
 
 	mov.change(function(){
-		console.log( $(this).val() );
+
 		$.ajax( { url: '{{url("cxc/movimiento/concept-list")}}/' + $(this).val()  } ).done(function( conceptList ){
 
 			var conceptSelect = $('#concept');
@@ -340,7 +341,26 @@
 	$('#pro_balance').val( new Number($('#pro_balance').val()).toFixed(2) );
 	$('#clientBalance').val( new Number($('#clientBalance').val()).toFixed(2) );
 
+	function showMovDetails(){
+		var movDetails = JSON.parse('{!!$mov->details->toJson()!!}');
+
+		for(var i = 0; i < movDetails.length; i++){
+
+			var cxcD = new CxcD(movDetails[i]);
+
+			addDocumentRow(cxcD);
+		}
+	}
+
+	showMovDetails();
+
+	(function getApplyOptions(){
+		$.ajax( { url: '{{url("cxc/movimiento/apply-list")}}/' + $('#client_id').val()  } ).done(function( data ){
+
+			applyList = data;
+		});
+	})();
+
 </script>
-@include('js/cxc/movement/new')
 
 @endsection

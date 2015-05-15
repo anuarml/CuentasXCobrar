@@ -22,7 +22,7 @@ class Cxc extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['details','office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'Mov', 'MovID','emission_date', 'amount',
+	protected $fillable = ['last_change','details','office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'Mov', 'MovID','emission_date', 'amount',
 							'taxes', 'currency', 'change_type', 'client_currency', 'client_change_type', 'user', 'status', 'CtaDinero', 'cashier',
 							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown', 'charge_type1',
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
@@ -40,13 +40,13 @@ class Cxc extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['client','details','ID','office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'Mov', 'MovID','emission_date', 'amount',
+	protected $visible = ['last_change','client','details','ID','office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'Mov', 'MovID','emission_date', 'amount',
 							'taxes', 'currency', 'change_type', 'client_currency', 'client_change_type', 'user', 'status', 'CtaDinero', 'cashier',
 							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown', 'charge_type1',
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
 							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'balance', 'tho_web_assigned' ];
 
-	protected $appends = ['office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'emission_date', 'amount',
+	protected $appends = ['last_change','office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'emission_date', 'amount',
 							'taxes', 'currency', 'change_type', 'client_currency', 'client_change_type', 'user', 'status', 'cashier',
 							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown','charge_type1',
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
@@ -378,6 +378,14 @@ class Cxc extends Model {
 	public function setThoWebAssignedAttribute($thoWebAssigned){
 		return $this->ThoAsignadoWeb = $thoWebAssigned;
 	}
+
+	public function getLastChangeAttribute(){
+		return $this->UltimoCambio;
+	}
+
+	public function setLastChangeAttribute($lastChange){
+		return $this->UltimoCambio = $lastChange;
+	}
 	
 
 	/*
@@ -392,4 +400,34 @@ class Cxc extends Model {
 		return $this->belongsTo('App\Client', 'Cliente', 'Cliente');
 	}
 
+
+	/*
+	 *	MovID en edición. Se guarda en la session.
+	 */
+
+	public static function getSessionMovID(){
+
+		$sessionMovID = null;
+
+		if(\Session::has('movID')){
+			$sessionMovID = \Session::get('movID');
+		}
+
+		return $sessionMovID;
+	}
+
+	public static function setSessionMovID($movID){
+
+		\Session::put('movID',$movID);
+	}
+
+	public static function hasSessionMovID(){
+
+		return \Session::has('movID');
+	}
+
+	public static function removeSessionMovID(){
+
+		return \Session::forget('movID');
+	}
 }

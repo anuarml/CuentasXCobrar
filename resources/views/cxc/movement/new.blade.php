@@ -3,7 +3,7 @@
 @section('content')
 
 	<div class="container">
-		<form id="cxcMovForm" role="form" action="{{ url('cxc/movimiento/guardar-nuevo') }}" method="POST">
+		<form id="cxcMovForm" role="form" action="{{ url('cxc/movimiento/guardar') }}" method="POST">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 			<div class="row">
 				<div class="col-md-10 col-md-offset-1">

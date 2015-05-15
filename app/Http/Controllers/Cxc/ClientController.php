@@ -19,6 +19,7 @@ class ClientController extends Controller {
 	}
 
 	public static function showClientSearch(){
+
 		$searchType = 'cliente';
 		$dataURL = '/cxc/cliente/clientes';
 		
