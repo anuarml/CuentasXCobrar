@@ -32,6 +32,12 @@ $("#showClientBalance").on("click", function(e){
 	window.location= "mov/331/consultar/saldo-cliente";
 });
 
+$("#Mov").on("change", function(e){
+	this.disabled = true;
+	var movToVerify = $("#Mov").val();
+	console.log(movToVerify);
+	verifyMov(movToVerify);
+});
 
 var documentsNumber = 0;
 

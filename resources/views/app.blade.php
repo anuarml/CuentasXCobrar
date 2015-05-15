@@ -97,6 +97,8 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script src="{{ asset('/js/cxc/movement/documents.js') }}"></script>
 	<script src="{{ asset('/js/bootstrap-table.min.js') }}"></script>
+	
+
 	@include('js/toolbar')
 	@yield('scripts')
 </body>
