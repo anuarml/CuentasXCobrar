@@ -36,7 +36,7 @@
 																<span class='glyphicon glyphicon-search'></span>
 															</button>
 														</span>
-														<!--<input type="text" name="client_id" id="client_id" class="form-control" tabindex="1" value="{{ \Session::get('selected_client_id') }}" readonly>-->
+														<!--<input type="text" name="client_id" id="client_id" class="form-control" tabindex="1" value="{--\Session::get('selected_client_id')--}" readonly>-->
 														{!! Form::text('client_id', \Session::get('selected_client_id'), array('class'=>'form-control', 'readonly'=>'true')) !!}
 													</div>
 												</div>
@@ -99,9 +99,9 @@
 											<div class="col-sm-6 ">
 												<div class="form-group">
 													<!--<label for="emission_date">Fecha Emisión:</label>-->
-													{!! Form::label('emission_date', 'Fecha Emisión:') !!}
-													<!--<input type="date" name="emission_date" id="emission_date" value="{{isset($mov)?$mov->emission_date->toDateString():Carbon\Carbon::now()->toDateString()}}" class="form-control " tabindex="2" readonly>-->
-													{!! Form::date('emission_date', null, array('type'=>'date', 'class'=>'form-control', 'readonly'=>'true')) !!}
+													{!! Form::label('emission_date_str', 'Fecha Emisión:') !!}
+													<!--<input type="date" name="emission_date" id="emission_date" value="{--isset($mov)?$mov->emission_date->toDateString():Carbon\Carbon::now()->toDateString()--}" class="form-control " tabindex="2" readonly>-->
+													{!! Form::date('emission_date_str', null, array('type'=>'date', 'class'=>'form-control', 'readonly'=>'true')) !!}
 												</div>
 											</div>
 										</div>

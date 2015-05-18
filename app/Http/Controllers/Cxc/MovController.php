@@ -237,6 +237,7 @@ class MovController extends Controller {
 
 	public function getListaMovimientos(){
 		$movList = Cxc::all();
+		//$movList->emission_date = $movList->emission_date->format('d/M/Y');
 
 		return response()->json($movList);
 	}

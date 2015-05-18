@@ -16,17 +16,17 @@ $("#searchClient").on("click", function(e){
 
 $("#searchClientOffice").on("click", function(e){
 
-	window.location= "mov/331/buscar/sucursal-cliente";
+	window.location= "331/buscar/sucursal-cliente";
 });
 
 $("#searchMovReference").on("click", function(e){
 
-	window.location= "mov/331/buscar/referencia-movimiento";
+	window.location= "331/buscar/referencia-movimiento";
 });
 
 $("#showClientBalance").on("click", function(e){
 
-	window.location= "mov/331/consultar/saldo-cliente";
+	window.location= "331/consultar/saldo-cliente";
 
 });
 

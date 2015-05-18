@@ -47,7 +47,7 @@ var toolbar = {
 	},
 
 	openMov : function(){
-		window.location = "abrir";
+		window.location = "{{ url('cxc/movimiento/abrir')}}";
 	}
 };
 
