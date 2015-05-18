@@ -245,7 +245,7 @@ function editAmount(e){
 	amountTD.append(
 		"<div class='input-group'>"+
 			"<span class='input-group-btn'>"+
-				"<button type='button' class='btn btn-default' id='calculator'>"+
+				"<button type='button' class='btn btn-default' data-toggle='modal' data-target='#calculatorModal' id='btnCalculator'>"+
 					"<span class='fa fa-calculator'></span>"+
 				"</button>"+
 			"</span>"+

@@ -8,7 +8,7 @@ class Cxc extends Model {
 
 	protected $primaryKey = 'ID';
 
-	protected $dates = ['FechaEmision'];
+	//protected $dates = ['FechaEmision'];
 
 	/**
 	 * The database table used by the model.
@@ -93,7 +93,16 @@ class Cxc extends Model {
 	}
 
 	public function getEmissionDateAttribute(){
-		return $this->FechaEmision;
+		$emision = $this->FechaEmision;
+		//dd($emision);
+		$pos = strpos($emision,'.');
+		//dd($pos);
+		$fixedDate = substr($emision, 0, $pos);
+		//dd($fixedDate);
+		//return $this->asDateTime($fixedDate)->__toString();
+		return \Carbon\Carbon::createFromFormat('Y-n-j G:i:s',$fixedDate)->__toString();
+		
+		//return "2014-09-08 11:22:38.357";
 	}
 	public function setEmissionDateAttribute($emissionDate){
 		return $this->FechaEmision = $emissionDate;
