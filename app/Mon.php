@@ -31,12 +31,29 @@ class Mon extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['change_type'];
+	protected $visible = ['change_type', 'currency'];
 
-	protected $appends = ['change_type'];
+	protected $appends = ['change_type','currency'];
 
 	public function getChangeTypeAttribute(){
 		return $this->TipoCambio;
+	}
+
+	public function getCurrencyAttribute(){
+		return trim($this->Moneda);
+	}
+
+	public static function getCurrencyList(){
+
+		$currencyList = [null => ''];
+
+		$currencys = self::orderby('Orden')->get();
+
+		foreach ($currencys as $currency) {
+			$currencyList[$currency->currency] = $currency->currency;
+		}
+
+		return $currencyList;
 	}
 
 }

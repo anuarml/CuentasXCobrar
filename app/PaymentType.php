@@ -31,12 +31,29 @@ class PaymentType extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['change_allowed'];
+	protected $visible = ['payment_type','change_allowed'];
 
-	protected $appends = ['change_allowed'];
+	protected $appends = ['payment_type','change_allowed'];
+
+	public function getPaymentTypeAttribute(){
+		return $this->FormaPago;
+	}
 
 	public function getChangeAllowedAttribute(){
 		return $this->PermiteCambio;
+	}
+
+	public static function getPaymentTypeList(){
+
+		$paymentTypeList = [null => ''];
+
+		$paymentTypes = self::where('CXCWEB', true)->get();
+
+		foreach ($paymentTypes as $paymentType) {
+			$paymentTypeList[$paymentType->payment_type] = $paymentType->payment_type;
+		}
+
+		return $paymentTypeList;
 	}
 
 }

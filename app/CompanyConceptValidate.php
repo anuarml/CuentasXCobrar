@@ -2,14 +2,14 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class CxcBalance extends Model {
+class CompanyConceptValidate extends Model {
 
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
-	protected $table = 'CxcSaldo';
+	protected $table = 'EmpresaConceptoValidar';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -31,15 +31,6 @@ class CxcBalance extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['balance','currency'];
+	protected $visible = [];
 
-	protected $appends = ['balance','currency'];
-
-	public function getBalanceAttribute(){
-		return $this->Saldo;
-	}
-
-	public function getCurrencyAttribute(){
-		return $this->Moneda;
-	}
 }
