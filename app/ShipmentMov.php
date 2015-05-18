@@ -32,11 +32,6 @@ class ShipmentMov extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['Mov', 'mov_id'];
+	protected $visible = ['Mov', 'MovID'];
 
-	protected $appends = ['mov_id'];
-
-	public function getMovIdAttribute(){
-		return $this->MovID;
-	}
 }

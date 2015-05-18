@@ -152,7 +152,7 @@ class MovController extends Controller {
 		return redirect('cxc/movimiento/nuevo');
 	}
 
-	public function postSaveDocument($movID){
+	/*public function postSaveDocument($movID){
 		
 		$cxc = Cxc::findOrFail($movID);
 
@@ -169,9 +169,9 @@ class MovController extends Controller {
 		$cxc->save();
 
 		return redirect('cxc/movimiento/mov/'.$movID);
-	}
+	}*/
 
-	public function postSaveClientOffice($movID){
+	/*public function postSaveClientOffice($movID){
 		
 		$cxc = Cxc::findOrFail($movID);
 
@@ -188,7 +188,7 @@ class MovController extends Controller {
 		$cxc->save();
 
 		return redirect('cxc/movimiento/mov/'.$movID);
-	}
+	}*/
 
 	public function getMov($movID){
 
@@ -223,19 +223,32 @@ class MovController extends Controller {
 		$cxc = Cxc::findOrFail($movID);
 		$client = $cxc->client_id;
 
-		$clientOffices = CxcRef::where('Cliente', $client);
+		$clientOffices = CxcRef::where('Cliente', $client)->get();
 
 		return response()->json($clientOffices);
 	}
 
 	public static function showMovementReferenceSearch($movID){
-		$searchType = 'movimiento-referencia';
+		$searchType = 'referencia';
 		$dataURL = '/cxc/movimiento/movimiento-referencia/'.$movID;
 		
 		return view('cxc.movement.searchMovReference', compact('searchType','dataURL','movID'));
 	}
 
-	public function postMovementReference($movID){
+	public function getListaMovimientos(){
+		$movList = Cxc::all();
+
+		return response()->json($movList);
+	}
+
+	public static function showMovementSearch(){
+		$searchType = 'movimiento';
+		$dataURL = '/cxc/movimiento/lista-movimientos/';
+		
+		return view('cxc.movement.open', compact('searchType','dataURL'));
+	}
+
+	public function postSaveMovementReference($movID){
 		
 		$cxc = Cxc::findOrFail($movID);
 
@@ -303,5 +316,6 @@ class MovController extends Controller {
 
 		return response()->json($applyList);
 	}
+
 }
 

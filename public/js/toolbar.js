@@ -25,7 +25,8 @@ var toolbar = {
 		console.log('save');
 		$('#documentsJson').val( JSON.stringify(aCxcD) );
 		$('#cxcMovForm').submit();
-	}
+	},
+
 };
 
 $('#newMov').click(toolbar.confirmSaveChanges);
@@ -36,5 +37,6 @@ $('#cancelMov').click(toolbar.confirmCancelMov);
 $('#confirmModal').on('hide.bs.modal', function (event) {
 	var modal = $(this);
 	modal.find('.btn-primary').off('click');
-	console.log('hide');
+	//console.log('hide');
 });
+

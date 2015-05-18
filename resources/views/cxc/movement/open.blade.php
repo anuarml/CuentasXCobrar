@@ -2,15 +2,17 @@
 
 @section('table-header')
     <th data-field="state" data-radio="true"></th>
-    <th data-field="MovID" data-align="center" data-sortable="true">MovID</th>
-    <th data-field="balance" data-align="center" data-sortable="true">Saldo</th>
-    <th data-field="total_amount" data-align="center" data-sortable="true">Importe Total</th>
-    <th data-field="emission_date" data-align="center" data-sortable="true">Emisión</th>
-    <th data-field="expiration" data-align="center" data-sortable="true">Vencimiento</th>
+    <th data-field="MovID" data-align="right" data-sortable="true">MovID</th>
+    <th data-field="Mov" data-align="center" data-sortable="true">Movimiento</th>
+    <th data-field="concept" data-sortable="true">Concepto</th>
+    <th data-field="client_id" data-sortable="true">Client</th>
+    <th data-field="amount" data-sortable="true">Importe</th>
+    <th data-field="status" data-sortable="true">Estatus</th>
+    <th data-field="emission_date" data-sortable="true">Emision</th>
 @endsection
 
 @section('action')
-	<form id="documentForm" class="form-horizontal" role="form" method="POST" action="{{ url('/cxc/movimiento/save-document/'.$movID) }}">
+	<form id="searchMovForm" class="form-horizontal" role="form" method="POST" action="{{ url('cxc/movimiento/save-mov') }}">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 		<input type="hidden" name="movID" id="movID" value="">
 	</form>
@@ -28,7 +30,7 @@
 			}
 			
 			$('#movID').val(selections[0].MovID);
-			$('#documentForm').submit();
+			$('#searchMovForm').submit();
 		});
 	</script>
 @endsection

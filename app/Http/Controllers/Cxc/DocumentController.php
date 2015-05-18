@@ -32,7 +32,7 @@ class DocumentController extends Controller {
 		$client = $cxc->client_id;
 		//dd($cxc->company);
 		//dd($cxc->client_id);
-		$documents = CxcPending::where ('Mov', $apply) -> where ('Empresa', $company) -> where ('Cliente', $client);
+		$documents = CxcPending::where ('Mov', $apply) -> where ('Empresa', $company) -> where ('Cliente', $client) -> get();
 
 		//dd($documents);
 

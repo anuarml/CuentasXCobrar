@@ -16,19 +16,28 @@ $("#searchClient").on("click", function(e){
 
 $("#searchClientOffice").on("click", function(e){
 
-	window.location= "357/buscar/sucursal-cliente";
+	window.location= "mov/331/buscar/sucursal-cliente";
 });
 
 $("#searchMovReference").on("click", function(e){
 
-	window.location= "357/buscar/referencia-movimiento";
+	window.location= "mov/331/buscar/referencia-movimiento";
 });
 
 $("#showClientBalance").on("click", function(e){
 
-	window.location= "357/consultar/saldo-cliente";
+	window.location= "mov/331/consultar/saldo-cliente";
+
 });
 
+
+$("#Mov").on("change", function(e){
+	this.disabled = true;
+	//var movToVerify = $("#Mov").val();
+	//console.log(movToVerify);
+	//verifyMov(movToVerify);
+	verifyMov();
+});
 
 /*
 	Documents
@@ -91,7 +100,6 @@ function addDocumentRow(cxcD){
 	$("#documentsTable tbody tr:last .apply").on("focusout", function(e){
 		var applyTD = $(this);
 		var applyText = $("#documentApply").val();
-
 		applyTD.on("click", editApply);
 		applyTD.empty();
 		applyTD.html(applyText);
@@ -244,8 +252,10 @@ function editAmount(e){
 			"<input type='number' class='form-control' id='documentAmount' min='0' step='any'>" +
 		"</div>");
 
-	$("#calculator").on("click", function(e){
-		window.location="calculadora";
+	
+	$("#btnCalculator").on("click", function(e){
+		documentAmount = document.getElementById("documentAmount");
+		input.innerHTML = documentAmount.value;
 	});
 
 	$("#documentAmount").val(amountValue);
