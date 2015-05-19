@@ -2,6 +2,7 @@
 
 @section('table-header')
     <th data-field="state" data-radio="true"></th>
+    <th data-field="ID" data-align="right" data-sortable="true" data-visible="false">ID</th>
     <th data-field="MovID" data-align="right" data-sortable="true">MovID</th>
     <th data-field="Mov" data-align="center" data-sortable="true">Movimiento</th>
     <th data-field="concept" data-sortable="true">Concepto</th>
@@ -12,7 +13,7 @@
 @endsection
 
 @section('action')
-	<form id="searchMovForm" class="form-horizontal" role="form" method="POST" action="{{ url('cxc/movimiento/save-mov') }}">
+	<form id="searchMovForm" class="form-horizontal" role="form" method="POST" action="{{ url('cxc/movimiento/open-selected-mov') }}">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 		<input type="hidden" name="movID" id="movID" value="">
 	</form>
@@ -29,7 +30,7 @@
 				return;
 			}
 			
-			$('#movID').val(selections[0].MovID);
+			$('#movID').val(selections[0].ID);
 			$('#searchMovForm').submit();
 		});
 	</script>

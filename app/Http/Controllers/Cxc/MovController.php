@@ -229,6 +229,7 @@ class MovController extends Controller {
 		return view('cxc.movement.mov',compact('mov','clientBalance','movTypeList','currencyList','paymentTypeList','user','officeName'));
 	}
 
+
 	/*public function search($movID, $searchType){
 
 		if($searchType == 'cliente'){
@@ -256,7 +257,8 @@ class MovController extends Controller {
 	}
 
 	public function getListaMovimientos(){
-		$movList = Cxc::all();
+		//$movList = Cxc::all();
+		$movList = Cxc::where('Mov', 'Cobro')->orWhere('Mov', 'Anticipo')->get();
 		//$movList->emission_date = $movList->emission_date->format('d/M/Y');
 
 		return response()->json($movList);
@@ -267,6 +269,27 @@ class MovController extends Controller {
 		$dataURL = '/cxc/movimiento/lista-movimientos/';
 		
 		return view('cxc.movement.open', compact('searchType','dataURL'));
+	}
+
+
+	public function postOpenSelectedMov(){
+		
+
+		//$cxc = Cxc::findOrFail($movID);
+
+		$validator = \Validator::make(\Input::only('movID'), [
+			'movID' => 'required',
+		]);
+
+		if($validator->fails()){
+			return Response::back()->withErrors(['movID','Se requiere seleccionar un movimiento.']);
+		}
+
+		$movID = \Input::get('movID');
+
+		//$cxc->save();
+
+		return redirect('cxc/movimiento/mov/'.$movID);
 	}
 
 	public function postSaveMovementReference($movID){
