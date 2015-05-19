@@ -5,12 +5,14 @@ use App\CxcD;
 use App\CxcRef;
 use App\Concept;
 use App\Client;
+use App\CteSendTo;
 use App\CxcPending;
 use App\Mon;
 use App\MovType;
 use App\Office;
 use App\PaymentType;
 use App\ThoUserAccess;
+
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 
@@ -171,7 +173,7 @@ class MovController extends Controller {
 		return redirect('cxc/movimiento/mov/'.$movID);
 	}*/
 
-	/*public function postSaveClientOffice($movID){
+	public function postSaveClientOffice($movID){
 		
 		$cxc = Cxc::findOrFail($movID);
 
@@ -183,12 +185,30 @@ class MovController extends Controller {
 			return Response::back()->withErrors(['clientOfficeID','Se requiere seleccionar una sucursal de cliente.']);
 		}
 
-		$cxc->client_id = \Input::get('clientOfficeID');
+		/*$cxc->client_id = \Input::get('clientOfficeID');
 
-		$cxc->save();
+		$cxc->save();*/
+
+
+		//$cxc = Cxc::findOrFail($movID);
+		$client = $cxc->client_id;
+		//dd($client = $cxc->client_id);
+
+		$selectedOffice = \Input::get('clientOfficeID');
+		$clientOffice = CteSendTo::where('Cliente', $client)->where('ID',$selectedOffice)->get();
+		if($clientOffice){
+			$cxc->client_send_to = $selectedOffice;
+			$cxc->save();
+		}else{
+			return Response::back()->withErrors(['clientOfficeID','Esa sucursal no es de ese cliente']);
+		}
+		//$clientOffices->name = \Input::get('clientOfficeID');
+		//$clientOffices->save();
+		//$cxc->client_send_to = \Input::get('clientOfficeID');
+		//$cxc->save();
 
 		return redirect('cxc/movimiento/mov/'.$movID);
-	}*/
+	}
 
 	public function getMov($movID){
 
@@ -261,12 +281,14 @@ class MovController extends Controller {
 			return Response::back()->withErrors(['movReferenceID','Se requiere seleccionar una referencia.']);
 		}
 
-		$cxc->client_id = \Input::get('movReferenceID');
+		$cxc->reference = \Input::get('movReferenceID');
 
 		$cxc->save();
 
 		return redirect('cxc/movimiento/mov/'.$movID);
 	}
+
+	
 
 	public function getConceptList($movType){
 
