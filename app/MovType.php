@@ -35,4 +35,16 @@ class MovType extends Model {
 
 	protected $appends = [];
 
+	public static function getMovTypeList(){
+
+		$movTypeList = [null => ''];
+
+		$movTypes = self::where('ThoCxcWeb',true)->orderBy('Mov')->get();
+
+		foreach ($movTypes as $movType) {
+			$movTypeList[$movType->Mov] = $movType->Mov;
+		}
+
+		return $movTypeList;
+	}
 }

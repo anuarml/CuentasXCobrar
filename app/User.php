@@ -122,8 +122,21 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		$isRememberTokenAttribute = $key == $this->getRememberTokenName();
 		if (!$isRememberTokenAttribute)
 		{
-		parent::setAttribute($key, $value);
+			parent::setAttribute($key, $value);
 		}
 	}
 
+	public function getSelectedCompany(){
+		return \Session::get('company');
+	}
+	public function setSelectedCompany($company){
+		\Session::put('company', $company);
+	}
+
+	public function getSelectedOffice(){
+		return \Session::get('office');
+	}
+	public function setSelectedOffice($office){
+		\Session::put('office', $office);
+	}
 }

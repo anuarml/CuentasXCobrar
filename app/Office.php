@@ -4,6 +4,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Office extends Model {
 
+	protected $primaryKey = 'Sucursal';
+
 	/**
 	 * The database table used by the model.
 	 *

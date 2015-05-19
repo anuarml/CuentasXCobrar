@@ -56,4 +56,9 @@ class CxcPending extends Model {
 	public function getEmissionDateAttribute(){
 		return $this->FechaEmision->__toString();
 	}
+
+
+	public function getTableName(){
+		return $this->table;
+	}
 }

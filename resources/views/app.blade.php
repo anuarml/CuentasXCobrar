@@ -13,7 +13,7 @@
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
 	<link href="{{ asset('/css/bootstrap-table.min.css') }}" rel="stylesheet">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
+	<link href="{{ asset('/css/calculatorStyle.css') }}" rel="stylesheet">
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -31,6 +31,8 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
+				<img id="logoAssis" src="{{ asset('/img/logo_Assi.png') }}" hidden>
+				<canvas id="pruebaImagen" hidden></canvas>
 				<a class="navbar-brand" href="#">Assis</a>
 				<a class="navbar-brand" href="{{ url('/') }}">Cobranza</a>
 			</div>
@@ -46,13 +48,13 @@
 							<a id="openMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/open.png')}}">
 							</a>
-							<a style="display:inline-block" href="#">
+							<a id="saveMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/save.png')}}">
 							</a>
 							<a id="deleteMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/delete.png')}}">
 							</a>
-							<a style="display:inline-block" href="#">
+							<a id="printMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/print.png')}}">
 							</a>
 							<a style="display:inline-block" href="#">
@@ -93,7 +95,8 @@
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	<script src="{{ asset('js/toolbar.js') }}"></script>
+	@include('js.toolbar')
+	<script src="{{ asset('/js/cxc/movement/documents.js') }}"></script>
 	<script src="{{ asset('/js/bootstrap-table.min.js') }}"></script>
 	
 	@yield('scripts')

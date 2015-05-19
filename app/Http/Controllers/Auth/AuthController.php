@@ -93,8 +93,10 @@ class AuthController extends Controller {
 		$user = User::where('Usuario', $request->get('username') )->first();
 		\Auth::login($user);
 
-		\Session::put('company', $request->get('company'));
-		\Session::put('office', $request->get('office'));
+		//\Session::put('company', $request->get('company'));
+		//\Session::put('office', $request->get('office'));
+		$user->setSelectedCompany($request->get('company'));
+		$user->setSelectedOffice($request->get('office'));
 
 		return redirect()->intended($this->redirectPath());
 	}

@@ -1,6 +1,6 @@
 var aCxcD = [];
 
-function cxcD(doc){
+function CxcD(doc){
 	if(!doc) doc = {};
 
 	this.row = doc.row || null;
@@ -9,3 +9,5 @@ function cxcD(doc){
 	this.amount = doc.amount || null;
 	this.p_p_discount = doc.p_p_discount || null;
 }
+
+var applyList = [];
