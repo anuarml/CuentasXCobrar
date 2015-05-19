@@ -5,6 +5,7 @@ var toolbar = {
 	confirmSaveChanges : function(){
 
 		$('#confirmModalBody').html('<img width="25px" src="/img/save.png">&nbsp;&nbsp;&nbsp;&nbsp;¿Guardar cambios?');
+		$('#confirmModal').find('.btn-default').click(toolbar.newMov);
 		$('#confirmModal').find('.btn-primary').click(function(){
 			var tempRedirect = window.sessionStorage.getItem('toolbar-temp-redirect');
 			window.sessionStorage.setItem('toolbar-redirect',tempRedirect);
@@ -25,6 +26,10 @@ var toolbar = {
 		$('#confirmModalBody').html('<img width="25px" src="/img/delete.png">&nbsp;&nbsp;&nbsp;&nbsp;¿Eliminar el movimiento?');
 		$('#confirmModal').find('.btn-primary').click(function(){console.log('delete');});
 		$('#confirmModal').modal('show');
+	},
+
+	newMov : function(){
+		toolbar.redirect("{{ url('cxc/movimiento/nuevo') }}", 'POST');
 	},
 
 	saveMov : function(){
@@ -198,6 +203,11 @@ function putSpaces(columns, line, align){
 
 toolbar.redirect = function(url, method) {
     var form = document.createElement('form');
+    var csrfInput = document.createElement('input');
+    csrfInput.type= 'hidden';
+    csrfInput.name = '_token';
+    csrfInput.value = '{{csrf_token()}}';
+    form.appendChild(csrfInput);
     form.method = method;
     form.action = url;
     form.submit();
