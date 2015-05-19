@@ -225,7 +225,7 @@ function editConsecutive(e){
 
 	$("#searchConsecutive").on("click", function(e){
 
-		window.location= "{{ url('357/buscar/documento/2048') }}";
+		window.location= "{{ url('cxc/movimiento/mov/357/buscar/documento/2048') }}";
 	});
 
 	$("#searchConsecutive").focus();

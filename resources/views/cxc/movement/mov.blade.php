@@ -308,6 +308,7 @@
 
 @section('scripts')
 <script type="text/javascript" src="{{ asset('js/cxc/movement/documents.js') }}"></script>
+<script src="{{ asset('/js/cxc/movement/verifications.js') }}"></script>
 @include('js/cxc/movement/new')
 <script type="text/javascript">
 	var mov = $('#Mov');
