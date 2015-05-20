@@ -104,6 +104,10 @@ class Cxc extends Model {
 		return $this->FechaEmision = $emissionDate;
 	}
 
+	public function setEmissionDateStrAttribute($emissionDate){
+		return $this->FechaEmision = (new \Carbon\Carbon($emissionDate))->format('d/m/Y');
+	}
+
 	
 
 	public function getAmountAttribute(){

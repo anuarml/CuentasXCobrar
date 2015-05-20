@@ -4,7 +4,7 @@ var toolbar = {
 
 	confirmSaveChanges : function(){
 
-		$('#confirmModalBody').html('<img width="25px" src="/img/save.png">&nbsp;&nbsp;&nbsp;&nbsp;¿Guardar cambios?');
+		$('#confirmModalBody').html('<img width="25px" src="{{asset("img/save.png")}}">&nbsp;&nbsp;&nbsp;&nbsp;¿Guardar cambios?');
 		$('#confirmModal').find('.btn-default').click(toolbar.newMov);
 		$('#confirmModal').find('.btn-primary').click(function(){
 			var tempRedirect = window.sessionStorage.getItem('toolbar-temp-redirect');
@@ -16,14 +16,14 @@ var toolbar = {
 
 	confirmCancelMov : function(){
 
-		$('#confirmModalBody').html('<img width="25px" src="/img/cancel.png">&nbsp;&nbsp;&nbsp;&nbsp;¿Cancelar el movimiento?');
+		$('#confirmModalBody').html('<img width="25px" src="{{asset("img/cancel.png")}}">&nbsp;&nbsp;&nbsp;&nbsp;¿Cancelar el movimiento?');
 		$('#confirmModal').find('.btn-primary').click(function(){console.log('cancel');});
 		$('#confirmModal').modal('show');
 	},
 
 	confirmDeleteMov : function(){
 
-		$('#confirmModalBody').html('<img width="25px" src="/img/delete.png">&nbsp;&nbsp;&nbsp;&nbsp;¿Eliminar el movimiento?');
+		$('#confirmModalBody').html('<img width="25px" src="{{asset("img/delete.png")}}">&nbsp;&nbsp;&nbsp;&nbsp;¿Eliminar el movimiento?');
 		$('#confirmModal').find('.btn-primary').click(function(){console.log('delete');});
 		$('#confirmModal').modal('show');
 	},
@@ -44,10 +44,11 @@ var toolbar = {
 
 	checkRedirect: function(){
 		var redirect = window.sessionStorage.getItem('toolbar-redirect');
+		var base = '{{ url() }}';
 
 		if(redirect){
 			window.sessionStorage.removeItem('toolbar-redirect');
-			toolbar.redirect("{{ url('"+redirect+"') }}");
+			toolbar.redirect(base + '/' + redirect);
 		}
 	},
 
@@ -202,12 +203,20 @@ function putSpaces(columns, line, align){
 }
 
 toolbar.redirect = function(url, method) {
+	@if (count($errors) > 0)
+		return;
+	@endif
+
     var form = document.createElement('form');
-    var csrfInput = document.createElement('input');
-    csrfInput.type= 'hidden';
-    csrfInput.name = '_token';
-    csrfInput.value = '{{csrf_token()}}';
-    form.appendChild(csrfInput);
+    
+    if(method = 'POST'){
+	    var csrfInput = document.createElement('input');
+	    csrfInput.type= 'hidden';
+	    csrfInput.name = '_token';
+	    csrfInput.value = '{{csrf_token()}}';
+	    form.appendChild(csrfInput);
+	}
+
     form.method = method;
     form.action = url;
     form.submit();
