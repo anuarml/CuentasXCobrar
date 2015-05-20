@@ -1,9 +1,11 @@
 <script type="text/javascript">
 // Javascript to enable link to tab
 var url = document.location.toString();
+var movementId;
 if (url.match('#')) {
     $('.nav-tabs a[href=#'+url.split('#')[1]+']').tab('show') ;
 } 
+
 
 // Change hash for page-reload
 $('.nav-tabs a').on('shown', function (e) {
@@ -12,21 +14,23 @@ $('.nav-tabs a').on('shown', function (e) {
 
 $("#searchClient").on("click", function(e){
 	window.location= "{{ url('cxc/movimiento/buscar/cliente') }}";
+	//toolbar.saveMov('searchClient');
 });
 
 $("#searchClientOffice").on("click", function(e){
-
-	window.location= "331/buscar/sucursal-cliente";
+	//getMovidFromUrl();
+	toolbar.saveMov('searchClientOffice');
+	//window.location= "331/buscar/sucursal-cliente";
 });
 
 $("#searchMovReference").on("click", function(e){
-
-	window.location= "331/buscar/referencia-movimiento";
+	toolbar.saveMov('searchMovReference');
+	//window.location= "331/buscar/referencia-movimiento";
 });
 
 $("#showClientBalance").on("click", function(e){
-
-	window.location= "331/consultar/saldo-cliente";
+	toolbar.saveMov('showClientBalance');
+	//window.location= "331/consultar/saldo-cliente";
 
 });
 
@@ -59,13 +63,19 @@ function addDocumentRow(cxcD){
 	if(emptyPlace == -1) {
 		// Se agrega al final.
 		insertedDocumentPlace = aCxcD.length;
+		cxcD.tableRowID = insertedDocumentPlace;
 		aCxcD.push(cxcD);
 	}
 	else {
 		// Se agrega en el espacio vacio.
-		aCxcD[emptyPlace] = cxcD;
 		insertedDocumentPlace = emptyPlace;
+		cxcD.tableRowID = insertedDocumentPlace;
+		aCxcD[emptyPlace] = cxcD;
+		
+
 	}
+
+
 
 	$('#documentsTable tbody').append(
 		"<tr id='document-"+insertedDocumentPlace+"'>"+
@@ -226,8 +236,10 @@ function editConsecutive(e){
 		"</div>");
 
 	$("#searchConsecutive").on("click", function(e){
-
-		window.location= "{{ url('cxc/movimiento/mov/357/buscar/documento/2048') }}";
+		//var idRow = $(this).closest('tr').attr('id');
+		$('#clickedRow').val(getDocNumber(this));
+		toolbar.saveMov('searchConsecutive');
+		//window.location= "{{ url('cxc/movimiento/mov/357/buscar/documento/2048') }}";
 	});
 
 	$("#searchConsecutive").focus();
@@ -258,9 +270,10 @@ function editAmount(e){
 	$("#btnCalculator").on("click", function(e){
 		documentAmount = document.getElementById("documentAmount");
 		input.innerHTML = documentAmount.value;
-		var idRow = $(this).closest('tr').attr('id');
-		idRow = idRow.split('-');
-		docRow = idRow[1];
+
+		//var idRow = $(this).closest('tr').attr('id');
+		//idRow = idRow.split('-');
+		docRow = getDocNumber(this);
 		//console.log( $(this).parent().parent().parent().parent());
 		//console.log( $(this).closest('tr'));
 		//console.log("id="+docRow);
@@ -282,6 +295,13 @@ function editDiscountPPP(e){
 	$("#discountPPP").focus();
 	$("#discountPPP").val(discountValue);
 	discountTD.off('click');
+}
+
+function getDocNumber(element){
+	var idRow = $(element).closest('tr').attr('id');
+	idRow = idRow.split('-');
+	//docRow = idRow[1];
+	return idRow[1];
 }
 
 </script>
