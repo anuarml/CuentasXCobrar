@@ -219,6 +219,7 @@
 									</tr>
 							        </tbody>
 							    </table>
+							    @include('utileries/calculator')
 						    </div>
 					    </div>
 					    <div role="tabpanel" class="tab-pane" id="desgloseCobro">
@@ -309,6 +310,8 @@
 @section('scripts')
 <script type="text/javascript" src="{{ asset('js/cxc/movement/documents.js') }}"></script>
 <script src="{{ asset('/js/cxc/movement/verifications.js') }}"></script>
+<script src="{{ asset('js/decimal.min.js') }}"></script>
+@include('js/utileries/calculator')
 @include('js/cxc/movement/new')
 <script type="text/javascript">
 	var mov = $('#Mov');

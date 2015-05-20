@@ -256,6 +256,12 @@ function editAmount(e){
 	$("#btnCalculator").on("click", function(e){
 		documentAmount = document.getElementById("documentAmount");
 		input.innerHTML = documentAmount.value;
+		var idRow = $(this).closest('tr').attr('id');
+		idRow = idRow.split('-');
+		docRow = idRow[1];
+		//console.log( $(this).parent().parent().parent().parent());
+		//console.log( $(this).closest('tr'));
+		//console.log("id="+docRow);
 	});
 
 	$("#documentAmount").val(amountValue);
