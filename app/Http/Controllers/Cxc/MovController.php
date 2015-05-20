@@ -28,15 +28,44 @@ class MovController extends Controller {
 			return redirect('cxc/movimiento/mov/'.$movID);
 		}
 
+
+		$mov = new Cxc;
+
 		$clientName = '';
+		$clientBalance = '';
+
+		// Se obtiene el usuario autenticado.
+		$user = \Auth::user();
 
 		if(\Session::has('selected_client_id')) {
 
-			$userID = \Session::get('selected_client_id');
-			$clientName = Client::find($userID)->name;
+			// Se guarda en el movimiento la ID del cliente seleccionado en la vista buscar cliente.
+			$mov->client_id = \Session::get('selected_client_id');
+
+			// Se obtiene el cliente con el id seleccionado.
+			$mov->load('client');
+
+			// Si el cliente es válido
+			if($client = $mov->client){
+				// Se obtiene el saldo del cliente.
+				$clientBalance = $client->balance()->where('Empresa', $user->getSelectedCompany())->where('Moneda','Pesos')->first();
+			} 
+			else {
+				$mov->client_id = null;
+			}
 		}
+
+		// Se obtiene el nombre de la oficina seleccionada por el usuario en el login.
+		// Se utiliza en la impresión del ticket.
+		$officeName = Office::find($user->getSelectedOffice())->name;
+
+		// Se obtienen las opciones de las listas desplegables.
+		$movTypeList = MovType::getMovTypeList();
+		$currencyList = Mon::getCurrencyList();
+		$paymentTypeList = PaymentType::getPaymentTypeList();
 		
-		return view('cxc.movement.new', compact('clientName'));
+		//return view('cxc.movement.new', compact('clientName'));
+		return view('cxc.movement.mov', compact('mov', 'user', 'clientBalance','officeName','movTypeList','currencyList','paymentTypeList'));
 	}
 
 	public function postNuevo(){
@@ -61,20 +90,38 @@ class MovController extends Controller {
 		//1 - AplicaManual
 		//1 - ConDesglose
 		//selectedOffice - SucursalOrigen
+		$validator = \Validator::make($cxcArray, [
+			'Mov' => 'required',
+			'currency' => 'required',
+			'client_id' => 'required',
+		]);
+
+		if($validator->fails()){
+			return redirect()->back()->withInput()->withErrors([
+				'Mov'=>'Es necesario seleccionar un Movimiento.',
+				'currency'=>'Es necesario seleccionar una Moneda.',
+				'client_id'=>'Es necesario seleccionar un Cliente.',
+			]);
+		}
 
 		//$cxc = new Cxc;
-		$cxc = findOrNew($movID);
+		$cxc = Cxc::findOrNew($movID);
 		$cxc->fill($cxcArray);
 		$cxc->company = $user->getSelectedCompany();
 		$cxc->office_id = $user->getSelectedOffice();
 		$cxc->origin_office_id = $user->getSelectedOffice();
-		$cxc->currency = $user->defCurrency->currency;
+		//$cxc->currency = $user->defCurrency->currency;
 		$cxc->manual_apply = true;
 		$cxc->with_breakdown = true;
 		$cxc->status = 'SINAFECTAR';
-		$cxc->last_change = Carbon::now();
+		$cxc->last_change = Carbon::now()->format('d/m/Y');
 
 		$cxc->save();
+
+		/*foreach ($cxc->details as $cxcDetail) {
+			$cxcDetail->delete();
+		}*/
+		$cxc->details()->delete();
 
 		$ROW_MULTIPLIER = 2048;
 		$rowNum = 1;
@@ -140,7 +187,7 @@ class MovController extends Controller {
 		]);
 
 		if($validator->fails()){
-			return Response::back()->withErrors(['clientID','Se requiere seleccionar un cliente.']);
+			return redirect()->back()->withInput()->withErrors(['clientID','Se requiere seleccionar un cliente.']);
 		}
 
 		//$cxc->client_id = \Input::get('clientID');
@@ -192,18 +239,27 @@ class MovController extends Controller {
 
 	public function getMov($movID){
 
+		// Se obtiene el movimiento solicitado
 		$mov = Cxc::with('details')->with('client')->findOrFail($movID);
+
+		// Se obtiene el usuario autenticado.
 		$user = \Auth::user();
+
+		// Se obtiene el nombre de la oficina seleccionada por el usuario en el login.
+		// Se utiliza en la impresión del ticket.
 		$officeName = Office::find($user->getSelectedOffice())->name;
 
-		$clientBalance = $mov->client->balance()->where('Empresa', $user->getSelectedCompany())->where('Moneda','Pesos')->get()->first();
-		//dd($clientBalance);
+		$clientBalance = '';
+		if($mov->client){
+			// Se obtiene el saldo del cliente.
+			$clientBalance = $mov->client->balance()->where('Empresa', $user->getSelectedCompany())->where('Moneda','Pesos')->get()->first();
+		}
+		// Se obtienen las opciones de las listas desplegables.
 		$movTypeList = MovType::getMovTypeList();
-
 		$currencyList = Mon::getCurrencyList();
-
 		$paymentTypeList = PaymentType::getPaymentTypeList();
 
+		// Se guarda en la sesión del usuario el ID del movimiento.
 		Cxc::setSessionMovID($movID);
 
 		return view('cxc.movement.mov',compact('mov','clientBalance','movTypeList','currencyList','paymentTypeList','user','officeName'));
@@ -258,7 +314,7 @@ class MovController extends Controller {
 		]);
 
 		if($validator->fails()){
-			return Response::back()->withErrors(['movReferenceID','Se requiere seleccionar una referencia.']);
+			return redirect()->back()->withInput()->withErrors(['movReferenceID','Se requiere seleccionar una referencia.']);
 		}
 
 		$cxc->client_id = \Input::get('movReferenceID');

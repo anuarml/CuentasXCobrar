@@ -3,6 +3,17 @@
 @section('content')
 
 	<div class="container">
+		@if (count($errors) > 0)
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				Resuelve los siguientes problemas.<br><br>
+				<ul>
+					@foreach ($errors->all() as $error)
+						<li>{{ $error }}</li>
+					@endforeach
+				</ul>
+			</div>
+		@endif
 		<!--<form id="cxcMovForm" role="form" action="{{ url('cxc/movimiento/guardar-nuevo') }}" method="POST">-->
 		{!! Form::model( $mov, array('url' => array('cxc/movimiento/guardar'), 'id'=>'cxcMovForm' ) ) !!}
 			<!--<input type="hidden" name="_token" value="{{ csrf_token() }}">-->
@@ -37,7 +48,7 @@
 															</button>
 														</span>
 														<!--<input type="text" name="client_id" id="client_id" class="form-control" tabindex="1" value="{--\Session::get('selected_client_id')--}" readonly>-->
-														{!! Form::text('client_id', \Session::get('selected_client_id'), array('class'=>'form-control', 'readonly'=>'true')) !!}
+														{!! Form::text('client_id', null, array('class'=>'form-control', 'readonly'=>'true')) !!}
 													</div>
 												</div>
 											</div>
@@ -93,6 +104,7 @@
 													  <option>Cobro</option>
 													</select>-->
 													{!! Form::select('Mov', $movTypeList, null, array('class'=>'form-control')) !!}
+													{!! Form::hidden('Mov', null, array('id'=>'hidden_mov')) !!}
 												</div>
 											</div>
 
@@ -153,7 +165,7 @@
 													<!--<select class="form-control" id="currency" name="currency" tabindex="3">
 													  <option hidden></option>
 													</select>-->
-													{!! Form::select('currency',$currencyList, null, array('class'=>'form-control')) !!}
+													{!! Form::select('currency',$currencyList, 'Pesos', array('class'=>'form-control')) !!}
 												</div>
 											</div>
 										</div>
@@ -199,26 +211,9 @@
 							            </tr>
 							        </thead>
 							        <tbody>
-							        	@foreach($mov->details as $document)
-							        	<!--<tr id='document-"+insertedDocumentPlace+"'>
-										<td style='text-align: center;' class='apply'>{{$document->apply}}</td>
-										<td style='text-align: center;' class='consecutive'>{{$document->apply_id}}</td>
-										<td style='text-align: center;' class='amount'>{{$document->amount}}</td>
-										<td style='text-align: center;' class='difference'></td>
-										<td style='text-align: center;' class='differencePercentage'></td>
-										<td style='text-align: center;' class='concept'></td>
-										<td style='text-align: center;' class='reference'></td>
-										<td style='text-align: center;' class='discountPPP' hidden>{{$document->p_p_discount}}</td>
-										<td style='text-align: center;' class='suggestPPP' hidden></td>
-										<td style='text-align: center;'>
-											<div class='deleteDocument'>
-												<div class='glyphicon glyphicon-remove'></div>
-											</div>
-										</td>-->
-										@endforeach
-									</tr>
 							        </tbody>
 							    </table>
+							    @include('utileries/calculator')
 						    </div>
 					    </div>
 					    <div role="tabpanel" class="tab-pane" id="desgloseCobro">
@@ -237,7 +232,7 @@
 												{!! Form::number('amount'.$i, null, array('min'=>'0', 'class'=>'form-control input-sm')) !!}
 											</div>
 										</div>
-										<div class='col-sm-4'>
+										<div class='col-sm-4'> 
 											{!! Form::label('charge_type'.$i,'Forma Cobro') !!}
 											{!! Form::select('charge_type'.$i, $paymentTypeList, null, array('class'=>'form-control input-sm')) !!}
 										</div>
@@ -309,6 +304,8 @@
 @section('scripts')
 <script type="text/javascript" src="{{ asset('js/cxc/movement/documents.js') }}"></script>
 <script src="{{ asset('/js/cxc/movement/verifications.js') }}"></script>
+<script src="{{ asset('js/decimal.min.js') }}"></script>
+@include('js/utileries/calculator')
 @include('js/cxc/movement/new')
 <script type="text/javascript">
 	var mov = $('#Mov');

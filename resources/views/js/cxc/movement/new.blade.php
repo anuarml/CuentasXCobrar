@@ -32,6 +32,8 @@ $("#showClientBalance").on("click", function(e){
 
 
 $("#Mov").on("change", function(e){
+	
+	$('#hidden_mov').val(this.value);
 	this.disabled = true;
 	//var movToVerify = $("#Mov").val();
 	//console.log(movToVerify);
