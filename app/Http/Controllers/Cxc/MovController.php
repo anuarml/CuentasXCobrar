@@ -169,13 +169,7 @@ class MovController extends Controller {
 						'Apply'=>'Es necesario seleccionar un Aplica.',
 					]);
 				} 
-				break;
-			case 'searchClientOffice':
-				return redirect('cxc/movimiento/mov/'.$cxc->ID.'/buscar/sucursal-cliente');
-				break;
-			case 'searchClientOffice':
-				return redirect('cxc/movimiento/mov/'.$cxc->ID.'/buscar/sucursal-cliente');
-				break;				 
+				break;			 
 			case 'save':
 			default:
 				return redirect('cxc/movimiento/mov/'.$cxc->ID);
