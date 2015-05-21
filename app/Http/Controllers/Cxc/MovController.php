@@ -127,7 +127,8 @@ class MovController extends Controller {
 
 		$ROW_MULTIPLIER = 2048;
 		$rowNum = 1;
-
+		$tableRowID = '';
+		$clickedRow = \Input::get('clickedRow');
 		foreach ($cxcDArray as $cxcDA) {
 
 			if($cxcDA != null && $cxcDA->apply != null) {
@@ -135,10 +136,45 @@ class MovController extends Controller {
 			    $cxcD = new CxcD;
 				$cxcD->fill((array)$cxcDA);
 				$cxcD->row = $rowNum++ * $ROW_MULTIPLIER;
+				if($cxcDA->tableRowID == $clickedRow){
+					$tableRowID = $cxcD->row;
+				}
 				$cxc->details()->save($cxcD);
+
 			}
 		}
 
+		$action = \Input::get('action');
+		switch ($action) {
+			case 'new':
+				return redirect('cxc/movimiento/nuevo');
+				break;
+			case 'open':
+				return redirect('cxc/movimiento/abrir');
+				break;
+			case 'searchClientOffice':
+				return redirect('cxc/movimiento/mov/'.$cxc->ID.'/buscar/sucursal-cliente');
+				break; 
+			case 'searchMovReference':
+				return redirect('cxc/movimiento/mov/'.$cxc->ID.'/buscar/referencia-movimiento');
+				break;
+			case 'showClientBalance':
+				return redirect('cxc/movimiento/mov/'.$cxc->ID.'/consultar/saldo-cliente');
+				break;
+			case 'searchConsecutive':
+				if($tableRowID)
+				return redirect('cxc/movimiento/mov/'.$cxc->ID.'/buscar/documento/'.$tableRowID);
+				else{
+					return redirect()->back()->withInput()->withErrors([
+						'Apply'=>'Es necesario seleccionar un Aplica.',
+					]);
+				} 
+				break;			 
+			case 'save':
+			default:
+				return redirect('cxc/movimiento/mov/'.$cxc->ID);
+				break;
+		}
 		return redirect('cxc/movimiento/mov/'.$cxc->ID);
 	}
 

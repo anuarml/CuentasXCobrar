@@ -2,14 +2,14 @@
 
 var toolbar = {
 
-	confirmSaveChanges : function(defaultCallback){
+	confirmSaveChanges : function(defaultCallback, action){
 
 		$('#confirmModalBody').html('<img width="25px" src="{{asset("img/save.png")}}">&nbsp;&nbsp;&nbsp;&nbsp;¿Guardar cambios?');
 		$('#confirmModal').find('.btn-default').click(defaultCallback);
 		$('#confirmModal').find('.btn-primary').click(function(){
-			var tempRedirect = window.sessionStorage.getItem('toolbar-temp-redirect');
-			window.sessionStorage.setItem('toolbar-redirect',tempRedirect);
-			toolbar.saveMov();
+			//var tempRedirect = window.sessionStorage.getItem('toolbar-temp-redirect');
+			//window.sessionStorage.setItem('toolbar-redirect',tempRedirect);
+			toolbar.saveMov(action);
 		});
 		$('#confirmModal').modal('show');
 	},
@@ -32,8 +32,9 @@ var toolbar = {
 		toolbar.redirect("{{ url('cxc/movimiento/nuevo') }}", 'POST');
 	},
 
-	saveMov : function(){
+	saveMov : function(actionType){
 		console.log('save');
+		$('#action').val(actionType);
 		$('#documentsJson').val( JSON.stringify(aCxcD) );
 		$('#cxcMovForm').submit();
 	},
@@ -53,21 +54,24 @@ var toolbar = {
 	},
 
 	openMov : function(){
-		toolbar.redirect("{{ url('cxc/movimiento/abrir') }}", 'GET');
-		//window.location = "{{ url('cxc/movimiento/abrir')}}";
+		//toolbar.redirect("{{ url('cxc/movimiento/abrir') }}", 'GET');
+		window.location = "{{ url('cxc/movimiento/abrir')}}";
 	}
 };
 
 $('#newMov').click(function(){
-	window.sessionStorage.setItem('toolbar-temp-redirect','cxc/movimiento/nuevo');
-	toolbar.confirmSaveChanges(toolbar.newMov);
+	//window.sessionStorage.setItem('toolbar-temp-redirect','cxc/movimiento/nuevo');
+	toolbar.confirmSaveChanges(toolbar.newMov, 'new');
 });
 //$('#openMov').click(toolbar.openMov);
 $('#openMov').click(function(){
-	window.sessionStorage.setItem('toolbar-temp-redirect','cxc/movimiento/abrir');
-	toolbar.confirmSaveChanges(toolbar.openMov);
+	//window.sessionStorage.setItem('toolbar-temp-redirect','cxc/movimiento/abrir');
+	toolbar.confirmSaveChanges(toolbar.openMov, 'open');
 });
-$('#saveMov').click(toolbar.saveMov);
+//$('#saveMov').click(toolbar.saveMov);
+$('#saveMov').click(function(){
+	toolbar.saveMov('save');
+});
 $('#deleteMov').click(toolbar.confirmDeleteMov);
 $('#cancelMov').click(toolbar.confirmCancelMov);
 $('#printMov').click(toolbar.printMov);

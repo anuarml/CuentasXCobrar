@@ -17,6 +17,8 @@
 		<!--<form id="cxcMovForm" role="form" action="{{ url('cxc/movimiento/guardar-nuevo') }}" method="POST">-->
 		{!! Form::model( $mov, array('url' => array('cxc/movimiento/guardar'), 'id'=>'cxcMovForm' ) ) !!}
 			<!--<input type="hidden" name="_token" value="{{ csrf_token() }}">-->
+			{!! Form::hidden('action', null, array('id'=>'action' )) !!}
+			{!! Form::hidden('clickedRow', null, array('id'=>'clickedRow' )) !!}
 			<div class="row">
 				<div class="col-md-10 col-md-offset-1">
 					<div role="tabpanel">
@@ -64,6 +66,31 @@
 										<div class="row">
 											<div class="col-sm-6 ">
 												<div class="form-group">
+													<!--<label for="Mov">Movimiento:</label>-->
+													{!! Form::label('Mov', 'Movimiento:') !!}
+							                        <!--<select class="form-control" id="Mov" name="Mov" tabindex="1">
+													  <option hidden></option>
+													  <option>Anticipo</option>
+													  <option>Cobro</option>
+													</select>-->
+													{!! Form::select('Mov', $movTypeList, null, array('class'=>'form-control')) !!}
+													{!! Form::hidden('Mov', null, array('id'=>'hidden_mov')) !!}
+												</div>
+											</div>
+
+											<div class="col-sm-6 ">
+												<div class="form-group">
+													<!--<label for="emission_date">Fecha Emisión:</label>-->
+													{!! Form::label('emission_date_str', 'Fecha Emisión:') !!}
+													<!--<input type="date" name="emission_date" id="emission_date" value="{--isset($mov)?$mov->emission_date->toDateString():Carbon\Carbon::now()->toDateString()--}" class="form-control " tabindex="2" readonly>-->
+													{!! Form::date('emission_date_str', null, array('type'=>'date', 'class'=>'form-control', 'readonly'=>'true')) !!}
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-sm-6 ">
+												<div class="form-group">
 													<!--<label for="client_send_to">Sucursal Cliente:</label>-->
 													{!! Form::label('client_send_to', 'Sucursal Cliente:') !!}
 													<div class='input-group'>
@@ -93,30 +120,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="row">
-											<div class="col-sm-6 ">
-												<div class="form-group">
-													<!--<label for="Mov">Movimiento:</label>-->
-													{!! Form::label('Mov', 'Movimiento:') !!}
-							                        <!--<select class="form-control" id="Mov" name="Mov" tabindex="1">
-													  <option hidden></option>
-													  <option>Anticipo</option>
-													  <option>Cobro</option>
-													</select>-->
-													{!! Form::select('Mov', $movTypeList, null, array('class'=>'form-control')) !!}
-													{!! Form::hidden('Mov', null, array('id'=>'hidden_mov')) !!}
-												</div>
-											</div>
-
-											<div class="col-sm-6 ">
-												<div class="form-group">
-													<!--<label for="emission_date">Fecha Emisión:</label>-->
-													{!! Form::label('emission_date_str', 'Fecha Emisión:') !!}
-													<!--<input type="date" name="emission_date" id="emission_date" value="{--isset($mov)?$mov->emission_date->toDateString():Carbon\Carbon::now()->toDateString()--}" class="form-control " tabindex="2" readonly>-->
-													{!! Form::date('emission_date_str', null, array('type'=>'date', 'class'=>'form-control', 'readonly'=>'true')) !!}
-												</div>
-											</div>
-										</div>
+										
 										<div class="row">
 											<div class="col-sm-6 ">
 												<div class="form-group">
@@ -345,19 +349,19 @@
 		for(var i = 0; i < movDetails.length; i++){
 
 			var cxcD = new CxcD(movDetails[i]);
-
+			console.log(cxcD.row);
 			addDocumentRow(cxcD);
 		}
 	}
 
 	showMovDetails();
 
-	(function getApplyOptions(){
+	/*(function getApplyOptions(){
 		$.ajax( { url: '{{url("cxc/movimiento/apply-list")}}/' + $('#client_id').val()  } ).done(function( data ){
 
 			applyList = data;
 		});
-	})();
+	})();*/
 
 </script>
 
