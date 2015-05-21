@@ -169,7 +169,9 @@ class MovController extends Controller {
 						'Apply'=>'Es necesario seleccionar un Aplica.',
 					]);
 				} 
-				break;			 
+				break;
+			case 'resultCalculator':
+				return redirect('cxc/movimiento/mov/'.$cxc->ID.'#documentos'); 	 
 			case 'save':
 			default:
 				return redirect('cxc/movimiento/mov/'.$cxc->ID);

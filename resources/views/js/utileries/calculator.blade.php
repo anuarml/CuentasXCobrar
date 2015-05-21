@@ -81,7 +81,8 @@ for(var i = 0; i < keys.length; i++) {
 				$('#document-'+docRow + ' .amount').html(input.innerHTML);// = input.innerHTML;
 				//console.log($('#document-'+docRow + ' .amount').html());
 				$('#calculatorModal').modal('toggle');
-				window.location	= "{{ url('cxc/movimiento/mov/238#documentos') }}";
+				toolbar.saveMov('resultCalculator');
+				//window.location	= "{{ url('cxc/movimiento/mov/238#documentos') }}";
 			}
 				
 			decimalAdded = false;
