@@ -440,4 +440,31 @@ class Cxc extends Model {
 
 		return \Session::forget('movID');
 	}
+
+	public static function affect($movID, $username, $action){
+
+		$module = 'CXC';
+		//$action = 'AFECTAR' || 'CANCELAR'
+		$message = '';
+		$reference = '';
+		
+		if( !$username || !$movID || !$action){
+			return null;
+		}
+
+		$stmt = \DB::getPdo()->prepare('EXECUTE spAfectar ?, ?, ?, NULL, NULL, ?, 1, 1, ?, ?');
+
+		$stmt->bindParam(1, $module);
+		$stmt->bindParam(2, $movID);
+		$stmt->bindParam(3, $action);
+		$stmt->bindParam(4, $username);
+		$stmt->bindParam(5, $message, \PDO::PARAM_STR, 11);
+		$stmt->bindParam(6, $reference, \PDO::PARAM_STR, 30);
+
+		if( !$stmt->execute() ){
+			return null;
+		}
+
+		return array('message' => $message, 'reference' => $reference);
+	}
 }
