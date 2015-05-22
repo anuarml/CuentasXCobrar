@@ -7,6 +7,7 @@ use App\Concept;
 use App\Client;
 use App\CteSendTo;
 use App\CxcPending;
+use App\MessageList;
 use App\Mon;
 use App\MovType;
 use App\Office;
@@ -78,6 +79,13 @@ class MovController extends Controller {
 	public function postGuardar(){
 
 		$movID = Cxc::getSessionMovID();
+		$cxc = Cxc::findOrNew($movID);
+
+		if($cxc->status && $cxc->status != 'SINAFECTAR'){
+			return redirect()->back()->withInput()->withErrors([
+				'Status'=>'Solo puedes guardar movimientos con estatus \'SINAFECTAR\'.',
+			]);
+		}
 
 		$cxcArray = \Input::except('documentsJson');
 		$cxcDArray = json_decode(\Input::get('documentsJson'));
@@ -96,18 +104,18 @@ class MovController extends Controller {
 			'Mov' => 'required',
 			'currency' => 'required',
 			'client_id' => 'required',
+		],
+		[
+			'Mov.required'=>'Es necesario seleccionar un Movimiento.',
+			'currency.required'=>'Es necesario seleccionar una Moneda.',
+			'client_id.required'=>'Es necesario seleccionar un Cliente.',
 		]);
 
 		if($validator->fails()){
-			return redirect()->back()->withInput()->withErrors([
-				'Mov'=>'Es necesario seleccionar un Movimiento.',
-				'currency'=>'Es necesario seleccionar una Moneda.',
-				'client_id'=>'Es necesario seleccionar un Cliente.',
-			]);
+			return redirect()->back()->withInput()->withErrors($validator->messages());
 		}
 
 		//$cxc = new Cxc;
-		$cxc = Cxc::findOrNew($movID);
 		$cxc->fill($cxcArray);
 		$cxc->company = $user->getSelectedCompany();
 		$cxc->office_id = $user->getSelectedOffice();
@@ -180,42 +188,36 @@ class MovController extends Controller {
 		return redirect('cxc/movimiento/mov/'.$cxc->ID);
 	}
 
-	public function postActualizar($movID){
+	public function postDelete(){
 
-		$cxcArray = \Input::except('documentsJson');
-		$cxcDArray = json_decode(\Input::get('documentsJson'));
-
-		$user = \Auth::user();
-
-		$cxc = findOrFail($movID);
-		$cxc->fill($cxcArray);
-		$cxc->company = $user->getSelectedCompany();
-		$cxc->office_id = $user->getSelectedOffice();
-		$cxc->currency = $user->defCurrency->currency;
-		$cxc->save();
-
-		$ROW_MULTIPLIER = 2048;
-		$rowNum = 1;
-
-		//Borrar todos los detalles y luego insertarlos de nuevo.
-
-		foreach ($cxcDArray as $cxcDA) {
-
-			if($cxcDA != null && $cxcDA->apply != null) {
-
-			    $cxcD = new CxcD;
-				$cxcD->fill((array)$cxcDA);
-				$cxcD->row = $rowNum++ * $ROW_MULTIPLIER;
-				$cxc->details()->save($cxcD);
-			}
+		// Se debe tener un movimiento abierto para poder eliminar.
+		if(!Cxc::hasSessionMovID()){
+			return redirect()->back()->withInput()->withErrors([
+				'Mov'=>'Debes abrir el movimiento que quieres eliminar.',
+			]);
 		}
 
-		return redirect('cxc/movimiento/mov/'.$cxc->ID);
-	}
+		// Se obtiene el ID del movimiento abierto.
+		$movID = Cxc::getSessionMovID();
 
-	public function postDelete($movID){
+		// Se obtiene el movimiento abierto.
 		$cxc = Cxc::findOrFail($movID);
+
+		// El movimiento debe tener el estatus SINAFECTAR para poder ser eliminado.
+		if($cxc->status && $cxc->status != 'SINAFECTAR'){
+			return redirect()->back()->withInput()->withErrors([
+				'Status'=>'Solo puedes eliminar movimientos con estatus \'SINAFECTAR\'.',
+			]);
+		}
+
+		if($cxc->details()){
+			$cxc->details()->delete();
+		}
+
 		$cxc->delete();
+
+		Cxc::removeSessionMovID();
+		return redirect('cxc/movimiento/nuevo');
 	}
 
 	public function postSaveClient(){
@@ -479,5 +481,68 @@ class MovController extends Controller {
 		return response()->json($applyList);
 	}
 
+	public function postAffect(){
+	
+		$movID = Cxc::getSessionMovID();
+		$username = \Auth::user()->username;
+		$action = 'AFECTAR';
+
+		if(!$movID) {
+			return redirect()->back()->withInput()->withErrors([
+				'MovID'=>'No hay un movimiento abierto.',
+			]);
+		}
+
+		if(!$username) {
+			return redirect()->back()->withInput()->withErrors([
+				'User'=>'No hay un usuario autenticado.',
+			]);
+		}
+
+		$result = Cxc::affect($movID, $username, $action);
+
+		if(!$result){
+			return redirect()->back()->withInput()->withErrors([
+				'Affect'=>'No se pudo afectar el movimiento.',
+			]);
+		}
+
+		$message = MessageList::find($result['message']);
+		$message->reference = $result['reference'];
+
+		return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
+	}
+
+	public function postCancel(){
+		
+		$movID = Cxc::getSessionMovID();
+		$username = \Auth::user()->username;
+		$action = 'CANCELAR';
+
+		if(!$movID) {
+			return redirect()->back()->withInput()->withErrors([
+				'MovID'=>'No hay un movimiento abierto.',
+			]);
+		}
+
+		if(!$username) {
+			return redirect()->back()->withInput()->withErrors([
+				'User'=>'No hay un usuario autenticado.',
+			]);
+		}
+
+		$result = Cxc::affect($movID, $username, $action);
+
+		if(!$result){
+			return redirect()->back()->withInput()->withErrors([
+				'Affect'=>'No se pudo cancelar el movimiento.',
+			]);
+		}
+
+		$message = MessageList::find($result['message']);
+		$message->reference = $result['reference'];
+
+		return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
+	}
 }
 

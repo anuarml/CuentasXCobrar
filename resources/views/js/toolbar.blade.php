@@ -17,14 +17,14 @@ var toolbar = {
 	confirmCancelMov : function(){
 
 		$('#confirmModalBody').html('<img width="25px" src="{{asset("img/cancel.png")}}">&nbsp;&nbsp;&nbsp;&nbsp;¿Cancelar el movimiento?');
-		$('#confirmModal').find('.btn-primary').click(function(){console.log('cancel');});
+		$('#confirmModal').find('.btn-primary').click(function(){ toolbar.cancelMov();});
 		$('#confirmModal').modal('show');
 	},
 
 	confirmDeleteMov : function(){
 
 		$('#confirmModalBody').html('<img width="25px" src="{{asset("img/delete.png")}}">&nbsp;&nbsp;&nbsp;&nbsp;¿Eliminar el movimiento?');
-		$('#confirmModal').find('.btn-primary').click(function(){console.log('delete');});
+		$('#confirmModal').find('.btn-primary').click(function(){ toolbar.deleteMov(); });
 		$('#confirmModal').modal('show');
 	},
 
@@ -56,6 +56,18 @@ var toolbar = {
 	openMov : function(){
 		//toolbar.redirect("{{ url('cxc/movimiento/abrir') }}", 'GET');
 		window.location = "{{ url('cxc/movimiento/abrir')}}";
+	},
+
+	deleteMov: function(){
+		toolbar.redirect("{{ url('cxc/movimiento/delete') }}", 'POST');
+	},
+
+	affectMov : function(){
+		toolbar.redirect("{{ url('cxc/movimiento/affect') }}", 'POST');
+	},
+
+	cancelMov: function(){
+		toolbar.redirect("{{ url('cxc/movimiento/cancel') }}", 'POST');
 	}
 };
 
@@ -73,6 +85,7 @@ $('#saveMov').click(function(){
 	toolbar.saveMov('save');
 });
 $('#deleteMov').click(toolbar.confirmDeleteMov);
+$('#affectMov').click(toolbar.affectMov);
 $('#cancelMov').click(toolbar.confirmCancelMov);
 $('#printMov').click(toolbar.printMov);
 

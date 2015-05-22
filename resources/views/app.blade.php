@@ -34,7 +34,7 @@
 				</button>
 				<img id="logoAssis" src="{{ asset('/img/logo_Assi.png') }}" hidden>
 				<canvas id="pruebaImagen" hidden></canvas>
-				<a class="navbar-brand" href="#">Assis</a>
+				<a class="navbar-brand" href="http://www.assis.mx/">Assis</a>
 				<a class="navbar-brand" href="{{ url('/') }}">Cobranza</a>
 			</div>
 
@@ -58,7 +58,7 @@
 							<a id="printMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/print.png')}}">
 							</a>
-							<a style="display:inline-block" href="#">
+							<a id="affectMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/affect.ico')}}">
 							</a>
 							<a id="cancelMov" style="display:inline-block" href="#">

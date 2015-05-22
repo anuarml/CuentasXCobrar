@@ -3,17 +3,6 @@
 @section('content')
 
 	<div class="container">
-		@if (count($errors) > 0)
-			<div class="alert alert-danger alert-dismissible">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				Resuelve los siguientes problemas.<br><br>
-				<ul>
-					@foreach ($errors->all() as $error)
-						<li>{{ $error }}</li>
-					@endforeach
-				</ul>
-			</div>
-		@endif
 		<!--<form id="cxcMovForm" role="form" action="{{ url('cxc/movimiento/guardar-nuevo') }}" method="POST">-->
 		{!! Form::model( $mov, array('url' => array('cxc/movimiento/guardar'), 'id'=>'cxcMovForm' ) ) !!}
 			<!--<input type="hidden" name="_token" value="{{ csrf_token() }}">-->
@@ -21,6 +10,30 @@
 			{!! Form::hidden('clickedRow', null, array('id'=>'clickedRow' )) !!}
 			<div class="row">
 				<div class="col-md-10 col-md-offset-1">
+					@if (count($errors) > 0)
+						<div class="alert alert-danger alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							Resuelve los siguientes problemas.<br><br>
+							<ul>
+								@foreach ($errors->all() as $error)
+									<li>{{ $error }}</li>
+								@endforeach
+							</ul>
+						</div>
+					@endif
+					@if ( \Session::has('message') )
+						@if( \Session::get('message')->type == 'ERROR' )
+							<div class="alert alert-danger alert-dismissible">
+						@else
+							<div class="alert alert-warning alert-dismissible">
+						@endif
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							{{ \Session::get('message')->type }}
+							{{ '('.\Session::get('message')->code.')' }}
+							{{ \Session::get('message')->description }}<br>
+							<li>{{ \Session::get('message')->reference }}</li>
+						</div>
+					@endif
 					<div role="tabpanel">
 		
 					  <!-- Nav tabs -->
