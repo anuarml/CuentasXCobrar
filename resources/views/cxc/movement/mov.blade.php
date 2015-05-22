@@ -142,7 +142,11 @@
 													<!--<select class="form-control" id="concept" name="concept" tabindex="1">
 													  <option hidden></option>
 													</select>-->
-													{!! Form::select('concept', array(null => ''), null, array('class'=>'form-control')) !!}
+													@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+														{!! Form::select('concept', array(null => ''), null, array('class'=>'form-control')) !!}
+													@else
+														{!! Form::select('concept', array(null => ''), null, array('class'=>'form-control', 'disabled'=>'true')) !!}
+													@endif
 												</div>
 											</div>
 											<div class="col-sm-6 ">
@@ -156,7 +160,11 @@
 															</button>
 														</span>
 							                        	<!--<input type="text" name="reference" id="reference" class="form-control " tabindex="2">-->
-							                        	{!! Form::text('reference', null, array('class'=>'form-control')) !!}
+							                        	@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+															{!! Form::text('reference', null, array('class'=>'form-control')) !!}
+														@else
+															{!! Form::text('reference', null, array('class'=>'form-control', 'readOnly'=>'true')) !!}
+														@endif							          
 													</div>
 												</div>
 											</div>
@@ -168,7 +176,11 @@
 													{!! Form::label('observations', 'Observaciones:') !!}
 													<!--<input type="text" name="Concept" id="Concept" class="form-control " tabindex="2">-->
 													<!--<input list="observation-list" name="observations" id="observations" class="form-control" tabindex="3">-->
-													{!! Form::text('observations', null, array('list'=>'observation-list','class'=>'form-control')) !!}
+													@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+														{!! Form::text('observations', null, array('list'=>'observation-list','class'=>'form-control')) !!}
+													@else
+														{!! Form::text('observations', null, array('list'=>'observation-list','class'=>'form-control', 'disabled'=>'true')) !!}
+													@endif
 													<datalist id="observation-list">
 													  <option value="fosil">
 													</datalist>
@@ -182,7 +194,12 @@
 													<!--<select class="form-control" id="currency" name="currency" tabindex="3">
 													  <option hidden></option>
 													</select>-->
-													{!! Form::select('currency',$currencyList, 'Pesos', array('class'=>'form-control')) !!}
+													@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+														{!! Form::select('currency',$currencyList, 'Pesos', array('class'=>'form-control')) !!}
+													@else
+														{!! Form::select('currency',$currencyList, 'Pesos', array('class'=>'form-control', 'disabled'=>'true')) !!}
+													@endif
+
 												</div>
 											</div>
 										</div>
@@ -208,7 +225,10 @@
 
 					    <div role="tabpanel" class="tab-pane" id="documentos">
 					    	<br>
-					    	<button type="button" id="newDocumentRow" class='btnz btn-primary'>Agregar <span class="glyphicon glyphicon-plus"></span></button>
+					    	@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+								<button type="button" id="newDocumentRow" class='btnz btn-primary' >Agregar <span class="glyphicon glyphicon-plus"></span></button>
+							@endif
+					    	<!--<button type="button" id="newDocumentRow" class='btnz btn-primary'>Agregar <span class="glyphicon glyphicon-plus"></span></button>-->
 					    	<input type="hidden" id="documentsJson" name="documentsJson">
 					    	<hr>
 							<div class = "table-responsive">
@@ -227,7 +247,7 @@
 							                <th></th>
 							            </tr>
 							        </thead>
-							        <tbody>
+							        <tbody >
 							        </tbody>
 							    </table>
 							    @include('utileries/calculator')
@@ -236,7 +256,10 @@
 					    <div role="tabpanel" class="tab-pane" id="desgloseCobro">
 					    	<div class="container-fluid">
 					    	<br>
-					    	<button type="button" id="newChargeRow" class='btnz btn-primary'>Agregar <span class="glyphicon glyphicon-plus"></span></button>
+					    	@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+								<button type="button" id="newChargeRow" class='btnz btn-primary'>Agregar <span class="glyphicon glyphicon-plus"></span></button>
+							@endif
+					    	<!--<button type="button" id="newChargeRow" class='btnz btn-primary'>Agregar <span class="glyphicon glyphicon-plus"></span></button>-->
 					    	<hr class="colorgraph">
 					    	<div id="charges" class="container-fluid">
 					    		@for($i=1; $i<=5; $i++)
@@ -246,16 +269,31 @@
 											{!! Form::label('amount'.$i,'Importe') !!}
 											<div class='input-group'>
 												<div class='input-group-addon'>$</div>
-												{!! Form::number('amount'.$i, null, array('min'=>'0', 'class'=>'form-control input-sm')) !!}
+												@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+													{!! Form::number('amount'.$i, null, array('min'=>'0', 'class'=>'form-control input-sm')) !!}
+												@else
+													{!! Form::number('amount'.$i, null, array('min'=>'0', 'class'=>'form-control input-sm', 'readOnly'=>'true')) !!}
+												@endif
+												
 											</div>
 										</div>
 										<div class='col-sm-4'> 
 											{!! Form::label('charge_type'.$i,'Forma Cobro') !!}
-											{!! Form::select('charge_type'.$i, $paymentTypeList, null, array('class'=>'form-control input-sm')) !!}
+											@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+												{!! Form::select('charge_type'.$i, $paymentTypeList, null, array('class'=>'form-control input-sm')) !!}	
+											@else
+												{!! Form::select('charge_type'.$i, $paymentTypeList, null, array('class'=>'form-control input-sm', 'disabled'=>'true')) !!}
+											@endif
+											
 										</div>
 										<div class='col-sm-3'>
 											{!! Form::label('reference'.$i,'Referencia') !!}
-											{!! Form::text('reference'.$i, null, array('min'=>'0', 'class'=>'form-control input-sm')) !!}
+											@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+												{!! Form::text('reference'.$i, null, array('min'=>'0', 'class'=>'form-control input-sm')) !!}	
+											@else
+												{!! Form::text('reference'.$i, null, array('min'=>'0', 'class'=>'form-control input-sm', 'readOnly'=>'true')) !!}
+											@endif
+											
 										</div>
 										<div class='col-sm-1' id='deleteCharge{{$i}}'><br>
 											<span class='glyphicon glyphicon-remove' style='font-size:30px; text-align:center; display: block;'></span>
@@ -273,7 +311,12 @@
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
 				    					<!--<input type='number' class='form-control input-sm' name='pro_balance' id='pro_balance' min='0' step='any'>-->
-				    					{!! Form::number('pro_balance', null, array('min'=>'0', 'class'=>'form-control input-sm')) !!}
+				    					@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+											{!! Form::number('pro_balance', null, array('min'=>'0', 'class'=>'form-control input-sm')) !!}
+										@else
+											{!! Form::number('pro_balance', null, array('min'=>'0', 'class'=>'form-control input-sm', 'readOnly'=>'true')) !!}
+										@endif
+				    					
 				    				</div>
 				    			</div>
 				    			<div class='col-sm-3'>
@@ -282,7 +325,12 @@
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
 				    					<!--<input type='number' class='form-control input-sm' name='change' id='change' min='0' step='any'>-->
-				    					{!! Form::number('change', null, array('min'=>'0', 'class'=>'form-control input-sm')) !!}
+				    					@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+											{!! Form::number('change', null, array('min'=>'0', 'class'=>'form-control input-sm')) !!}
+										@else
+											{!! Form::number('change', null, array('min'=>'0', 'class'=>'form-control input-sm', 'readOnly'=>'true')) !!}
+										@endif
+				    					
 				    				</div>
 				    			</div>
 				    			<div class='col-sm-2'>

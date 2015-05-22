@@ -76,7 +76,7 @@ function addDocumentRow(cxcD){
 	}
 
 
-
+	
 	$('#documentsTable tbody').append(
 		"<tr id='document-"+insertedDocumentPlace+"'>"+
 			"<td style='text-align: center;' class='apply'>"+(cxcD.apply || '')+"</td>"+
@@ -107,7 +107,13 @@ function addDocumentRow(cxcD){
 		documentsNumber--;
 	});
 
-	$("#documentsTable tbody tr:last .apply").on("click", editApply);
+	@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+		$("#documentsTable tbody tr:last .apply").on("click", editApply);
+		$("#documentsTable tbody tr:last .consecutive").on("click", editConsecutive);
+		$("#documentsTable tbody tr:last .amount").on("click", editAmount);
+		$("#documentsTable tbody tr:last .discountPPP").on("click", editDiscountPPP);
+	@endif
+	//$("#documentsTable tbody tr:last .apply").on("click", editApply);
 
 	$("#documentsTable tbody tr:last .apply").on("focusout", function(e){
 		var applyTD = $(this);
@@ -117,7 +123,7 @@ function addDocumentRow(cxcD){
 		applyTD.html(applyText);
 	});
 
-	$("#documentsTable tbody tr:last .consecutive").on("click", editConsecutive);
+	//$("#documentsTable tbody tr:last .consecutive").on("click", editConsecutive);
 
 	$("#documentsTable tbody tr:last .consecutive").on("focusout", function(e){
 		var consecutiveTD = $(this);
@@ -128,7 +134,7 @@ function addDocumentRow(cxcD){
 		consecutiveTD.html(consecutiveText);
 	});
 
-	$("#documentsTable tbody tr:last .amount").on("click", editAmount);
+	//$("#documentsTable tbody tr:last .amount").on("click", editAmount);
 
 	$("#documentsTable tbody tr:last .amount").on("focusout", function(e){
 		var amountTD = $(this);
@@ -139,7 +145,7 @@ function addDocumentRow(cxcD){
 		amountTD.html(amountValue);
 	});
 
-	$("#documentsTable tbody tr:last .discountPPP").on("click", editDiscountPPP);
+	//$("#documentsTable tbody tr:last .discountPPP").on("click", editDiscountPPP);
 
 	$("#documentsTable tbody tr:last .discountPPP").on("focusout", function(e){
 		var discountTD = $(this);
