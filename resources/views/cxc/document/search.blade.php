@@ -7,12 +7,14 @@
     <th data-field="total_amount" data-align="center" data-sortable="true">Importe Total</th>
     <th data-field="emission_date" data-align="center" data-sortable="true">Emisión</th>
     <th data-field="expiration" data-align="center" data-sortable="true">Vencimiento</th>
+    <th data-field="concept" data-align="center" data-sortable="true">Concepto</th>
 @endsection
 
 @section('action')
-	<form id="documentForm" class="form-horizontal" role="form" method="POST" action="{{ url('/cxc/movimiento/save-document/'.$movID) }}">
+	<form id="documentForm" class="form-horizontal" role="form" method="POST" action="{{ url('/cxc/movimiento/save-document/'.$movID.'/'.$row) }}">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 		<input type="hidden" name="movID" id="movID" value="">
+		<input type="hidden" name="balance" id="balance" value="">
 	</form>
 @endsection
 
@@ -28,6 +30,7 @@
 			}
 			
 			$('#movID').val(selections[0].MovID);
+			$('#balance').val(selections[0].balance);
 			$('#documentForm').submit();
 		});
 	</script>

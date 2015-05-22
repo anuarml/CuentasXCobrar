@@ -239,24 +239,7 @@ class MovController extends Controller {
 		return redirect('cxc/movimiento/nuevo');
 	}
 
-	/*public function postSaveDocument($movID){
-		
-		$cxc = Cxc::findOrFail($movID);
-
-		$validator = \Validator::make(\Input::only('movID'), [
-			'movID' => 'required',
-		]);
-
-		if($validator->fails()){
-			return Response::back()->withErrors(['movID','Se requiere seleccionar un documento.']);
-		}
-
-		$cxc->client_id = \Input::get('movID');
-
-		$cxc->save();
-
-		return redirect('cxc/movimiento/mov/'.$movID);
-	}*/
+	
 
 	public function postSaveClientOffice($movID){
 		
@@ -405,7 +388,46 @@ class MovController extends Controller {
 		return redirect('cxc/movimiento/mov/'.$movID);
 	}
 
-	
+	public function postSaveDocument($movID, $row){
+		
+		$cxc = Cxc::findOrFail($movID);
+
+		$validator = \Validator::make(\Input::only('movID'), [
+			'movID' => 'required',
+		]);
+
+		if($validator->fails()){
+			return Response::back()->withErrors(['movID','Se requiere seleccionar un documento.']);
+		}
+
+		//$cxcD = CxcD::where('Renglon', $row)->get();
+		//$cxcD = $cxc->details->where('Renglon', '=', $row)->get();
+		$cxcD = $cxc->details()->where('Renglon', '=', $row)->first();
+		$cxcD->apply_id = \Input::get('movID');
+		$cxcD->amount = \Input::get('balance');		
+		//dd($cxcD);
+		/*$cxcDSize = count($cxcD);
+		//dd(count($cxcD));
+		for ($i=0; $i < $cxcDSize; $i++) { 
+			$detailRow = $cxcD[$i]->row;
+			dd($cxcD[$i]);
+			if($detailRow == $row){
+				$cxcD[$i]->apply_id = \Input::get('movID');
+				//dd($cxcD[$i]->apply_id);
+				$cxcD[$i]->amount = \Input::get('balance');
+				//dd($cxcD[$i]->amount);
+			}
+		}*/
+		/*if($cxcD == $row){
+			$cxcD->apply_id = \Input::get('movID');
+			$cxcD->amount = \Input::get('balance');
+		}*/
+		//$cxc->client_id = \Input::get('movID');
+		$cxcD->save();
+		//$cxc->save();
+
+		return redirect('cxc/movimiento/mov/'.$movID.'/#documentos');
+	}
 
 	public function getConceptList($movType){
 

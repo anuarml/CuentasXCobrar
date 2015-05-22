@@ -356,12 +356,12 @@
 
 	showMovDetails();
 
-	/*(function getApplyOptions(){
+	(function getApplyOptions(){
 		$.ajax( { url: '{{url("cxc/movimiento/apply-list")}}/' + $('#client_id').val()  } ).done(function( data ){
 
 			applyList = data;
 		});
-	})();*/
+	})();
 
 </script>
 

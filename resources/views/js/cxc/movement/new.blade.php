@@ -212,6 +212,13 @@ function editApply(e){
 	applyTD.empty();
 	applyTD.append("<select class='form-control' id='documentApply'>"+options+"</select>");
 
+	$("#documentApply").on("change", function(){
+		var documentRow = getDocNumber(this);
+		//console.log(documentRow);
+		aCxcD[documentRow].apply =  $(this).val();
+		//console.log($(this).val());
+	});
+
 	$("#documentApply").val(applyTDText);
 	$("#documentApply").focus();
 	applyTD.off('click');
@@ -237,6 +244,7 @@ function editConsecutive(e){
 
 	$("#searchConsecutive").on("click", function(e){
 		//var idRow = $(this).closest('tr').attr('id');
+
 		$('#clickedRow').val(getDocNumber(this));
 		toolbar.saveMov('searchConsecutive');
 		//window.location= "{{ url('cxc/movimiento/mov/357/buscar/documento/2048') }}";
