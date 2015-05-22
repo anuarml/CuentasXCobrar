@@ -99,7 +99,7 @@
 	@include('js.toolbar')
 	<script src="{{ asset('/js/cxc/movement/documents.js') }}"></script>
 	<script src="{{ asset('/js/bootstrap-table.min.js') }}"></script>
-	
+	<script src="{{ asset('/js/cxc/movement/verifications.js') }}"></script>
 	@yield('scripts')
 </body>
 </html>

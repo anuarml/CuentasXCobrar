@@ -1,4 +1,4 @@
-@extends('app')
+	@extends('app')
 
 @section('content')
 
@@ -26,7 +26,7 @@
 					  <!-- Nav tabs -->
 					  <ul class="nav nav-tabs" role="tablist">
 					    <li role="presentation" class="active"><a href="#datosGenerales" aria-controls="datosGenerales" role="tab" data-toggle="tab">Datos Generales</a></li>
-					    <li role="presentation"><a href="#documentos" aria-controls="documentos" role="tab" data-toggle="tab">Documentos</a></li>
+					    <li role="presentation"><a href="#documentos" aria-controls="documentos" role="tab" data-toggle="tab" id="tabDocs">Documentos</a></li>
 					    <li role="presentation"><a href="#desgloseCobro" aria-controls="desgloseCobro" role="tab" data-toggle="tab">Desglose Cobro</a></li>
 					  </ul>
 
@@ -307,7 +307,7 @@
 
 @section('scripts')
 <script type="text/javascript" src="{{ asset('js/cxc/movement/documents.js') }}"></script>
-<script src="{{ asset('/js/cxc/movement/verifications.js') }}"></script>
+<!--<script src="{{ asset('/js/cxc/movement/verifications.js') }}"></script>-->
 <script src="{{ asset('js/decimal.min.js') }}"></script>
 @include('js/utileries/calculator')
 @include('js/cxc/movement/new')

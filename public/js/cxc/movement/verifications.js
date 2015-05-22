@@ -4,11 +4,12 @@ function verifyMov(/*movToVerify*/){
 	//console.log(selectedMov);
 	switch(selectedMov){
 		case 'Anticipo':
-			console.log(selectedMov);
+			//console.log(selectedMov);
 			//$('#documentos').empty();
 			//$('#documentos').remove();
 			//console.log($('#documentos'));
-			$('#tabDocumentos').remove();
+			$('#tabDocs').remove();
+			//tabDocs
 			//var tabDocuments = document.getElementById("documentos");
 			//console.log(tabDocuments);
 			//tabDocuments.hidden = true;
