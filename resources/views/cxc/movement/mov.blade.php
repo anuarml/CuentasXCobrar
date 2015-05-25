@@ -337,21 +337,21 @@
 				    				<label for="totalCharge">Cobro Total</label>
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-				    					<input type='number' class='form-control input-sm' id='totalCharge' min='0' step='any' readonly>
+				    					<input type='number' class='form-control input-sm' id='totalCharge' min='0' step='any' value='0.00' readonly>
 				    				</div>
 				    			</div>
 				    			<div class='col-sm-2'>
 				    				<label for="totalAmount">Importe Total</label>
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-				    					<input type='number' class='form-control input-sm' id='totalAmount' min='0' step='any' readonly>
+				    					<input type='number' class='form-control input-sm' id='totalAmount' min='0' step='any' value='0.00' readonly>
 				    				</div>
 				    			</div>
 				    			<div class='col-sm-2'>
 				    				<label for="difference">Por Cobrar</label>
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-				    					<input type='number' class='form-control input-sm' id='difference' min='0' step='any' readonly>
+				    					<input type='number' class='form-control input-sm' id='difference' min='0' step='any' value='0.00' readonly>
 				    				</div>
 				    			</div>
 				    		</div>
@@ -424,6 +424,69 @@
 		});
 	})();
 
+	var proBalance = $('#pro_balance');
+	var previousProBalanceAmount = 0.00;
+	proBalance.change(function(){
+		var nProBalance = proBalance.val();
+		if(nProBalance < 0 || isNaN(nProBalance)){
+			console.log(isNaN(nProBalance));
+			var proBalanceAmount = 0;
+			proBalance.val(proBalanceAmount.toFixed(2));
+		}
+		previousProBalanceAmount = proBalance.val();
+	});
+
+	proBalance.focus(function(){
+		proBalance.val('');
+	});
+
+	proBalance.blur(function(){
+		if(proBalance.val()==''){
+			proBalance.val(previousProBalanceAmount);
+		}
+	});
+
+	var change = $('#change');
+	var previousChangeAmount = 0.00;
+	change.change(function(){
+		var nChange = change.val();
+		if(nChange < 0 || isNaN(nChange)){
+			console.log(isNaN(nChange));
+			var changeAmount = 0;
+			change.val(changeAmount.toFixed(2));
+		}
+		previousChangeAmount = change.val();
+	});
+
+	change.focus(function(){
+		change.val('');
+	});
+
+	change.blur(function(){
+		if(change.val()==''){
+			change.val(previousChangeAmount);
+		}
+	});
+
+	var totalCharge = $('#totalCharge');
+
+	totalCharge.change(function(){
+		var totalAmount = $('#totalAmount');
+		var nTotalAmount = totalAmount.val();
+		var nTotalCharge = totalCharge.val();
+		var nDifference = new Decimal(nTotalAmount).minus(nTotalCharge).toNumber();
+		if(nDifference<0){
+			nDifference = 0;
+		}
+		$('#difference').val(nDifference.toFixed(2));
+
+	});	
+	//totalCharge.change();
+	$(document).ready(function(){
+		proBalance.change();
+		change.change();
+		totalCharge.change();
+	});
 </script>
 
 @endsection
