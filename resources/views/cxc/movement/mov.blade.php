@@ -361,9 +361,11 @@
 
 		for(var i = 0; i < movDetails.length; i++){
 
-			var cxcD = new CxcD(movDetails[i]);
-			console.log(cxcD.row);
-			addDocumentRow(cxcD);
+			var movDetail = movDetails[i];
+			var cxcD = new CxcD(movDetail);
+			var cxcDocument = new CxcDocument(movDetail.origin);
+			//console.log(cxcD.row);
+			addDocumentRow(cxcD, cxcDocument);
 		}
 	}
 

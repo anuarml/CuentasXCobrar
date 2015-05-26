@@ -53,9 +53,10 @@ $("#newDocumentRow").on("click", function() {addDocumentRow();});
 
 var documentsNumber = 0;
 
-function addDocumentRow(cxcD){
+function addDocumentRow(cxcD, cxcDocument){
 
 	var cxcD = cxcD || new CxcD();
+	var cxcDocument = cxcDocument || new CxcDocument();
 	var emptyPlace = aCxcD.indexOf(null);
 	var insertedDocumentPlace;
 
@@ -65,14 +66,14 @@ function addDocumentRow(cxcD){
 		insertedDocumentPlace = aCxcD.length;
 		cxcD.tableRowID = insertedDocumentPlace;
 		aCxcD.push(cxcD);
+		aCxcDocs.push(cxcDocument);
 	}
 	else {
 		// Se agrega en el espacio vacio.
 		insertedDocumentPlace = emptyPlace;
 		cxcD.tableRowID = insertedDocumentPlace;
 		aCxcD[emptyPlace] = cxcD;
-		
-
+		aCxcDocs[emptyPlace] = cxcDocument;
 	}
 
 
@@ -82,10 +83,10 @@ function addDocumentRow(cxcD){
 			"<td style='text-align: center;' class='apply'>"+(cxcD.apply || '')+"</td>"+
 			"<td style='text-align: center;' class='consecutive'>"+(cxcD.apply_id || '')+"</td>"+
 			"<td style='text-align: center;' class='amount'>"+(cxcD.amount || '')+"</td>"+
-			"<td style='text-align: center;' class='difference'></td>"+
-			"<td style='text-align: center;' class='differencePercentage'></td>"+
-			"<td style='text-align: center;' class='concept'></td>"+
-			"<td style='text-align: center;' class='reference'></td>"+
+			"<td style='text-align: center;' class='difference'>"+cxcDocument.difference(cxcD.amount)+"</td>"+
+			"<td style='text-align: center;' class='differencePercentage'>"+cxcDocument.diferencePercent(cxcD.amount)+"</td>"+
+			"<td style='text-align: center;' class='concept'>"+(cxcDocument.concept || '')+"</td>"+
+			"<td style='text-align: center;' class='reference'>"+(cxcDocument.reference || '')+"</td>"+
 			"<td style='text-align: center;' class='discountPPP' hidden>"+(cxcD.p_p_discount || '')+"</td>"+
 			"<td style='text-align: center;' class='suggestPPP' hidden></td>"+
 			"<td style='text-align: center;'>"+
@@ -101,6 +102,7 @@ function addDocumentRow(cxcD){
 		var documentNum = $killrow.attr('id').split('-')[1];
 
 		aCxcD[documentNum] = null;
+		aCxcDocs[documentNum] = null;
 
 		$killrow.remove();
 
@@ -216,7 +218,7 @@ function editApply(e){
 		var documentRow = getDocNumber(this);
 		//console.log(documentRow);
 		aCxcD[documentRow].apply =  $(this).val();
-		
+		clearRowInfo(this);
 		console.log(aCxcD);
 	});
 
@@ -291,7 +293,19 @@ function editAmount(e){
 	$("#documentAmount").on("change", function(){
 		var documentRow = getDocNumber(this);
 		//console.log(documentRow);
-		aCxcD[documentRow].amount = $(this).val();
+		var previousAmount = aCxcD[documentRow].amount;
+		var actualAmount = aCxcD[documentRow].amount = $(this).val();
+
+		updateRowDifference(this);
+
+
+		// Actualizar importe total
+		var totalChargeInput = $('#totalCharge');
+
+		var totalCharge = new Decimal(totalChargeInput.val() || 0);
+		amount = new Decimal(amount);
+
+		totalCharge.plus(amount.minus());
 		
 		console.log(aCxcD);
 	});
@@ -319,6 +333,43 @@ function getDocNumber(element){
 	idRow = idRow.split('-');
 	//docRow = idRow[1];
 	return idRow[1];
+}
+
+function updateRowDifference(element){
+	var row = $(element).closest('tr');
+	var docPosition = getDocNumber(element);
+
+	var cxcD = aCxcD[docPosition];
+	var cxcDoc = aCxcDocs[docPosition];
+
+	row.find('.difference').html(cxcDoc.difference(cxcD.amount));
+	row.find('.differencePercentage').html(cxcDoc.diferencePercent(cxcD.amount));
+}
+
+function clearRowInfo(element){
+	var row = $(element).closest('tr');
+	var docPosition = getDocNumber(element);
+
+	var cxcD = aCxcD[docPosition];
+	var cxcDoc = aCxcDocs[docPosition];
+
+	cxcD.apply_id = null;
+	cxcD.amount = null;
+	cxcD.p_p_discount = null;
+
+	cxcDoc.balance = null;
+	cxcDoc.concept = null;
+	cxcDoc.reference = null;
+
+	row.find('.consecutive').html('');
+	row.find('.amount').html('');
+	row.find('.difference').html('');
+	row.find('.differencePercentage').html('');
+	row.find('.concept').html('');
+	row.find('.reference').html('');
+	row.find('.discountPPP').html('');
+	row.find('.suggestPPP').html('');
+	
 }
 
 </script>

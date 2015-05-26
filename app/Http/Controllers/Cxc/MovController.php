@@ -301,6 +301,20 @@ class MovController extends Controller {
 		// Se obtiene el movimiento solicitado
 		$mov = Cxc::with('details')->with('client')->findOrFail($movID);
 
+		foreach($mov->details as &$movDetail) {
+			$movCompany = $mov->company;
+			$apply = $movDetail->apply;
+			$apply_id = $movDetail->apply_id;
+
+			if($movCompany && $apply && $apply_id){
+
+				$movDetailOrigin = Cxc::where('Empresa', $movCompany)->where('Mov', $apply)->where('MovID',$apply_id)->first(['Concepto','Referencia','Saldo']);
+				$movDetail->origin = $movDetailOrigin;
+			}
+		}
+
+		//dd($mov->details->toJson());
+
 		// Se obtiene el usuario autenticado.
 		$user = \Auth::user();
 

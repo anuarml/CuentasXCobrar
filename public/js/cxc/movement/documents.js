@@ -1,4 +1,5 @@
 var aCxcD = [];
+var aCxcDocs = [];
 
 function CxcD(doc){
 	if(!doc) doc = {};
@@ -20,14 +21,19 @@ function CxcDocument(doc){
 	this.difference = function(amount){
 
 		if(!this.balance || !amount){
-			return null;
+			return '';
 		}
 
 		var difference = new Decimal(this.balance).minus(amount).toNumber();
 		return difference;
 	};
 	this.diferencePercent = function(amount){
+		if(!this.balance || !amount){
+			return '';
+		}
 
+		var diferencePercent = new Decimal(100).minus(new Decimal(amount).times(100).div(this.balance));
+		return diferencePercent.toNumber().toFixed(2);
 	};
 }
 

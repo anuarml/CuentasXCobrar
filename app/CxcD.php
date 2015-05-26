@@ -32,7 +32,7 @@ class CxcD extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['office','ID','row','apply', 'apply_id', 'amount', 'p_p_discount'];
+	protected $visible = ['office','ID','row','apply', 'apply_id', 'amount', 'p_p_discount','origin'];
 	
 	protected $appends = ['office','row','apply', 'apply_id', 'amount', 'p_p_discount'];
 
