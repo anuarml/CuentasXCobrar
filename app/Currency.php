@@ -34,9 +34,9 @@ class Currency extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['currency','changeType'];
+	protected $visible = ['currency','change_type'];
 
-	protected $appends = ['currency','changeType'];
+	protected $appends = ['currency','change_type'];
 
 	public function getCurrencyAttribute(){
 		return $this->Moneda;

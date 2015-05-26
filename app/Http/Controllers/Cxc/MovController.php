@@ -6,6 +6,7 @@ use App\CxcRef;
 use App\Concept;
 use App\Client;
 use App\CteSendTo;
+use App\Currency;
 use App\CxcPending;
 use App\MessageList;
 use App\Mon;
@@ -117,14 +118,29 @@ class MovController extends Controller {
 
 		//$cxc = new Cxc;
 		$cxc->fill($cxcArray);
+		$cxc->user = $user->username;
 		$cxc->company = $user->getSelectedCompany();
 		$cxc->office_id = $user->getSelectedOffice();
 		$cxc->origin_office_id = $user->getSelectedOffice();
+		$cxc->CtaDinero = $user->account;
+		$cxc->charge_type = $user->payment_type;
+		$cxc->cashier = $user->cashier;
 		//$cxc->currency = $user->defCurrency->currency;
 		$cxc->manual_apply = true;
 		$cxc->with_breakdown = true;
 		$cxc->status = 'SINAFECTAR';
 		$cxc->last_change = Carbon::now()->format('d/m/Y');
+		$cxc->expiration = $cxcArray['emission_date_str'];
+		$cxc->condition = 'Contado';
+
+		$changeType = 1;
+		$currency = Currency::find($cxc->currency);
+		if($currency){
+			$changeType = $currency->change_type;
+		}
+
+		$cxc->client_change_type = $cxc->change_type = $changeType;
+		$cxc->client_currency = $cxc->currency;
 
 		$cxc->save();
 

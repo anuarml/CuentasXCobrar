@@ -216,7 +216,8 @@ function editApply(e){
 		var documentRow = getDocNumber(this);
 		//console.log(documentRow);
 		aCxcD[documentRow].apply =  $(this).val();
-		//console.log($(this).val());
+		
+		console.log(aCxcD);
 	});
 
 	$("#documentApply").val(applyTDText);
@@ -285,6 +286,14 @@ function editAmount(e){
 		//console.log( $(this).parent().parent().parent().parent());
 		//console.log( $(this).closest('tr'));
 		//console.log("id="+docRow);
+	});
+
+	$("#documentAmount").on("change", function(){
+		var documentRow = getDocNumber(this);
+		//console.log(documentRow);
+		aCxcD[documentRow].amount = $(this).val();
+		
+		console.log(aCxcD);
 	});
 
 	$("#documentAmount").val(amountValue);

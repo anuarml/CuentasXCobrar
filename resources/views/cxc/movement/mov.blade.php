@@ -319,9 +319,9 @@
 @endsection
 
 @section('scripts')
+<script src="{{ asset('js/decimal.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/cxc/movement/documents.js') }}"></script>
 <!--<script src="{{ asset('/js/cxc/movement/verifications.js') }}"></script>-->
-<script src="{{ asset('js/decimal.min.js') }}"></script>
 @include('js/utileries/calculator')
 @include('js/cxc/movement/new')
 <script type="text/javascript">
@@ -369,12 +369,20 @@
 
 	showMovDetails();
 
-	(function getApplyOptions(){
-		$.ajax( { url: '{{url("cxc/movimiento/apply-list")}}/' + $('#client_id').val()  } ).done(function( data ){
+	function getApplyOptions(clientID){
+		$.ajax( { url: '{{url("cxc/movimiento/apply-list")}}/' + clientID } ).done(function( data ){
 
 			applyList = data;
+
+			console.log(applyList);
 		});
-	})();
+	};
+
+	var clientID = $('#client_id').val();
+
+	if( clientID ) {
+		getApplyOptions(clientID);
+	}
 
 </script>
 
