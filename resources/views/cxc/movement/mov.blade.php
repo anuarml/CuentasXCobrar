@@ -372,6 +372,7 @@
 <script src="{{ asset('js/decimal.min.js') }}"></script>
 @include('js/utileries/calculator')
 @include('js/cxc/movement/new')
+<script type="text/javascript" src="{{ asset('js/cxc/movement/breakdownCharge.js') }}"></script>
 <script type="text/javascript">
 	var mov = $('#Mov');
 	var concept = '{{$mov->concept}}';
@@ -424,69 +425,8 @@
 		});
 	})();
 
-	var proBalance = $('#pro_balance');
-	var previousProBalanceAmount = 0.00;
-	proBalance.change(function(){
-		var nProBalance = proBalance.val();
-		if(nProBalance < 0 || isNaN(nProBalance)){
-			console.log(isNaN(nProBalance));
-			var proBalanceAmount = 0;
-			proBalance.val(proBalanceAmount.toFixed(2));
-		}
-		previousProBalanceAmount = proBalance.val();
-	});
+	
 
-	proBalance.focus(function(){
-		proBalance.val('');
-	});
-
-	proBalance.blur(function(){
-		if(proBalance.val()==''){
-			proBalance.val(previousProBalanceAmount);
-		}
-	});
-
-	var change = $('#change');
-	var previousChangeAmount = 0.00;
-	change.change(function(){
-		var nChange = change.val();
-		if(nChange < 0 || isNaN(nChange)){
-			console.log(isNaN(nChange));
-			var changeAmount = 0;
-			change.val(changeAmount.toFixed(2));
-		}
-		previousChangeAmount = change.val();
-	});
-
-	change.focus(function(){
-		change.val('');
-	});
-
-	change.blur(function(){
-		if(change.val()==''){
-			change.val(previousChangeAmount);
-		}
-	});
-
-	var totalCharge = $('#totalCharge');
-
-	totalCharge.change(function(){
-		var totalAmount = $('#totalAmount');
-		var nTotalAmount = totalAmount.val();
-		var nTotalCharge = totalCharge.val();
-		var nDifference = new Decimal(nTotalAmount).minus(nTotalCharge).toNumber();
-		if(nDifference<0){
-			nDifference = 0;
-		}
-		$('#difference').val(nDifference.toFixed(2));
-
-	});	
-	//totalCharge.change();
-	$(document).ready(function(){
-		proBalance.change();
-		change.change();
-		totalCharge.change();
-	});
 </script>
 
 @endsection

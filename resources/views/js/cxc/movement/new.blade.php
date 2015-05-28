@@ -175,7 +175,7 @@ $("#newChargeRow").on("click", function(){
 				"<label for='amount"+chargeNumber+"'>Importe</label>" +
 				"<div class='input-group'>"+
 					"<div class='input-group-addon'>$</div>"+
-					"<input type='number' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' min='0' step='any'>"+
+					"<input type='number' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' value='0.00' min='0' step='any'>"+
 				"</div>"+
 			"</div>" +
 			"<div class='col-sm-4'>" +
@@ -193,6 +193,60 @@ $("#newChargeRow").on("click", function(){
 			"</div>" +
 			"<hr>" + 
 		"</div>");
+	
+	/*var previousAmount = 0.00;
+	amount1.change(function(){
+		var nChange = amount1.val();
+		if(nChange < 0 || isNaN(nChange)){
+			console.log(isNaN(nChange));
+			var changeAmount = 0;
+			amount1.val(changeAmount.toFixed(2));
+		}
+		previousAmount = amount1.val();
+	});
+
+	amount1.focus(function(){
+		amount1.val('');
+	});
+
+	amount1.blur(function(){
+		if(amount1.val()==''){
+			amount1.val(previousAmount);
+		}
+	});*/
+	
+	var previousAmount = 0.00;
+	$("#charges div#charge" + chargeNumber + " #amount"+chargeNumber).on("change", function(){
+		var totalCharge = $('#totalCharge');
+		var nTotalCharge = parseInt(totalCharge.val());
+		var nAmount = parseInt($(this).val());
+		console.log(nAmount);
+		if(nAmount < 0 || isNaN(nAmount)){
+			//console.log(isNaN(nAmount));
+				var changeAmount = 0;
+				$(this).val(changeAmount.toFixed(2));
+		}else{
+			//nTotalCharge += (nAmount-previousAmount);
+			nTotalCharge = nTotalCharge + nAmount;
+			nTotalCharge = nTotalCharge - previousAmount;
+			if(nTotalCharge<1) nTotalCharge = 0;
+			totalCharge.val(nTotalCharge);
+			previousAmount = nAmount;
+		}
+		
+		//previousAmount = $(this).val();
+	});
+
+	$("#charges div#charge" + chargeNumber + " #amount"+chargeNumber).on("focus", function(){
+		
+		$(this).val('');
+	});
+
+	$("#charges div#charge" + chargeNumber + " #amount"+chargeNumber).on("blur", function(){
+		if($(this).val()==''){
+			$(this).val(previousAmount);
+		}
+	});
 
 	$("#charges div:last#deleteCharge"+chargeNumber).on("click", function(){
 		charges[indexNumber] = null;
@@ -200,7 +254,7 @@ $("#newChargeRow").on("click", function(){
 		var $killrow = $(this).parent('div');
 		$killrow.remove();
 	});
-
+	
 	charges[indexNumber] = numberOfCharges;
 	numberOfCharges++;
 });
