@@ -223,8 +223,12 @@ $("#newChargeRow").on("click", function(){
 		console.log(nAmount);
 		if(nAmount < 0 || isNaN(nAmount)){
 			//console.log(isNaN(nAmount));
+			/*if(previousAmount == 0){
 				var changeAmount = 0;
 				$(this).val(changeAmount.toFixed(2));
+			}else{*/
+			$(this).val(previousAmount);
+			//}
 		}else{
 			//nTotalCharge += (nAmount-previousAmount);
 			nTotalCharge = nTotalCharge + nAmount;
