@@ -372,10 +372,10 @@
 
 	function showMovDetails(){
 		var movDetails = JSON.parse('{!! $mov->details->toJson() !!}');
-
 		for(var i = 0; i < movDetails.length; i++){
 
 			var movDetail = movDetails[i];
+			
 			var cxcD = new CxcD(movDetail);
 			var cxcDocument = new CxcDocument(movDetail.origin);
 			//console.log(cxcD.row);
@@ -383,19 +383,19 @@
 		}
 	}
 
-	function showMovDetails(){
+	function showChargeDetails(){
 		var movCharges = JSON.parse('{!!$movCharges!!}');
 		if(movCharges){
 			for(var i = 0; i < movCharges.length; i++){
 				var charge = new Charge(movCharges[i]);
-				console.log(charge.amount);
+				//console.log(charge.amount);
 				addChargeRow(charge);
 			}
 		}
 	}
 
 	showMovDetails();
-
+	showChargeDetails();
 	function getApplyOptions(clientID){
 		$.ajax( { url: '{{url("cxc/movimiento/apply-list")}}/' + clientID } ).done(function( data ){
 
