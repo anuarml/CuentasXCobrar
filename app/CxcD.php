@@ -6,6 +6,7 @@ class CxcD extends Model {
 
 	public $timestamps = false;
 	protected $primaryKey = 'Renglon';
+
 	/**
 	 * The database table used by the model.
 	 *
@@ -79,6 +80,55 @@ class CxcD extends Model {
 	}
 	public function setPPDiscountAttribute($ppDiscount){
 		return $this->DescuentoRecargos = $ppDiscount;
+	}
+
+
+	public function cxc(){
+		return $this->belongsTo('App\Cxc','ID','ID');
+	}
+
+
+
+	public function updateRow(){
+		\DB::table($this->getTable())
+			->where('ID', $this->ID)
+			->where('Renglon', $this->row)
+			->update([
+				'Importe' => $this->amount,
+				'AplicaID' => $this->apply_id,
+			]);
+	}
+
+
+	public function suggestPP(){
+
+		$company = \Auth::user()->getSelectedCompany();
+
+		$cxc = $this->cxc;
+
+		$client = $cxc->client_id;
+		$emissionDate = $cxc->emission_date_str;
+		$mov = $cxc->Mov;
+		$apply = $this->apply;
+		$consecutive = $this->apply_id;
+
+		//dd([$company,$client,$emissionDate,$mov,$apply,$consecutive]);
+
+		$suggestPP = 0;
+
+		$stmt = \DB::getPdo()->prepare('EXEC spThoDescPPWeb ?, ?, ?, ?, ?, ?, ?');
+		
+		$stmt->bindParam(1, $company);
+		$stmt->bindParam(2, $client);
+		$stmt->bindParam(3, $emissionDate);
+		$stmt->bindParam(4, $mov);
+		$stmt->bindParam(5, $apply);
+		$stmt->bindParam(6, $consecutive);
+		$stmt->bindParam(7, $suggestPP, \PDO::PARAM_STR | \PDO::PARAM_INPUT_OUTPUT, 5);
+
+		$stmt->execute();
+
+		return $suggestPP;
 	}
 }
 

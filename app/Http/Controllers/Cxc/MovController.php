@@ -309,6 +309,7 @@ class MovController extends Controller {
 			if($movCompany && $apply && $apply_id){
 
 				$movDetailOrigin = Cxc::where('Empresa', $movCompany)->where('Mov', $apply)->where('MovID',$apply_id)->first(['Concepto','Referencia','Saldo']);
+				$movDetailOrigin->pp_suggest = $movDetail->suggestPP();
 				$movDetail->origin = $movDetailOrigin;
 			}
 		}
@@ -436,7 +437,10 @@ class MovController extends Controller {
 		//$cxcD = $cxc->details->where('Renglon', '=', $row)->get();
 		$cxcD = $cxc->details()->where('Renglon', '=', $row)->first();
 		$cxcD->apply_id = \Input::get('movID');
-		$cxcD->amount = \Input::get('balance');		
+		$cxcD->amount = \Input::get('balance');
+
+		$cxcD->updateRow();
+
 		//dd($cxcD);
 		/*$cxcDSize = count($cxcD);
 		//dd(count($cxcD));
@@ -455,7 +459,7 @@ class MovController extends Controller {
 			$cxcD->amount = \Input::get('balance');
 		}*/
 		//$cxc->client_id = \Input::get('movID');
-		$cxcD->save();
+		//$cxc->details()->save($cxcD);
 		//$cxc->save();
 
 		return redirect('cxc/movimiento/mov/'.$movID.'/#documentos');

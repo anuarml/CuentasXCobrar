@@ -222,8 +222,8 @@
 							                <th>Diferencia(%)</th>
 							                <th>Concepto</th>
 							                <th>Referencia</th>
-							                <th hidden>Descuento</th>
-							                <th hidden>Sugerencia</th>
+							                <th hidden class="discountPPPHeader">Descuento</th>
+							                <th hidden class="suggestPPPHeader">Sugerencia</th>
 							                <th></th>
 							            </tr>
 							        </thead>
@@ -297,6 +297,8 @@
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
 				    					<input type='number' class='form-control input-sm' id='totalAmount' min='0' step='any' readonly>
+				    					<input type="hidden" name="amount" id="amount">
+				    					<input type="hidden" name="taxes" id="taxes">
 				    				</div>
 				    			</div>
 				    			<div class='col-sm-2'>
@@ -357,7 +359,7 @@
 	$('#clientBalance').val( new Number($('#clientBalance').val()).toFixed(2) );
 
 	function showMovDetails(){
-		var movDetails = JSON.parse('{!!$mov->details->toJson()!!}');
+		var movDetails = JSON.parse('{!! $mov->details->toJson() !!}');
 
 		for(var i = 0; i < movDetails.length; i++){
 
@@ -375,8 +377,6 @@
 		$.ajax( { url: '{{url("cxc/movimiento/apply-list")}}/' + clientID } ).done(function( data ){
 
 			applyList = data;
-
-			console.log(applyList);
 		});
 	};
 
