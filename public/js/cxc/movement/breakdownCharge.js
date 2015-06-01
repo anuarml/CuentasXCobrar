@@ -3,9 +3,10 @@ var previousProBalanceAmount = 0.00;
 proBalance.change(function(){
 	var nProBalance = proBalance.val();
 	if(nProBalance < 0 || isNaN(nProBalance)){
-		console.log(isNaN(nProBalance));
-		var proBalanceAmount = 0;
-		proBalance.val(proBalanceAmount.toFixed(2));
+		//console.log(isNaN(nProBalance));
+		//var proBalanceAmount = 0;
+		//proBalance.val(proBalanceAmount.toFixed(2));
+		proBalance.val(previousProBalanceAmount);
 	}
 	previousProBalanceAmount = proBalance.val();
 });
@@ -25,9 +26,10 @@ var previousChangeAmount = 0.00;
 change.change(function(){
 	var nChange = change.val();
 	if(nChange < 0 || isNaN(nChange)){
-		console.log(isNaN(nChange));
-		var changeAmount = 0;
-		change.val(changeAmount.toFixed(2));
+		//console.log(isNaN(nChange));
+		//var changeAmount = 0;
+		//change.val(changeAmount.toFixed(2));
+		change.val(previousChangeAmount);
 	}
 	previousChangeAmount = change.val();
 });
@@ -71,10 +73,16 @@ totalCharge.change(function(){
 	var nTotalAmount = totalAmount.val();
 	var nTotalCharge = totalCharge.val();
 	var nDifference = new Decimal(nTotalAmount).minus(nTotalCharge).toNumber();
+	/*console.log(nTotalAmount);
+	console.log(nTotalCharge);
+	console.log(new Decimal(nTotalAmount));
+	console.log(new Decimal(nTotalAmount).minus(nTotalCharge));
+	console.log(nDifference);*/
 	if(nDifference<0){
 		nDifference = 0;
 	}
-	$('#difference').val(nDifference.toFixed(2));
+	console.log(nDifference);
+	$('#difference').val(nDifference);
 });	
 
 /*$('#charges').on('click', '#amount1', function(){
@@ -220,11 +228,26 @@ function calculateTotalCharge(){
 	});*/
 
 }
+/*var amount1 = $("#amount1");
+var amount2 = $("#amount2");
+var amount3 = $("#amount3");
+var amount4 = $("#amount4");
+var amount5 = $("#amount5");*/
 
 $(document).ready(function(){
 	proBalance.change();
 	change.change();
 	totalCharge.change();
+	/*if(amount1 && amount2 && amount3 && amount4 && amount5){
+		$("#newChargeRow").prop('disabled',true);
+	}*/
+
+	/*amount1.change();
+	amount2.change();
+	amount3.change();
+	amount4.change();
+	amount5.change();*/
+	//console.log("hola");
 	//calculateTotalCharge();
 
 });

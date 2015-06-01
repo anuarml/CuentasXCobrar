@@ -11,3 +11,13 @@ function CxcD(doc){
 }
 
 var applyList = [];
+
+var aCharges = [];
+
+function Charge(charge){
+	if(!charge) charge = {};
+	
+	this.amount = charge.amount || null;
+	this.payment_type = charge.payment_type || null;
+	this.reference = charge.reference || null;
+}

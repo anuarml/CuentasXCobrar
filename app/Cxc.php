@@ -467,4 +467,17 @@ class Cxc extends Model {
 
 		return array('message' => $message, 'reference' => $reference);
 	}
+
+	public function getCharges(){
+
+		$charge1 = array('amount' =>  $this->amount1, 'chargeType' => $this->charge_type1, 'reference' => $this->reference1);
+		$charge2 = array('amount' =>  $this->amount2, 'chargeType' => $this->charge_type2, 'reference' => $this->reference2);
+		$charge3 = array('amount' =>  $this->amount3, 'chargeType' => $this->charge_type3, 'reference' => $this->reference3);
+		$charge4 = array('amount' =>  $this->amount4, 'chargeType' => $this->charge_type4, 'reference' => $this->reference4);
+		$charge5 = array('amount' =>  $this->amount5, 'chargeType' => $this->charge_type5, 'reference' => $this->reference5);
+
+		$charges = array($charge1,$charge2,$charge3,$charge4,$charge5);
+
+		return $charges;
+	}
 }

@@ -247,7 +247,7 @@
 							                <th></th>
 							            </tr>
 							        </thead>
-							        <tbody >
+							        <tbody>
 							        </tbody>
 							    </table>
 							    @include('utileries/calculator')
@@ -262,46 +262,7 @@
 					    	<!--<button type="button" id="newChargeRow" class='btnz btn-primary'>Agregar <span class="glyphicon glyphicon-plus"></span></button>-->
 					    	<hr class="colorgraph">
 					    	<div id="charges" class="container-fluid">
-					    		@for($i=1; $i<=5; $i++)
-					    			@if($mov['amount'.$i])
-					    			<div class='form-group' id='charge{{$i}}'>
-										<div class='col-sm-4'>
-											{!! Form::label('amount'.$i,'Importe') !!}
-											<div class='input-group'>
-												<div class='input-group-addon'>$</div>
-												@if($mov->status == 'SINAFECTAR' || $mov->status == '')
-													{!! Form::number('amount'.$i, null, array('min'=>'0', 'class'=>'form-control input-sm')) !!}
-												@else
-													{!! Form::number('amount'.$i, null, array('min'=>'0', 'class'=>'form-control input-sm', 'readOnly'=>'true')) !!}
-												@endif
-												
-											</div>
-										</div>
-										<div class='col-sm-4'> 
-											{!! Form::label('charge_type'.$i,'Forma Cobro') !!}
-											@if($mov->status == 'SINAFECTAR' || $mov->status == '')
-												{!! Form::select('charge_type'.$i, $paymentTypeList, null, array('class'=>'form-control input-sm')) !!}	
-											@else
-												{!! Form::select('charge_type'.$i, $paymentTypeList, null, array('class'=>'form-control input-sm', 'disabled'=>'true')) !!}
-											@endif
-											
-										</div>
-										<div class='col-sm-3'>
-											{!! Form::label('reference'.$i,'Referencia') !!}
-											@if($mov->status == 'SINAFECTAR' || $mov->status == '')
-												{!! Form::text('reference'.$i, null, array('min'=>'0', 'class'=>'form-control input-sm')) !!}	
-											@else
-												{!! Form::text('reference'.$i, null, array('min'=>'0', 'class'=>'form-control input-sm', 'readOnly'=>'true')) !!}
-											@endif
-											
-										</div>
-										<div class='col-sm-1' id='deleteCharge{{$i}}'><br>
-											<span class='glyphicon glyphicon-remove' style='font-size:30px; text-align:center; display: block;'></span>
-										</div>
-										<hr>
-									</div>
-									@endif
-					    		@endfor
+					    		
 					    	</div>
 					    	<hr class="colorgraph">
 				    		<div class='form-group'>
@@ -413,6 +374,17 @@
 			var cxcD = new CxcD(movDetails[i]);
 			console.log(cxcD.row);
 			addDocumentRow(cxcD);
+		}
+	}
+
+	function showMovDetails(){
+		var movCharges = JSON.parse('{!!$movCharges!!}');
+		if(movCharges){
+			for(var i = 0; i < movCharges.length; i++){
+				var charge = new Charge(movCharges[i]);
+				console.log(charge.amount);
+				addChargeRow(charge);
+			}
 		}
 	}
 
