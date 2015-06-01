@@ -10,9 +10,10 @@
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
 	<!-- Fonts -->
-	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+	<!--<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>-->
 	<link href="{{ asset('/css/bootstrap-table.min.css') }}" rel="stylesheet">
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">-->
+	<link rel="stylesheet" href="{{ asset('/css/font-awesome-4.3.0/css/font-awesome.min.css') }}">
 	<link href="{{ asset('/css/calculatorStyle.css') }}" rel="stylesheet">
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -33,7 +34,7 @@
 				</button>
 				<img id="logoAssis" src="{{ asset('/img/logo_Assi.png') }}" hidden>
 				<canvas id="pruebaImagen" hidden></canvas>
-				<a class="navbar-brand" href="#">Assis</a>
+				<a class="navbar-brand" href="http://www.assis.mx/">Assis</a>
 				<a class="navbar-brand" href="{{ url('/') }}">Cobranza</a>
 			</div>
 
@@ -57,7 +58,7 @@
 							<a id="printMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/print.png')}}">
 							</a>
-							<a style="display:inline-block" href="#">
+							<a id="affectMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/affect.ico')}}">
 							</a>
 							<a id="cancelMov" style="display:inline-block" href="#">
@@ -98,7 +99,7 @@
 	@include('js.toolbar')
 	<script src="{{ asset('/js/cxc/movement/documents.js') }}"></script>
 	<script src="{{ asset('/js/bootstrap-table.min.js') }}"></script>
-	
+	<script src="{{ asset('/js/cxc/movement/verifications.js') }}"></script>
 	@yield('scripts')
 </body>
 </html>

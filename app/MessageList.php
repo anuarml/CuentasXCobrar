@@ -4,6 +4,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class MessageList extends Model {
 
+	protected $primaryKey = 'Mensaje';
+
 	/**
 	 * The database table used by the model.
 	 *

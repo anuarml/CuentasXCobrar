@@ -11,6 +11,7 @@ var pressedBtn = false;
 var documentAmount; 
 
 var input = document.querySelector('.screen');
+var docRow;
 /*input.innerHTML = 
 	@if(\Session::has('calculatorAmount'))
 		{{\Session::get('calculatorAmount')}};
@@ -73,7 +74,15 @@ for(var i = 0; i < keys.length; i++) {
 				console.log(oCalculadora.calculatorPressed);*/
 				/*var documentAmount = document.getElementById("documentAmount");
 				documentAmount.value = input.innerHTML;*/
-				window.location	= "{{ url('cxc/movimiento/mov/331#documentos') }}";
+				//var row = $()
+				//CxcD.amount = input.innerHTML;
+				aCxcD[docRow].amount = input.innerHTML;
+				//console.log(aCxcD[docRow].amount);
+				$('#document-'+docRow + ' .amount').html(input.innerHTML);// = input.innerHTML;
+				//console.log($('#document-'+docRow + ' .amount').html());
+				$('#calculatorModal').modal('toggle');
+				toolbar.saveMov('resultCalculator');
+				//window.location	= "{{ url('cxc/movimiento/mov/238#documentos') }}";
 			}
 				
 			decimalAdded = false;

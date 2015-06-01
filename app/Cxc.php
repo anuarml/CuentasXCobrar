@@ -42,15 +42,15 @@ class Cxc extends Model {
 	 */
 	protected $visible = ['last_change','client','details','ID','office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'Mov', 'MovID','emission_date','emission_date_str', 'amount',
 							'taxes', 'currency', 'change_type', 'client_currency', 'client_change_type', 'user', 'status', 'CtaDinero', 'cashier',
-							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown', 'charge_type1',
+							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown','charge_type', 'charge_type1',
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
-							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'balance', 'tho_web_assigned' ];
+							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'balance', 'tho_web_assigned','expiration','condition','pp_suggest'];
 
 	protected $appends = ['last_change','office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'emission_date', 'emission_date_str', 'amount',
 							'taxes', 'currency', 'change_type', 'client_currency', 'client_change_type', 'user', 'status', 'cashier',
-							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown','charge_type1',
+							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown','charge_type','charge_type1',
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
-							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'balance', 'tho_web_assigned' ];
+							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'balance', 'tho_web_assigned','expiration','condition' ];
 
 	
 	public function getOfficeIdAttribute(){
@@ -102,6 +102,10 @@ class Cxc extends Model {
 
 	public function setEmissionDateAttribute($emissionDate){
 		return $this->FechaEmision = $emissionDate;
+	}
+
+	public function setEmissionDateStrAttribute($emissionDate){
+		return $this->FechaEmision = (new \Carbon\Carbon($emissionDate))->format('d/m/Y');
 	}
 
 	
@@ -231,6 +235,14 @@ class Cxc extends Model {
 	}
 	public function setWithBreakdownAttribute($withBreakdown){
 		return $this->ConDesglose = $withBreakdown;
+	}
+
+
+	public function getChargeTypeAttribute(){
+		return $this->FormaCobro;
+	}
+	public function setChargeTypeAttribute($chargeType){
+		return $this->FormaCobro = $chargeType;
 	}
 
 
@@ -392,6 +404,22 @@ class Cxc extends Model {
 	public function setLastChangeAttribute($lastChange){
 		return $this->UltimoCambio = $lastChange;
 	}
+
+	public function getConditionAttribute(){
+		return $this->Condicion;
+	}
+
+	public function setConditionAttribute($condition){
+		$this->Condicion = $condition;
+	}
+
+	public function getExpirationAttribute(){
+		return $this->Vencimiento;
+	}
+
+	public function setExpirationAttribute($expiration){
+		$this->Vencimiento = (new \Carbon\Carbon($expiration))->format('d/m/Y');
+	}
 	
 
 	/*
@@ -435,5 +463,45 @@ class Cxc extends Model {
 	public static function removeSessionMovID(){
 
 		return \Session::forget('movID');
+	}
+
+	public static function affect($movID, $username, $action){
+
+		$module = 'CXC';
+		//$action = 'AFECTAR' || 'CANCELAR'
+		$message = '';
+		$reference = '';
+		
+		if( !$username || !$movID || !$action){
+			return null;
+		}
+
+		$stmt = \DB::getPdo()->prepare('EXECUTE spAfectar ?, ?, ?, NULL, NULL, ?, 1, 1, ?, ?');
+
+		$stmt->bindParam(1, $module);
+		$stmt->bindParam(2, $movID);
+		$stmt->bindParam(3, $action);
+		$stmt->bindParam(4, $username);
+		$stmt->bindParam(5, $message, \PDO::PARAM_STR, 11);
+		$stmt->bindParam(6, $reference, \PDO::PARAM_STR, 30);
+
+		if( !$stmt->execute() ){
+			return null;
+		}
+
+		return array('message' => $message, 'reference' => $reference);
+	}
+
+	public function getCharges(){
+
+		$charge1 = array('amount' =>  $this->amount1, 'chargeType' => $this->charge_type1, 'reference' => $this->reference1);
+		$charge2 = array('amount' =>  $this->amount2, 'chargeType' => $this->charge_type2, 'reference' => $this->reference2);
+		$charge3 = array('amount' =>  $this->amount3, 'chargeType' => $this->charge_type3, 'reference' => $this->reference3);
+		$charge4 = array('amount' =>  $this->amount4, 'chargeType' => $this->charge_type4, 'reference' => $this->reference4);
+		$charge5 = array('amount' =>  $this->amount5, 'chargeType' => $this->charge_type5, 'reference' => $this->reference5);
+
+		$charges = array($charge1,$charge2,$charge3,$charge4,$charge5);
+
+		return $charges;
 	}
 }

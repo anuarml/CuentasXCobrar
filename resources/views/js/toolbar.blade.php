@@ -2,29 +2,29 @@
 
 var toolbar = {
 
-	confirmSaveChanges : function(){
+	confirmSaveChanges : function(defaultCallback, action){
 
-		$('#confirmModalBody').html('<img width="25px" src="/img/save.png">&nbsp;&nbsp;&nbsp;&nbsp;¿Guardar cambios?');
-		$('#confirmModal').find('.btn-default').click(toolbar.newMov);
+		$('#confirmModalBody').html('<img width="25px" src="{{asset("img/save.png")}}">&nbsp;&nbsp;&nbsp;&nbsp;¿Guardar cambios?');
+		$('#confirmModal').find('.btn-default').click(defaultCallback);
 		$('#confirmModal').find('.btn-primary').click(function(){
-			var tempRedirect = window.sessionStorage.getItem('toolbar-temp-redirect');
-			window.sessionStorage.setItem('toolbar-redirect',tempRedirect);
-			toolbar.saveMov();
+			//var tempRedirect = window.sessionStorage.getItem('toolbar-temp-redirect');
+			//window.sessionStorage.setItem('toolbar-redirect',tempRedirect);
+			toolbar.saveMov(action);
 		});
 		$('#confirmModal').modal('show');
 	},
 
 	confirmCancelMov : function(){
 
-		$('#confirmModalBody').html('<img width="25px" src="/img/cancel.png">&nbsp;&nbsp;&nbsp;&nbsp;¿Cancelar el movimiento?');
-		$('#confirmModal').find('.btn-primary').click(function(){console.log('cancel');});
+		$('#confirmModalBody').html('<img width="25px" src="{{asset("img/cancel.png")}}">&nbsp;&nbsp;&nbsp;&nbsp;¿Cancelar el movimiento?');
+		$('#confirmModal').find('.btn-primary').click(function(){ toolbar.cancelMov();});
 		$('#confirmModal').modal('show');
 	},
 
 	confirmDeleteMov : function(){
 
-		$('#confirmModalBody').html('<img width="25px" src="/img/delete.png">&nbsp;&nbsp;&nbsp;&nbsp;¿Eliminar el movimiento?');
-		$('#confirmModal').find('.btn-primary').click(function(){console.log('delete');});
+		$('#confirmModalBody').html('<img width="25px" src="{{asset("img/delete.png")}}">&nbsp;&nbsp;&nbsp;&nbsp;¿Eliminar el movimiento?');
+		$('#confirmModal').find('.btn-primary').click(function(){ toolbar.deleteMov(); });
 		$('#confirmModal').modal('show');
 	},
 
@@ -32,8 +32,11 @@ var toolbar = {
 		toolbar.redirect("{{ url('cxc/movimiento/nuevo') }}", 'POST');
 	},
 
-	saveMov : function(){
+	saveMov : function(actionType){
+
+
 		console.log('save');
+		$('#action').val(actionType);
 		$('#documentsJson').val( JSON.stringify(aCxcD) );
 		$('#cxcMovForm').submit();
 	},
@@ -44,35 +47,60 @@ var toolbar = {
 
 	checkRedirect: function(){
 		var redirect = window.sessionStorage.getItem('toolbar-redirect');
+		var base = '{{ url() }}';
 
 		if(redirect){
 			window.sessionStorage.removeItem('toolbar-redirect');
-			toolbar.redirect("{{ url('"+redirect+"') }}");
+			toolbar.redirect(base + '/' + redirect);
 		}
 	},
 
 	openMov : function(){
+		//toolbar.redirect("{{ url('cxc/movimiento/abrir') }}", 'GET');
 		window.location = "{{ url('cxc/movimiento/abrir')}}";
-	}
+	},
+
+	deleteMov: function(){
+		toolbar.redirect("{{ url('cxc/movimiento/delete') }}", 'POST');
+	},
+
+	affectMov : function(){
+		toolbar.redirect("{{ url('cxc/movimiento/affect') }}", 'POST');
+	},
+
+	cancelMov: function(){
+		toolbar.redirect("{{ url('cxc/movimiento/cancel') }}", 'POST');
+	},
+
+	/*verifySave: function(){
+		client_id
+		currency
+		Mov
+	}*/
 };
 
 $('#newMov').click(function(){
-	window.sessionStorage.setItem('toolbar-temp-redirect','cxc/movimiento/nuevo');
-	toolbar.confirmSaveChanges();
-});
-$('#openMov').click(toolbar.openMov);
-/*$('#openMov').click(function(){
 	//window.sessionStorage.setItem('toolbar-temp-redirect','cxc/movimiento/nuevo');
-	toolbar.confirmSaveChanges();
-});*/
-$('#saveMov').click(toolbar.saveMov);
+	toolbar.confirmSaveChanges(toolbar.newMov, 'new');
+});
+//$('#openMov').click(toolbar.openMov);
+$('#openMov').click(function(){
+	//window.sessionStorage.setItem('toolbar-temp-redirect','cxc/movimiento/abrir');
+	toolbar.confirmSaveChanges(toolbar.openMov, 'open');
+});
+//$('#saveMov').click(toolbar.saveMov);
+$('#saveMov').click(function(){
+	toolbar.saveMov('save');
+});
 $('#deleteMov').click(toolbar.confirmDeleteMov);
+$('#affectMov').click(toolbar.affectMov);
 $('#cancelMov').click(toolbar.confirmCancelMov);
 $('#printMov').click(toolbar.printMov);
 
 $('#confirmModal').on('hide.bs.modal', function (event) {
 	var modal = $(this);
 	modal.find('.btn-primary').off('click');
+	modal.find('.btn-default').off('click')
 	console.log('hide');
 });
 
@@ -202,12 +230,20 @@ function putSpaces(columns, line, align){
 }
 
 toolbar.redirect = function(url, method) {
+	@if (count($errors) > 0)
+		return;
+	@endif
+
     var form = document.createElement('form');
-    var csrfInput = document.createElement('input');
-    csrfInput.type= 'hidden';
-    csrfInput.name = '_token';
-    csrfInput.value = '{{csrf_token()}}';
-    form.appendChild(csrfInput);
+    
+    if(method = 'POST'){
+	    var csrfInput = document.createElement('input');
+	    csrfInput.type= 'hidden';
+	    csrfInput.name = '_token';
+	    csrfInput.value = '{{csrf_token()}}';
+	    form.appendChild(csrfInput);
+	}
+
     form.method = method;
     form.action = url;
     form.submit();

@@ -3,6 +3,7 @@ var aCxcD = [];
 function CxcD(doc){
 	if(!doc) doc = {};
 
+	this.tableRowID = doc.tableRowID || null;
 	this.row = doc.row || null;
 	this.apply = doc.apply || null;
 	this.apply_id = doc.apply_id || null;

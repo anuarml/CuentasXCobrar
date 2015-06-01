@@ -43,6 +43,6 @@ class DocumentController extends Controller {
 		
 		$dataURL = '/cxc/documento/documentos/'.$movID .'/' .$row;
 		
-		return view('cxc.document.search', compact('searchType','dataURL','movID'));
+		return view('cxc.document.search', compact('searchType','dataURL','movID','row'));
 	}
 }

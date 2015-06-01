@@ -40,11 +40,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $visible = ['username', 'name', 'account', 'cashier', 'can_cancel', 'agent', 'shipments', 'def_currency'];
+	protected $visible = ['username', 'name', 'account', 'cashier', 'can_cancel', 'agent', 'shipments', 'def_currency','payment_type'];
 
 	protected $with = [];
 
-	protected $appends = ['username', 'name', 'account', 'cashier', 'can_cancel', 'agent'];
+	protected $appends = ['username', 'name', 'account', 'cashier', 'can_cancel', 'agent', 'payment_type'];
 
 	public function getUsernameAttribute(){
 		return $this->Usuario;
@@ -60,6 +60,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function getCashierAttribute(){
 		return $this->DefCajero;
+	}
+
+	public function getPaymentTypeAttribute(){
+		return $this->DefFormaPago;
 	}
 
 	public function getCanCancelAttribute(){
