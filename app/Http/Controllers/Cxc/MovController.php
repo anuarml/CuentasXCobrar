@@ -6,6 +6,7 @@ use App\CxcRef;
 use App\Concept;
 use App\Client;
 use App\CteSendTo;
+use App\Currency;
 use App\CxcPending;
 use App\MessageList;
 use App\Mon;
@@ -118,14 +119,29 @@ class MovController extends Controller {
 
 		//$cxc = new Cxc;
 		$cxc->fill($cxcArray);
+		$cxc->user = $user->username;
 		$cxc->company = $user->getSelectedCompany();
 		$cxc->office_id = $user->getSelectedOffice();
 		$cxc->origin_office_id = $user->getSelectedOffice();
+		$cxc->CtaDinero = $user->account;
+		$cxc->charge_type = $user->payment_type;
+		$cxc->cashier = $user->cashier;
 		//$cxc->currency = $user->defCurrency->currency;
 		$cxc->manual_apply = true;
 		$cxc->with_breakdown = true;
 		$cxc->status = 'SINAFECTAR';
 		$cxc->last_change = Carbon::now()->format('d/m/Y');
+		$cxc->expiration = $cxcArray['emission_date_str'];
+		$cxc->condition = 'Contado';
+
+		$changeType = 1;
+		$currency = Currency::find($cxc->currency);
+		if($currency){
+			$changeType = $currency->change_type;
+		}
+
+		$cxc->client_change_type = $cxc->change_type = $changeType;
+		$cxc->client_currency = $cxc->currency;
 
 		$cxc->save();
 
@@ -286,6 +302,21 @@ class MovController extends Controller {
 		// Se obtiene el movimiento solicitado
 		$mov = Cxc::with('details')->with('client')->findOrFail($movID);
 
+		foreach($mov->details as &$movDetail) {
+			$movCompany = $mov->company;
+			$apply = $movDetail->apply;
+			$apply_id = $movDetail->apply_id;
+
+			if($movCompany && $apply && $apply_id){
+
+				$movDetailOrigin = Cxc::where('Empresa', $movCompany)->where('Mov', $apply)->where('MovID',$apply_id)->first(['Concepto','Referencia','Saldo']);
+				$movDetailOrigin->pp_suggest = $movDetail->suggestPP();
+				$movDetail->origin = $movDetailOrigin;
+			}
+		}
+
+		//dd($mov->details->toJson());
+
 		// Se obtiene el usuario autenticado.
 		$user = \Auth::user();
 
@@ -409,7 +440,10 @@ class MovController extends Controller {
 		//$cxcD = $cxc->details->where('Renglon', '=', $row)->get();
 		$cxcD = $cxc->details()->where('Renglon', '=', $row)->first();
 		$cxcD->apply_id = \Input::get('movID');
-		$cxcD->amount = \Input::get('balance');		
+		$cxcD->amount = \Input::get('balance');
+
+		$cxcD->updateRow();
+
 		//dd($cxcD);
 		/*$cxcDSize = count($cxcD);
 		//dd(count($cxcD));
@@ -428,7 +462,7 @@ class MovController extends Controller {
 			$cxcD->amount = \Input::get('balance');
 		}*/
 		//$cxc->client_id = \Input::get('movID');
-		$cxcD->save();
+		//$cxc->details()->save($cxcD);
 		//$cxc->save();
 
 		return redirect('cxc/movimiento/mov/'.$movID.'/#documentos');

@@ -242,8 +242,8 @@
 							                <th>Diferencia(%)</th>
 							                <th>Concepto</th>
 							                <th>Referencia</th>
-							                <th hidden>Descuento</th>
-							                <th hidden>Sugerencia</th>
+							                <th hidden class="discountPPPHeader">Descuento</th>
+							                <th hidden class="suggestPPPHeader">Sugerencia</th>
 							                <th></th>
 							            </tr>
 							        </thead>
@@ -305,7 +305,11 @@
 				    				<label for="totalAmount">Importe Total</label>
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-				    					<input type='number' class='form-control input-sm' id='totalAmount' min='0' step='any' value='0.00' readonly>
+
+				    					<input type='number' class='form-control input-sm' id='totalAmount' min='0' step='any' readonly>
+				    					<input type="hidden" name="amount" id="amount">
+				    					<input type="hidden" name="taxes" id="taxes">
+
 				    				</div>
 				    			</div>
 				    			<div class='col-sm-2'>
@@ -328,9 +332,9 @@
 @endsection
 
 @section('scripts')
+<script src="{{ asset('js/decimal.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/cxc/movement/documents.js') }}"></script>
 <!--<script src="{{ asset('/js/cxc/movement/verifications.js') }}"></script>-->
-<script src="{{ asset('js/decimal.min.js') }}"></script>
 @include('js/utileries/calculator')
 @include('js/cxc/movement/new')
 <script type="text/javascript" src="{{ asset('js/cxc/movement/breakdownCharge.js') }}"></script>
@@ -367,13 +371,15 @@
 	$('#clientBalance').val( new Number($('#clientBalance').val()).toFixed(2) );
 
 	function showMovDetails(){
-		var movDetails = JSON.parse('{!!$mov->details->toJson()!!}');
+		var movDetails = JSON.parse('{!! $mov->details->toJson() !!}');
 
 		for(var i = 0; i < movDetails.length; i++){
 
-			var cxcD = new CxcD(movDetails[i]);
-			console.log(cxcD.row);
-			addDocumentRow(cxcD);
+			var movDetail = movDetails[i];
+			var cxcD = new CxcD(movDetail);
+			var cxcDocument = new CxcDocument(movDetail.origin);
+			//console.log(cxcD.row);
+			addDocumentRow(cxcD, cxcDocument);
 		}
 	}
 
@@ -390,12 +396,18 @@
 
 	showMovDetails();
 
-	(function getApplyOptions(){
-		$.ajax( { url: '{{url("cxc/movimiento/apply-list")}}/' + $('#client_id').val()  } ).done(function( data ){
+	function getApplyOptions(clientID){
+		$.ajax( { url: '{{url("cxc/movimiento/apply-list")}}/' + clientID } ).done(function( data ){
 
 			applyList = data;
 		});
-	})();
+	};
+
+	var clientID = $('#client_id').val();
+
+	if( clientID ) {
+		getApplyOptions(clientID);
+	}
 
 	
 

@@ -53,9 +53,12 @@ $("#newDocumentRow").on("click", function() {addDocumentRow();});
 
 //var documentsNumber = 0;
 
-function addDocumentRow(cxcD){
+var suggesPPVisibility = 'hidden';
+
+function addDocumentRow(cxcD, cxcDocument){
 
 	var cxcD = cxcD || new CxcD();
+	var cxcDocument = cxcDocument || new CxcDocument();
 	var emptyPlace = aCxcD.indexOf(null);
 	var insertedDocumentPlace;
 
@@ -65,40 +68,49 @@ function addDocumentRow(cxcD){
 		insertedDocumentPlace = aCxcD.length;
 		cxcD.tableRowID = insertedDocumentPlace;
 		aCxcD.push(cxcD);
+		aCxcDocs.push(cxcDocument);
 	}
 	else {
 		// Se agrega en el espacio vacio.
 		insertedDocumentPlace = emptyPlace;
 		cxcD.tableRowID = insertedDocumentPlace;
 		aCxcD[emptyPlace] = cxcD;
-		
-
+		aCxcDocs[emptyPlace] = cxcDocument;
 	}
 
 	$('#documentsTable tbody').append(
 		"<tr id='document-"+insertedDocumentPlace+"'>"+
 			"<td style='text-align: center;' class='apply'>"+(cxcD.apply || '')+"</td>"+
 			"<td style='text-align: center;' class='consecutive'>"+(cxcD.apply_id || '')+"</td>"+
-			"<td style='text-align: center;' class='amount'>"+(cxcD.amount || '')+"</td>"+
-			"<td style='text-align: center;' class='difference'></td>"+
-			"<td style='text-align: center;' class='differencePercentage'></td>"+
-			"<td style='text-align: center;' class='concept'></td>"+
-			"<td style='text-align: center;' class='reference'></td>"+
-			"<td style='text-align: center;' class='discountPPP' hidden>"+(cxcD.p_p_discount || '')+"</td>"+
-			"<td style='text-align: center;' class='suggestPPP' hidden></td>"+
+			"<td style='text-align: center;' class='amount'>"+(cxcD.amount.toFixed(2) || '')+"</td>"+
+			"<td style='text-align: center;' class='difference'>"+cxcDocument.difference(cxcD.amount)+"</td>"+
+			"<td style='text-align: center;' class='differencePercentage'>"+cxcDocument.diferencePercent(cxcD.amount)+"</td>"+
+			"<td style='text-align: center;' class='concept'>"+(cxcDocument.concept || '')+"</td>"+
+			"<td style='text-align: center;' class='reference'>"+(cxcDocument.reference || '')+"</td>"+
+			"<td style='text-align: center;' class='discountPPP' "+suggesPPVisibility+">"+(cxcD.p_p_discount.toFixed(2) || '')+"</td>"+
+			"<td style='text-align: center;' class='suggestPPP' "+suggesPPVisibility+">"+(cxcDocument.pp_suggest.toFixed(2) || '')+"</td>"+
 			"<td style='text-align: center;'>"+
 				"<div class='deleteDocument'>"+
 					"<div class='glyphicon glyphicon-remove'></div>"+
 				"</div>"+
 			"</td>"+
 		"</tr>");
+
+	if(cxcDocument.pp_suggest != 0){
+		showPPSuggest();
+	}
 	
 	$("#documentsTable tbody tr:last .deleteDocument").on("click", function(){
 
 		var $killrow = $(this).parent('td').parent('tr');
 		var documentNum = $killrow.attr('id').split('-')[1];
 
+		// Actualizar importe total
+		if(aCxcD[documentNum])
+			updateTotalAmount(aCxcD[documentNum].amount, 0);
+
 		aCxcD[documentNum] = null;
+		aCxcDocs[documentNum] = null;
 
 		$killrow.remove();
 
@@ -154,7 +166,13 @@ function addDocumentRow(cxcD){
 		discountTD.html(discountValue);
 	});
 
+	$("#totalAmount").val();
+
+	// Actualizar importe total
+	updateTotalAmount(0, cxcD.amount);
+
 	//documentsNumber++;
+
 }
 
 var numberOfCharges = 1;
@@ -317,9 +335,9 @@ function editApply(e){
 
 	$("#documentApply").on("change", function(){
 		var documentRow = getDocNumber(this);
-		//console.log(documentRow);
+
 		aCxcD[documentRow].apply =  $(this).val();
-		//console.log($(this).val());
+		clearRowInfo(this);
 	});
 
 	$("#documentApply").val(applyTDText);
@@ -346,7 +364,6 @@ function editConsecutive(e){
 		"</div>");
 
 	$("#searchConsecutive").on("click", function(e){
-		//var idRow = $(this).closest('tr').attr('id');
 
 		$('#clickedRow').val(getDocNumber(this));
 		toolbar.saveMov('searchConsecutive');
@@ -374,7 +391,7 @@ function editAmount(e){
 					"<span class='fa fa-calculator'></span>"+
 				"</button>"+
 			"</span>"+
-			"<input type='number' class='form-control' id='documentAmount' min='0' step='any'>" +
+			"<input type='number' class='form-control' id='documentAmount' min='0'>" +
 		"</div>");
 
 	
@@ -382,12 +399,18 @@ function editAmount(e){
 		documentAmount = document.getElementById("documentAmount");
 		input.innerHTML = documentAmount.value;
 
-		//var idRow = $(this).closest('tr').attr('id');
-		//idRow = idRow.split('-');
 		docRow = getDocNumber(this);
-		//console.log( $(this).parent().parent().parent().parent());
-		//console.log( $(this).closest('tr'));
-		//console.log("id="+docRow);
+	});
+
+	$("#documentAmount").on("change", function(){
+		var documentRow = getDocNumber(this);
+		var previousAmount = aCxcD[documentRow].amount;
+		var actualAmount = aCxcD[documentRow].amount = $(this).val();
+
+		updateRowDifference(this);
+
+		// Actualizar importe total
+		updateTotalAmount(previousAmount, actualAmount);
 	});
 
 	$("#documentAmount").val(amountValue);
@@ -416,5 +439,72 @@ function getDocNumber(element){
 }
 
 
+function updateRowDifference(element){
+	var row = $(element).closest('tr');
+	var docPosition = getDocNumber(element);
+
+	var cxcD = aCxcD[docPosition];
+	var cxcDoc = aCxcDocs[docPosition];
+
+	row.find('.difference').html(cxcDoc.difference(cxcD.amount));
+	row.find('.differencePercentage').html(cxcDoc.diferencePercent(cxcD.amount));
+}
+
+function clearRowInfo(element){
+	var row = $(element).closest('tr');
+	var docPosition = getDocNumber(element);
+
+	var cxcD = aCxcD[docPosition];
+	var cxcDoc = aCxcDocs[docPosition];
+
+	cxcD.apply_id = null;
+	cxcD.amount = null;
+	cxcD.p_p_discount = null;
+
+	cxcDoc.balance = null;
+	cxcDoc.concept = null;
+	cxcDoc.reference = null;
+
+	row.find('.consecutive').html('');
+	row.find('.amount').html('');
+	row.find('.difference').html('');
+	row.find('.differencePercentage').html('');
+	row.find('.concept').html('');
+	row.find('.reference').html('');
+	row.find('.discountPPP').html('');
+	row.find('.suggestPPP').html('');
+}
+
+function updateTotalAmount(previousAmount, actualAmount){
+	var totalChargeInput = $('#totalAmount');
+	var totalCharge = new Decimal(totalChargeInput.val() || 0);
+	var amount = 0;
+	var taxes = 0;
+	var IVA = 1.16;
+
+	actualAmount = new Decimal(actualAmount || 0);
+
+	totalCharge = totalCharge.plus(actualAmount.minus(previousAmount));
+
+	amount = totalCharge.div(IVA);
+	taxes = totalCharge.minus(amount);
+
+	totalChargeInput.val(totalCharge.toNumber().toFixed(2));
+	$('#amount').val(amount.toNumber().toFixed(2));
+	$('#taxes').val(taxes.toNumber().toFixed(2));
+}
+
+function showPPSuggest(){
+
+	if( $('.suggestPPP').attr('hidden') == 'hidden'){
+
+		suggesPPVisibility = '';
+		$('.discountPPP').attr('hidden',false);
+		$('.suggestPPP').attr('hidden',false);
+		$('.discountPPPHeader').attr('hidden',false);
+		$('.suggestPPPHeader').attr('hidden',false);
+	}
+}
 
 </script>
+

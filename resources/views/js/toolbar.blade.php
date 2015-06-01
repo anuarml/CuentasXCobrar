@@ -33,6 +33,8 @@ var toolbar = {
 	},
 
 	saveMov : function(actionType){
+
+
 		console.log('save');
 		$('#action').val(actionType);
 		$('#documentsJson').val( JSON.stringify(aCxcD) );
@@ -68,7 +70,13 @@ var toolbar = {
 
 	cancelMov: function(){
 		toolbar.redirect("{{ url('cxc/movimiento/cancel') }}", 'POST');
-	}
+	},
+
+	/*verifySave: function(){
+		client_id
+		currency
+		Mov
+	}*/
 };
 
 $('#newMov').click(function(){
