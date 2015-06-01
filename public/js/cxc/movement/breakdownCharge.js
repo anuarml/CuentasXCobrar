@@ -81,7 +81,7 @@ totalCharge.change(function(){
 	if(nDifference<0){
 		nDifference = 0;
 	}
-	console.log(nDifference);
+	//console.log(nDifference);
 	$('#difference').val(nDifference);
 });	
 
@@ -170,11 +170,11 @@ function calculateTotalCharge(){
 			//var previousAmount = parseInt(amount.val());
 			var previousAmount = 0.00;
 			amount.change(function(){
-				console.log(previousAmount);
+				//console.log(previousAmount);
 				var nAmount =  parseInt(amount.val());
-				console.log(nAmount);
+				//console.log(nAmount);
 				nTotalCharge += nAmount-previousAmount;
-				console.log(nTotalCharge);
+				//console.log(nTotalCharge);
 				if(nTotalCharge<1) nTotalCharge = 0;
 				totalCharge.val(nTotalCharge);
 				previousAmount = nAmount;
