@@ -306,7 +306,7 @@
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
 
-				    					<input type='number' class='form-control input-sm' id='totalAmount' min='0' step='any' readonly>
+				    					<input type='number' class='form-control input-sm' id='totalAmount' min='0' step='any' value='0.00' readonly>
 				    					<input type="hidden" name="amount" id="amount">
 				    					<input type="hidden" name="taxes" id="taxes">
 
