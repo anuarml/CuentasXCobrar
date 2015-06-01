@@ -51,7 +51,7 @@ $("#Mov").on("change", function(e){
 
 $("#newDocumentRow").on("click", function() {addDocumentRow();});
 
-var documentsNumber = 0;
+//var documentsNumber = 0;
 
 var suggesPPVisibility = 'hidden';
 
@@ -77,8 +77,6 @@ function addDocumentRow(cxcD, cxcDocument){
 		aCxcD[emptyPlace] = cxcD;
 		aCxcDocs[emptyPlace] = cxcDocument;
 	}
-
-
 
 	$('#documentsTable tbody').append(
 		"<tr id='document-"+insertedDocumentPlace+"'>"+
@@ -116,10 +114,16 @@ function addDocumentRow(cxcD, cxcDocument){
 
 		$killrow.remove();
 
-		documentsNumber--;
+		//documentsNumber--;
 	});
 
-	$("#documentsTable tbody tr:last .apply").on("click", editApply);
+	@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+		$("#documentsTable tbody tr:last .apply").on("click", editApply);
+		$("#documentsTable tbody tr:last .consecutive").on("click", editConsecutive);
+		$("#documentsTable tbody tr:last .amount").on("click", editAmount);
+		$("#documentsTable tbody tr:last .discountPPP").on("click", editDiscountPPP);
+	@endif
+	//$("#documentsTable tbody tr:last .apply").on("click", editApply);
 
 	$("#documentsTable tbody tr:last .apply").on("focusout", function(e){
 		var applyTD = $(this);
@@ -129,7 +133,7 @@ function addDocumentRow(cxcD, cxcDocument){
 		applyTD.html(applyText);
 	});
 
-	$("#documentsTable tbody tr:last .consecutive").on("click", editConsecutive);
+	//$("#documentsTable tbody tr:last .consecutive").on("click", editConsecutive);
 
 	$("#documentsTable tbody tr:last .consecutive").on("focusout", function(e){
 		var consecutiveTD = $(this);
@@ -140,7 +144,7 @@ function addDocumentRow(cxcD, cxcDocument){
 		consecutiveTD.html(consecutiveText);
 	});
 
-	$("#documentsTable tbody tr:last .amount").on("click", editAmount);
+	//$("#documentsTable tbody tr:last .amount").on("click", editAmount);
 
 	$("#documentsTable tbody tr:last .amount").on("focusout", function(e){
 		var amountTD = $(this);
@@ -151,7 +155,7 @@ function addDocumentRow(cxcD, cxcDocument){
 		amountTD.html(amountValue);
 	});
 
-	$("#documentsTable tbody tr:last .discountPPP").on("click", editDiscountPPP);
+	//$("#documentsTable tbody tr:last .discountPPP").on("click", editDiscountPPP);
 
 	$("#documentsTable tbody tr:last .discountPPP").on("focusout", function(e){
 		var discountTD = $(this);
@@ -167,54 +171,154 @@ function addDocumentRow(cxcD, cxcDocument){
 	// Actualizar importe total
 	updateTotalAmount(0, cxcD.amount);
 
-	documentsNumber++;
+	//documentsNumber++;
+
 }
 
 var numberOfCharges = 1;
 var charges = [null,null,null,null,null];
 
-$("#newChargeRow").on("click", function(){
+$("#newChargeRow").on("click", function() {addChargeRow();});
+
+function addChargeRow(charge){
+//$("#newChargeRow").on("click", function(){
+	var charge = charge || new Charge();
+	var emptyPlace = aCharges.indexOf(null);
+	var chargeNumber;
+	//var chargesLenght = aCharges.length;
+
 	
 	if(numberOfCharges > 5 ) return;
 
-	var indexNumber = charges.indexOf(null);
-	var chargeNumber = indexNumber + 1
+	// No hay un espacio en null.
+	if(emptyPlace == -1) {
+		// Se agrega al final.
+		chargeNumber = aCharges.length + 1;
+		charge.tableRowID = chargeNumber;
+		aCharges.push(charge);
+	}
+	else {
+		// Se agrega en el espacio vacio.
+		chargeNumber = emptyPlace + 1;
+		charge.tableRowID = chargeNumber;
+		aCharges[emptyPlace] = charge;
+		
+
+	}
+
+	//var indexNumber = aCharges.indexOf(null);
+	//var chargeNumber = indexNumber + 1
 
 	$('#charges').append(
-		"<div class='form-group' id='charge"+chargeNumber+"'>" +	    	
+		"<div class='form-group' id='charge-"+chargeNumber+"'>" +	    	
 			"<div class='col-sm-4'>" +
 				"<label for='amount"+chargeNumber+"'>Importe</label>" +
 				"<div class='input-group'>"+
 					"<div class='input-group-addon'>$</div>"+
-					"<input type='number' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' min='0' step='any'>"+
+					"<input type='number' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' value='"+ (charge.amount || '0.00') +"' min='0' step='any'>"+
 				"</div>"+
 			"</div>" +
 			"<div class='col-sm-4'>" +
 				"<label for='charge_type"+chargeNumber+"'>Forma Cobro</label>"+
 				"<select id='charge_type"+chargeNumber+"' name='charge_type"+chargeNumber+"' class='form-control input-sm'>"+
-					"<option></option>" +
+					"<option>"+ (charge.payment_type || '') +"</option>" +
 				"</select>" +
 			"</div>" +
 			"<div class='col-sm-3'>" +
 				"<label for='reference"+chargeNumber+"'>Referencia</label>"+
-				"<input type='text' class='form-control input-sm' id='reference"+chargeNumber+"' name='reference"+chargeNumber+"'>"+
+				"<input type='text' class='form-control input-sm' id='reference"+chargeNumber+"' name='reference"+chargeNumber+"' value='"+ (charge.reference || '') +"'>"+
 			"</div>" + 
 			"<div class='col-sm-1' id='deleteCharge"+chargeNumber+"'><br>" +
 				"<span class='glyphicon glyphicon-remove' style='font-size:30px; text-align:center; display: block;'></span>"+
 			"</div>" +
 			"<hr>" + 
 		"</div>");
+	
+	/*var previousAmount = 0.00;
+	amount1.change(function(){
+		var nChange = amount1.val();
+		if(nChange < 0 || isNaN(nChange)){
+			console.log(isNaN(nChange));
+			var changeAmount = 0;
+			amount1.val(changeAmount.toFixed(2));
+		}
+		previousAmount = amount1.val();
+	});
+
+	amount1.focus(function(){
+		amount1.val('');
+	});
+
+	amount1.blur(function(){
+		if(amount1.val()==''){
+			amount1.val(previousAmount);
+		}
+	});*/
+	
+	var previousAmount = 0.00;
+	$("#charges div#charge-" + chargeNumber + " #amount"+chargeNumber).on("change", function(){
+		var totalCharge = $('#totalCharge');
+		var nTotalCharge = parseFloat(totalCharge.val());
+		var nAmount = parseFloat($(this).val());
+		//console.log(nAmount);
+		if(nAmount < 0 || isNaN(nAmount)){
+			//console.log(isNaN(nAmount));
+			/*if(previousAmount == 0){
+				var changeAmount = 0;
+				$(this).val(changeAmount.toFixed(2));
+			}else{*/
+			$(this).val(previousAmount);
+			charge.amount = $(this).val();
+			
+			//}
+		}else{
+			//nTotalCharge += (nAmount-previousAmount);
+			var nTotalCharge2 = new Decimal(nTotalCharge).plus(nAmount).toNumber().toFixed(2);
+			//console.log(nTotalCharge2);
+			var nTotalCharge3 = new Decimal(nTotalCharge2).minus(previousAmount).toNumber().toFixed(2);
+			//console.log(nTotalCharge3);
+			nTotalCharge = nTotalCharge3;
+			//nTotalCharge = nTotalCharge + nAmount;
+			//nTotalCharge = nTotalCharge - previousAmount;
+			if(nTotalCharge<1) nTotalCharge = 0;
+			totalCharge.val(nTotalCharge);
+			totalCharge.change();
+			previousAmount = nAmount;
+		}
+		
+		//previousAmount = $(this).val();
+	});
+
+	$("#charges div#charge-" + chargeNumber + " #amount"+chargeNumber).on("focus", function(){
+		
+		$(this).val('');
+	});
+
+	$("#charges div#charge-" + chargeNumber + " #amount"+chargeNumber).on("blur", function(){
+		if($(this).val()==''){
+			$(this).val(previousAmount);
+		}
+	});
 
 	$("#charges div:last#deleteCharge"+chargeNumber).on("click", function(){
-		charges[indexNumber] = null;
-		numberOfCharges--;
+		$('#amount'+chargeNumber).val(0.00);
+		$('#amount'+chargeNumber).change();
 		var $killrow = $(this).parent('div');
+		var chargeNum = $killrow.attr('id').split('-')[1];
+		chargeNum = chargeNum -1;
+		aCharges[chargeNum] = null;
+		//console.log(aCharges[chargeNum]);
+		//console.log(aCharges.length)
+		//console.log(aCharges);
+		numberOfCharges--;
+		//var $killrow = $(this).parent('div');
 		$killrow.remove();
 	});
 
-	charges[indexNumber] = numberOfCharges;
+	//charges[indexNumber] = numberOfCharges;
+	$('#amount'+chargeNumber).change();
 	numberOfCharges++;
-});
+}//);
 
 function editApply(e){
 
@@ -334,6 +438,7 @@ function getDocNumber(element){
 	return idRow[1];
 }
 
+
 function updateRowDifference(element){
 	var row = $(element).closest('tr');
 	var docPosition = getDocNumber(element);
@@ -402,3 +507,4 @@ function showPPSuggest(){
 }
 
 </script>
+
