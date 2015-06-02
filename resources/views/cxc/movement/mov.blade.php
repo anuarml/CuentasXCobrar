@@ -388,8 +388,8 @@
 		if(movCharges){
 			for(var i = 0; i < movCharges.length; i++){
 				var charge = new Charge(movCharges[i]);
-				//console.log(charge.amount);
-				if(charge.amount != 0)
+				//console.log(parseInt(charge.amount));
+				if(parseInt(charge.amount) != 0)
 				addChargeRow(charge);
 			}
 		}
