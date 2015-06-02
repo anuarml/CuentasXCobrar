@@ -389,6 +389,7 @@
 			for(var i = 0; i < movCharges.length; i++){
 				var charge = new Charge(movCharges[i]);
 				//console.log(charge.amount);
+				if(charge.amount != 0)
 				addChargeRow(charge);
 			}
 		}
