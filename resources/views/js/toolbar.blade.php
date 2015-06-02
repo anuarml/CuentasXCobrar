@@ -28,12 +28,20 @@ var toolbar = {
 		$('#confirmModal').modal('show');
 	},
 
+	showAlertModal: function(message){
+		$('#alertModalBody').html(message);
+		$('#alertModal').modal('show');
+	},
+
 	newMov : function(){
 		toolbar.redirect("{{ url('cxc/movimiento/nuevo') }}", 'POST');
 	},
 
 	saveMov : function(actionType){
 
+		if(!toolbar.verifySave()){
+			return;
+		}
 
 		console.log('save');
 		$('#action').val(actionType);
@@ -72,11 +80,41 @@ var toolbar = {
 		toolbar.redirect("{{ url('cxc/movimiento/cancel') }}", 'POST');
 	},
 
-	/*verifySave: function(){
-		client_id
-		currency
-		Mov
-	}*/
+	verifySave: function(){
+		var success = false;
+		var clientID = $('#client_id').val();
+		var currency = $('#currency').val();
+		var mov = $('#hidden_mov').val();
+
+		if(!clientID){
+			toolbar.showAlertModal('Es necesario seleccionar un cliente.');
+			return success;
+		}
+		if(!currency){
+			toolbar.showAlertModal('Es necesario seleccionar una moneda.');
+			return success;
+		}
+		if(!mov){
+			toolbar.showAlertModal('Es necesario seleccionar un movimiento.');
+			return success;
+		}
+
+		success = true;
+
+		return success;
+	},
+
+	verifyAffect: function(){
+		
+	},
+
+	verifyCancel: function(){
+		
+	},
+
+	verifyDelete: function(){
+		
+	}
 };
 
 $('#newMov').click(function(){

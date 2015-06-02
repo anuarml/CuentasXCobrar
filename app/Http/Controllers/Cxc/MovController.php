@@ -133,6 +133,7 @@ class MovController extends Controller {
 		$cxc->last_change = Carbon::now()->format('d/m/Y');
 		$cxc->expiration = $cxcArray['emission_date_str'];
 		$cxc->condition = 'Contado';
+		$cxc->tho_web_assigned = $user->shipment->ID;
 
 		$changeType = 1;
 		$currency = Currency::find($cxc->currency);
@@ -142,7 +143,7 @@ class MovController extends Controller {
 
 		$cxc->client_change_type = $cxc->change_type = $changeType;
 		$cxc->client_currency = $cxc->currency;
-
+		//dd($cxc);
 		$cxc->save();
 
 		/*foreach ($cxc->details as $cxcDetail) {
@@ -544,6 +545,15 @@ class MovController extends Controller {
 			]);
 		}
 
+		$message = new \stdClass();
+		if($result['message'] == null){
+			$message->type = 'INFO';
+			$message->description = 'Movimiento afectado.';
+			$message->code = '';
+			$message->reference = '';
+			return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
+		}
+
 		$message = MessageList::find($result['message']);
 		$message->reference = $result['reference'];
 
@@ -574,6 +584,15 @@ class MovController extends Controller {
 			return redirect()->back()->withInput()->withErrors([
 				'Affect'=>'No se pudo cancelar el movimiento.',
 			]);
+		}
+
+		$message = new \stdClass();
+		if($result['message'] == null){
+			$message->type = 'INFO';
+			$message->description = 'Movimiento cancelado.';
+			$message->code = '';
+			$message->reference = '';
+			return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
 		}
 
 		$message = MessageList::find($result['message']);

@@ -24,6 +24,8 @@
 					@if ( \Session::has('message') )
 						@if( \Session::get('message')->type == 'ERROR' )
 							<div class="alert alert-danger alert-dismissible">
+						@elseif(\Session::get('message')->type == 'INFO')
+							<div class="alert alert-success alert-dismissible">
 						@else
 							<div class="alert alert-warning alert-dismissible">
 						@endif
@@ -31,7 +33,7 @@
 							{{ \Session::get('message')->type }}
 							{{ '('.\Session::get('message')->code.')' }}
 							{{ \Session::get('message')->description }}<br>
-							<li>{{ \Session::get('message')->reference }}</li>
+							<p>{{ \Session::get('message')->reference }}</p>
 						</div>
 					@endif
 					<div role="tabpanel">
@@ -383,6 +385,8 @@
 		}
 	}
 
+	paymentTypeList = JSON.parse('{!! $paymentTypeList !!}');
+
 	function showChargeDetails(){
 		var movCharges = JSON.parse('{!!$movCharges!!}');
 		if(movCharges){
@@ -408,8 +412,6 @@
 	if( clientID ) {
 		getApplyOptions(clientID);
 	}
-
-	
 
 </script>
 

@@ -177,6 +177,7 @@ function addDocumentRow(cxcD, cxcDocument){
 
 var numberOfCharges = 1;
 var charges = [null,null,null,null,null];
+var paymentTypeList = [];
 
 $("#newChargeRow").on("click", function() {addChargeRow();});
 
@@ -206,6 +207,13 @@ function addChargeRow(charge){
 
 	}
 
+	var options = '';
+
+	for(var i=0; i < paymentTypeList.length; i++){
+		var paymentType = paymentTypeList[i];
+		options += '<option value="'+paymentType.payment_type+'">'+paymentType.payment_type+'</option>';
+	}
+
 	//var indexNumber = aCharges.indexOf(null);
 	//var chargeNumber = indexNumber + 1
 
@@ -221,7 +229,7 @@ function addChargeRow(charge){
 			"<div class='col-sm-4'>" +
 				"<label for='charge_type"+chargeNumber+"'>Forma Cobro</label>"+
 				"<select id='charge_type"+chargeNumber+"' name='charge_type"+chargeNumber+"' class='form-control input-sm'>"+
-					"<option>"+ (charge.payment_type || '') +"</option>" +
+					options +
 				"</select>" +
 			"</div>" +
 			"<div class='col-sm-3'>" +
@@ -233,6 +241,8 @@ function addChargeRow(charge){
 			"</div>" +
 			"<hr>" + 
 		"</div>");
+
+	$('#charge_type'+chargeNumber).val(charge.payment_type || '');
 	
 	/*var previousAmount = 0.00;
 	amount1.change(function(){
