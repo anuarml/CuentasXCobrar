@@ -256,10 +256,12 @@ function addChargeRow(charge){
 	});*/
 	
 	var previousAmount = 0.00;
+	//previousAmount = parseFloat(previousAmount).toFixed(2);
 	$("#charges div#charge-" + chargeNumber + " #amount"+chargeNumber).on("change", function(){
 		var totalCharge = $('#totalCharge');
+		//var nTotalCharge = parseFloat(totalCharge.val()).toFixed(2);
 		var nTotalCharge = parseFloat(totalCharge.val());
-		var nAmount = parseFloat($(this).val());
+		var nAmount = $(this).val();
 		//console.log(nAmount);
 		if(nAmount < 0 || isNaN(nAmount)){
 			//console.log(isNaN(nAmount));
@@ -267,23 +269,27 @@ function addChargeRow(charge){
 				var changeAmount = 0;
 				$(this).val(changeAmount.toFixed(2));
 			}else{*/
+			previousAmount = parseFloat(previousAmount).toFixed(2)
 			$(this).val(previousAmount);
-			charge.amount = $(this).val();
+			charge.amount = parseFloat($(this).val());
 			
 			//}
 		}else{
 			//nTotalCharge += (nAmount-previousAmount);
-			var nTotalCharge2 = new Decimal(nTotalCharge).plus(nAmount).toNumber().toFixed(2);
+			var nTotalCharge2 = new Decimal(nTotalCharge).plus(nAmount).toNumber();
 			//console.log(nTotalCharge2);
-			var nTotalCharge3 = new Decimal(nTotalCharge2).minus(previousAmount).toNumber().toFixed(2);
+			var nTotalCharge3 = new Decimal(nTotalCharge2).minus(previousAmount).toNumber();
 			//console.log(nTotalCharge3);
-			nTotalCharge = nTotalCharge3;
+			nTotalCharge = parseFloat(nTotalCharge3);
 			//nTotalCharge = nTotalCharge + nAmount;
 			//nTotalCharge = nTotalCharge - previousAmount;
 			if(nTotalCharge<1) nTotalCharge = 0;
-			totalCharge.val(nTotalCharge);
+			totalCharge.val(nTotalCharge.toFixed(2));
+			var change = $('#change');
 			totalCharge.change();
+			change.change();
 			previousAmount = nAmount;
+			$(this).val(parseFloat($(this).val()).toFixed(2));
 		}
 		
 		//previousAmount = $(this).val();
@@ -296,6 +302,7 @@ function addChargeRow(charge){
 
 	$("#charges div#charge-" + chargeNumber + " #amount"+chargeNumber).on("blur", function(){
 		if($(this).val()==''){
+			previousAmount = parseFloat(previousAmount).toFixed(2);
 			$(this).val(previousAmount);
 		}
 	});
