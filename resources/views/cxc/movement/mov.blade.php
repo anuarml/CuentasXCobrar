@@ -273,9 +273,9 @@
 				    					<div class='input-group-addon'>$</div>
 				    					<!--<input type='number' class='form-control input-sm' name='pro_balance' id='pro_balance' min='0' step='any'>-->
 				    					@if($mov->status == 'SINAFECTAR' || $mov->status == '')
-											{!! Form::number('pro_balance', null, array('min'=>'0', 'class'=>'form-control input-sm')) !!}
+											{!! Form::number('pro_balance', null, array('min'=>'0', 'class'=>'form-control input-sm', 'value'=>'0.00' )) !!}
 										@else
-											{!! Form::number('pro_balance', null, array('min'=>'0', 'class'=>'form-control input-sm', 'readOnly'=>'true')) !!}
+											{!! Form::number('pro_balance', null, array('min'=>'0', 'class'=>'form-control input-sm', 'readOnly'=>'true', 'value'=>'0.00')) !!}
 										@endif
 				    					
 				    				</div>
@@ -287,9 +287,9 @@
 				    					<div class='input-group-addon'>$</div>
 				    					<!--<input type='number' class='form-control input-sm' name='change' id='change' min='0' step='any'>-->
 				    					@if($mov->status == 'SINAFECTAR' || $mov->status == '')
-											{!! Form::number('change', null, array('min'=>'0', 'class'=>'form-control input-sm')) !!}
+											{!! Form::number('change', null, array('min'=>'0', 'class'=>'form-control input-sm', 'value'=>'0.00')) !!}
 										@else
-											{!! Form::number('change', null, array('min'=>'0', 'class'=>'form-control input-sm', 'readOnly'=>'true')) !!}
+											{!! Form::number('change', null, array('min'=>'0', 'class'=>'form-control input-sm', 'readOnly'=>'true', 'value'=>'0.00')) !!}
 										@endif
 				    					
 				    				</div>
@@ -388,7 +388,7 @@
 		if(movCharges){
 			for(var i = 0; i < movCharges.length; i++){
 				var charge = new Charge(movCharges[i]);
-				//console.log(parseInt(charge.amount));
+				console.log(charge.payment_type);
 				if(parseInt(charge.amount) != 0)
 				addChargeRow(charge);
 			}
