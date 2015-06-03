@@ -171,8 +171,10 @@ class MovController extends Controller {
 		}
 
 		$action = \Input::get('action');
+		Cxc::setSessionMovID($cxc->ID);
 		switch ($action) {
 			case 'new':
+				Cxc::removeSessionMovID($cxc->ID);
 				return redirect('cxc/movimiento/nuevo');
 				break;
 			case 'open':
@@ -197,7 +199,10 @@ class MovController extends Controller {
 				} 
 				break;
 			case 'resultCalculator':
-				return redirect('cxc/movimiento/mov/'.$cxc->ID.'#documentos'); 	 
+				return redirect('cxc/movimiento/mov/'.$cxc->ID.'#documentos');
+			case 'affect':
+				return redirect('cxc/movimiento/affect');
+				break;	 
 			case 'save':
 			default:
 				return redirect('cxc/movimiento/mov/'.$cxc->ID);
@@ -519,7 +524,7 @@ class MovController extends Controller {
 		return response()->json($applyList);
 	}
 
-	public function postAffect(){
+	public function getAffect(){
 	
 		$movID = Cxc::getSessionMovID();
 		$username = \Auth::user()->username;
@@ -534,6 +539,19 @@ class MovController extends Controller {
 		if(!$username) {
 			return redirect()->back()->withInput()->withErrors([
 				'User'=>'No hay un usuario autenticado.',
+			]);
+		}
+
+		$cxc = Cxc::find($movID);
+		if(!$cxc) {
+			return redirect()->back()->withInput()->withErrors([
+				'Mov'=>'El movimiento '.$movID.' ya no existe.',
+			]);
+		}
+		// El movimiento debe tener el estatus SINAFECTAR o PENDIENTE para poder ser eliminado.
+		if($cxc->status != 'SINAFECTAR' && $cxc->status != 'PENDIENTE'){
+			return redirect()->back()->withInput()->withErrors([
+				'Status'=>'Solo puedes AFECTAR movimientos con estatus \'SINAFECTAR\' o \'PENDIENTE\'.',
 			]);
 		}
 
@@ -575,6 +593,19 @@ class MovController extends Controller {
 		if(!$username) {
 			return redirect()->back()->withInput()->withErrors([
 				'User'=>'No hay un usuario autenticado.',
+			]);
+		}
+
+		$cxc = Cxc::find($movID);
+		if(!$cxc) {
+			return redirect()->back()->withInput()->withErrors([
+				'Mov'=>'El movimiento '.$movID.' ya no existe.',
+			]);
+		}
+		// El movimiento debe tener el estatus CONCLUIDO O PENDIENTE para poder ser eliminado.
+		if($cxc->status != 'CONCLUIDO' && $cxc->status != 'PENDIENTE'){
+			return redirect()->back()->withInput()->withErrors([
+				'Status'=>'Solo puedes AFECTAR movimientos con estatus \'CONCLUIDO\' o \'PENDIENTE\'.',
 			]);
 		}
 
