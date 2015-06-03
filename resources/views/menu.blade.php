@@ -38,7 +38,7 @@
 	<!-- /#wrapper -->
 
     <!-- jQuery -->
-    <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>

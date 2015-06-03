@@ -10,7 +10,7 @@
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
 	<!-- Fonts -->
-	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+	<!--<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>-->
 	<link href="{{ asset('/css/bootstrap-table.min.css') }}" rel="stylesheet">
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -59,8 +59,10 @@
 	</div>
 
 	<!-- Scripts -->
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
+	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
+	<script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
 	<script type="text/javascript">
 		
