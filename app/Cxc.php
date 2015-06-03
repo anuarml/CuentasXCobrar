@@ -482,8 +482,8 @@ class Cxc extends Model {
 		$stmt->bindParam(2, $movID);
 		$stmt->bindParam(3, $action);
 		$stmt->bindParam(4, $username);
-		$stmt->bindParam(5, $message, \PDO::PARAM_STR, 11);
-		$stmt->bindParam(6, $reference, \PDO::PARAM_STR, 30);
+		$stmt->bindParam(5, $message, \PDO::PARAM_STR, 40);
+		$stmt->bindParam(6, $reference, \PDO::PARAM_STR, 255);
 
 		if( !$stmt->execute() ){
 			return null;
@@ -494,11 +494,11 @@ class Cxc extends Model {
 
 	public function getCharges(){
 
-		$charge1 = array('amount' =>  $this->amount1, 'chargeType' => $this->charge_type1, 'reference' => $this->reference1);
-		$charge2 = array('amount' =>  $this->amount2, 'chargeType' => $this->charge_type2, 'reference' => $this->reference2);
-		$charge3 = array('amount' =>  $this->amount3, 'chargeType' => $this->charge_type3, 'reference' => $this->reference3);
-		$charge4 = array('amount' =>  $this->amount4, 'chargeType' => $this->charge_type4, 'reference' => $this->reference4);
-		$charge5 = array('amount' =>  $this->amount5, 'chargeType' => $this->charge_type5, 'reference' => $this->reference5);
+		$charge1 = array('amount' =>  $this->amount1, 'payment_type' => $this->charge_type1, 'reference' => $this->reference1);
+		$charge2 = array('amount' =>  $this->amount2, 'payment_type' => $this->charge_type2, 'reference' => $this->reference2);
+		$charge3 = array('amount' =>  $this->amount3, 'payment_type' => $this->charge_type3, 'reference' => $this->reference3);
+		$charge4 = array('amount' =>  $this->amount4, 'payment_type' => $this->charge_type4, 'reference' => $this->reference4);
+		$charge5 = array('amount' =>  $this->amount5, 'payment_type' => $this->charge_type5, 'reference' => $this->reference5);
 
 		$charges = array($charge1,$charge2,$charge3,$charge4,$charge5);
 

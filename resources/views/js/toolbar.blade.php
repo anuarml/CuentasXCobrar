@@ -2,13 +2,14 @@
 
 var toolbar = {
 
+	movStatus : '{{$mov->status}}',
+	movID : '{{$mov->ID}}',
+
 	confirmSaveChanges : function(defaultCallback, action){
 
 		$('#confirmModalBody').html('<img width="25px" src="{{asset("img/save.png")}}">&nbsp;&nbsp;&nbsp;&nbsp;¿Guardar cambios?');
 		$('#confirmModal').find('.btn-default').click(defaultCallback);
 		$('#confirmModal').find('.btn-primary').click(function(){
-			//var tempRedirect = window.sessionStorage.getItem('toolbar-temp-redirect');
-			//window.sessionStorage.setItem('toolbar-redirect',tempRedirect);
 			toolbar.saveMov(action);
 		});
 		$('#confirmModal').modal('show');
@@ -28,12 +29,20 @@ var toolbar = {
 		$('#confirmModal').modal('show');
 	},
 
+	showAlertModal: function(message){
+		$('#alertModalBody').html(message);
+		$('#alertModal').modal('show');
+	},
+
 	newMov : function(){
 		toolbar.redirect("{{ url('cxc/movimiento/nuevo') }}", 'POST');
 	},
 
 	saveMov : function(actionType){
 
+		if(!toolbar.verifySave()){
+			return;
+		}
 
 		console.log('save');
 		$('#action').val(actionType);
@@ -45,38 +54,127 @@ var toolbar = {
 		generateText();
 	},
 
-	checkRedirect: function(){
-		var redirect = window.sessionStorage.getItem('toolbar-redirect');
-		var base = '{{ url() }}';
-
-		if(redirect){
-			window.sessionStorage.removeItem('toolbar-redirect');
-			toolbar.redirect(base + '/' + redirect);
-		}
-	},
-
 	openMov : function(){
 		//toolbar.redirect("{{ url('cxc/movimiento/abrir') }}", 'GET');
 		window.location = "{{ url('cxc/movimiento/abrir')}}";
 	},
 
 	deleteMov: function(){
+		if(!toolbar.verifyDelete()){
+			return;
+		}
+
 		toolbar.redirect("{{ url('cxc/movimiento/delete') }}", 'POST');
 	},
 
 	affectMov : function(){
-		toolbar.redirect("{{ url('cxc/movimiento/affect') }}", 'POST');
+		
+		if(!toolbar.verifyAffect()){
+			return;
+		}
+
+		if(toolbar.movStatus == 'PENDIENTE'){
+			window.location = "{{ url('cxc/movimiento/affect') }}";
+		}
+		else{
+			toolbar.saveMov('affect');
+		}
 	},
 
 	cancelMov: function(){
+		if(!toolbar.verifyCancel()){
+			return;
+		}
+
 		toolbar.redirect("{{ url('cxc/movimiento/cancel') }}", 'POST');
 	},
 
-	/*verifySave: function(){
-		client_id
-		currency
-		Mov
-	}*/
+	verifySave: function(){
+		var success = false;
+		var clientID = $('#client_id').val();
+		var currency = $('#currency').val();
+		var mov = $('#hidden_mov').val();
+
+		if(toolbar.movStatus && toolbar.movStatus != 'SINAFECTAR'){
+			toolbar.showAlertModal('Solo se pueden guardar movimientos con estatus \'SINAFECTAR\'.');
+			return success;
+		}
+		if(!clientID){
+			toolbar.showAlertModal('Es necesario seleccionar un cliente.');
+			return success;
+		}
+		if(!mov){
+			toolbar.showAlertModal('Es necesario seleccionar un movimiento.');
+			return success;
+		}
+		if(!currency){
+			toolbar.showAlertModal('Es necesario seleccionar una moneda.');
+			return success;
+		}
+
+		success = true;
+
+		return success;
+	},
+
+	verifyAffect: function(){
+		var success = false;
+
+		if(toolbar.movStatus && toolbar.movStatus != 'SINAFECTAR' && toolbar.movStatus != 'PENDIENTE'){
+			toolbar.showAlertModal('Solo se pueden afectar movimientos con estatus \'SINAFECTAR\' o \'PENDIENTE\'.');
+			return success;
+		}
+
+		var rounding = 1;
+		var totalAmount = parseFloat($('#totalAmount').val()) || 0;
+		var totalCharge = parseFloat($('#totalCharge').val()) || 0;
+		var change = parseFloat($('#change').val()) || 0;
+		var proBalance = parseFloat($('#pro_balance').val()) || 0;
+
+		totalAmount = new Decimal(totalAmount);
+		totalCharge = new Decimal(totalCharge);
+
+		var minimunAmount = totalAmount.minus(rounding);
+		var maximunAmount = totalAmount.plus(rounding);
+
+		//var total = totalAmount.plus(proBalance).minus(change);
+		var charge = totalCharge.plus(proBalance).minus(change);
+
+		if( charge < minimunAmount || charge > maximunAmount ){
+			toolbar.showAlertModal('El cobro no cuadra con el importe total.');
+			return success;
+		}
+
+		success = true;
+
+		return success;
+	},
+
+	verifyCancel: function(){
+		var success = false;
+
+		if(toolbar.movStatus && toolbar.movStatus != 'PENDIENTE' && toolbar.movStatus != 'CONCLUIDO'){
+			toolbar.showAlertModal('Solo se pueden guardar movimientos con estatus \'PENDIENTE\' o \'CONCLUIDO\'.');
+			return success;
+		}
+
+		success = true;
+
+		return success;
+	},
+
+	verifyDelete: function(){
+		var success = false;
+
+		if(toolbar.movStatus && toolbar.movStatus != 'SINAFECTAR'){
+			toolbar.showAlertModal('Solo se pueden guardar movimientos con estatus \'SINAFECTAR\'.');
+			return success;
+		}
+
+		success = true;
+
+		return success;
+	}
 };
 
 $('#newMov').click(function(){
@@ -93,7 +191,9 @@ $('#saveMov').click(function(){
 	toolbar.saveMov('save');
 });
 $('#deleteMov').click(toolbar.confirmDeleteMov);
-$('#affectMov').click(toolbar.affectMov);
+$('#affectMov').click(function(){
+	toolbar.affectMov();
+});
 $('#cancelMov').click(toolbar.confirmCancelMov);
 $('#printMov').click(toolbar.printMov);
 
@@ -248,8 +348,5 @@ toolbar.redirect = function(url, method) {
     form.action = url;
     form.submit();
 };
-
-toolbar.checkRedirect();
-
 
 </script>

@@ -133,6 +133,7 @@ class MovController extends Controller {
 		$cxc->last_change = Carbon::now()->format('d/m/Y');
 		$cxc->expiration = $cxcArray['emission_date_str'];
 		$cxc->condition = 'Contado';
+		$cxc->tho_web_assigned = $user->shipment->ID;
 
 		$changeType = 1;
 		$currency = Currency::find($cxc->currency);
@@ -142,7 +143,7 @@ class MovController extends Controller {
 
 		$cxc->client_change_type = $cxc->change_type = $changeType;
 		$cxc->client_currency = $cxc->currency;
-
+		//dd($cxc);
 		$cxc->save();
 
 		/*foreach ($cxc->details as $cxcDetail) {
@@ -170,8 +171,10 @@ class MovController extends Controller {
 		}
 
 		$action = \Input::get('action');
+		Cxc::setSessionMovID($cxc->ID);
 		switch ($action) {
 			case 'new':
+				Cxc::removeSessionMovID($cxc->ID);
 				return redirect('cxc/movimiento/nuevo');
 				break;
 			case 'open':
@@ -196,7 +199,10 @@ class MovController extends Controller {
 				} 
 				break;
 			case 'resultCalculator':
-				return redirect('cxc/movimiento/mov/'.$cxc->ID.'#documentos'); 	 
+				return redirect('cxc/movimiento/mov/'.$cxc->ID.'#documentos');
+			case 'affect':
+				return redirect('cxc/movimiento/affect');
+				break;	 
 			case 'save':
 			default:
 				return redirect('cxc/movimiento/mov/'.$cxc->ID);
@@ -518,7 +524,7 @@ class MovController extends Controller {
 		return response()->json($applyList);
 	}
 
-	public function postAffect(){
+	public function getAffect(){
 	
 		$movID = Cxc::getSessionMovID();
 		$username = \Auth::user()->username;
@@ -536,12 +542,34 @@ class MovController extends Controller {
 			]);
 		}
 
+		$cxc = Cxc::find($movID);
+		if(!$cxc) {
+			return redirect()->back()->withInput()->withErrors([
+				'Mov'=>'El movimiento '.$movID.' ya no existe.',
+			]);
+		}
+		// El movimiento debe tener el estatus SINAFECTAR o PENDIENTE para poder ser eliminado.
+		if($cxc->status != 'SINAFECTAR' && $cxc->status != 'PENDIENTE'){
+			return redirect()->back()->withInput()->withErrors([
+				'Status'=>'Solo puedes AFECTAR movimientos con estatus \'SINAFECTAR\' o \'PENDIENTE\'.',
+			]);
+		}
+
 		$result = Cxc::affect($movID, $username, $action);
 
 		if(!$result){
 			return redirect()->back()->withInput()->withErrors([
 				'Affect'=>'No se pudo afectar el movimiento.',
 			]);
+		}
+
+		$message = new \stdClass();
+		if($result['message'] == null){
+			$message->type = 'INFO';
+			$message->description = 'Movimiento afectado.';
+			$message->code = '';
+			$message->reference = '';
+			return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
 		}
 
 		$message = MessageList::find($result['message']);
@@ -568,12 +596,34 @@ class MovController extends Controller {
 			]);
 		}
 
+		$cxc = Cxc::find($movID);
+		if(!$cxc) {
+			return redirect()->back()->withInput()->withErrors([
+				'Mov'=>'El movimiento '.$movID.' ya no existe.',
+			]);
+		}
+		// El movimiento debe tener el estatus CONCLUIDO O PENDIENTE para poder ser eliminado.
+		if($cxc->status != 'CONCLUIDO' && $cxc->status != 'PENDIENTE'){
+			return redirect()->back()->withInput()->withErrors([
+				'Status'=>'Solo puedes AFECTAR movimientos con estatus \'CONCLUIDO\' o \'PENDIENTE\'.',
+			]);
+		}
+
 		$result = Cxc::affect($movID, $username, $action);
 
 		if(!$result){
 			return redirect()->back()->withInput()->withErrors([
 				'Affect'=>'No se pudo cancelar el movimiento.',
 			]);
+		}
+
+		$message = new \stdClass();
+		if($result['message'] == null){
+			$message->type = 'INFO';
+			$message->description = 'Movimiento cancelado.';
+			$message->code = '';
+			$message->reference = '';
+			return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
 		}
 
 		$message = MessageList::find($result['message']);
