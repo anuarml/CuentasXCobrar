@@ -336,11 +336,15 @@ function addChargeRow(charge){
 			//nTotalCharge = nTotalCharge - previousAmount;
 			if(nTotalCharge<1) nTotalCharge = 0;
 			totalCharge.val(nTotalCharge.toFixed(2));
+			@if($mov->Mov == 'Anticipo')
+				$('#totalAmount').val(totalCharge.val());
+			@endif
 			var change = $('#change');
 			totalCharge.change();
 			change.change();
 			previousAmount = nAmount;
 			$(this).val(parseFloat($(this).val()).toFixed(2));
+			
 		}
 		
 		//previousAmount = $(this).val();
@@ -548,6 +552,8 @@ function updateTotalAmount(previousAmount, actualAmount){
 	taxes = totalCharge.minus(amount);
 
 	totalChargeInput.val(totalCharge.toNumber().toFixed(2));
+
+	
 	$('#amount').val(amount.toNumber().toFixed(2));
 	$('#taxes').val(taxes.toNumber().toFixed(2));
 }

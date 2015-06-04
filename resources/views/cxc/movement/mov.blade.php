@@ -268,7 +268,7 @@
 					    	</div>
 					    	<hr class="colorgraph">
 				    		<div class='form-group'>
-				    			<div class='col-sm-3'>
+			    				<div class='col-sm-3' id='dvProBalance'>
 				    				<!--<label for="pro_balance">Saldo a Favor</label>-->
 				    				{!! Form::label('pro_balance','Saldo a Favor') !!}
 				    				<div class='input-group'>
@@ -296,15 +296,25 @@
 				    					
 				    				</div>
 				    			</div>
+				    			@if($mov->Mov == 'Anticipo')
+					    			<div class='col-sm-2' hidden>
+					    				<label for="totalCharge">Importe Total</label>
+					    				<div class='input-group'>
+					    					<div class='input-group-addon'>$</div>
+					    					<input type='number' class='form-control input-sm' id='totalCharge' min='0' step='any' value='0.00' readonly >
+					    				</div>
+					    			</div>
+				    			@else
+					    			<div class='col-sm-2'>
+					    				<label for="totalCharge">Importe Total</label>
+					    				<div class='input-group'>
+					    					<div class='input-group-addon'>$</div>
+					    					<input type='number' class='form-control input-sm' id='totalCharge' min='0' step='any' value='0.00' readonly>
+					    				</div>
+					    			</div>
+				    			@endif
 				    			<div class='col-sm-2'>
-				    				<label for="totalCharge">Cobro Total</label>
-				    				<div class='input-group'>
-				    					<div class='input-group-addon'>$</div>
-				    					<input type='number' class='form-control input-sm' id='totalCharge' min='0' step='any' value='0.00' readonly>
-				    				</div>
-				    			</div>
-				    			<div class='col-sm-2'>
-				    				<label for="totalAmount">Importe Total</label>
+				    				<label for="totalAmount">Total</label>
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
 
@@ -314,13 +324,23 @@
 
 				    				</div>
 				    			</div>
-				    			<div class='col-sm-2'>
-				    				<label for="difference">Por Cobrar</label>
-				    				<div class='input-group'>
-				    					<div class='input-group-addon'>$</div>
-				    					<input type='number' class='form-control input-sm' id='difference' min='0' step='any' value='0.00' readonly>
-				    				</div>
-				    			</div>
+				    			@if($mov->Mov == 'Anticipo')
+					    			<div class='col-sm-2' hidden>
+					    				<label for="difference">Por Cobrar</label>
+					    				<div class='input-group'>
+					    					<div class='input-group-addon'>$</div>
+					    					<input type='number' class='form-control input-sm' id='difference' min='0' step='any' value='0.00' readonly>
+					    				</div>
+					    			</div>
+				    			@else
+					    			<div class='col-sm-2'>
+					    				<label for="difference">Por Cobrar</label>
+					    				<div class='input-group'>
+					    					<div class='input-group-addon'>$</div>
+					    					<input type='number' class='form-control input-sm' id='difference' min='0' step='any' value='0.00' readonly>
+					    				</div>
+					    			</div>
+				    			@endif
 				    		</div>
 				    		</div>
 					    </div>

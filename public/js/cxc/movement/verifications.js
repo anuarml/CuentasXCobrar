@@ -9,6 +9,7 @@ function verifyMov(/*movToVerify*/){
 			//$('#documentos').remove();
 			//console.log($('#documentos'));
 			$('#tabDocs').remove();
+			$('#dvProBalance').attr('hidden', true);
 			//tabDocs
 			//var tabDocuments = document.getElementById("documentos");
 			//console.log(tabDocuments);

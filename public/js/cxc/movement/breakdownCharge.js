@@ -132,6 +132,7 @@ totalCharge.change(function(){
 	}
 	//console.log(nDifference);
 	$('#difference').val(nDifference.toFixed(2));
+	
 });	
 
 /*$('#charges').on('click', '#amount1', function(){
