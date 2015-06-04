@@ -100,7 +100,7 @@ function addDocumentRow(cxcD, cxcDocument){
 		showPPSuggest();
 	}
 	
-	$("#documentsTable tbody tr:last .deleteDocument").on("click", function(){
+	/*$("#documentsTable tbody tr:last .deleteDocument").on("click", function(){
 
 		var $killrow = $(this).parent('td').parent('tr');
 		var documentNum = $killrow.attr('id').split('-')[1];
@@ -115,13 +115,29 @@ function addDocumentRow(cxcD, cxcDocument){
 		$killrow.remove();
 
 		//documentsNumber--;
-	});
+	});*/
 
 	@if($mov->status == 'SINAFECTAR' || $mov->status == '')
 		$("#documentsTable tbody tr:last .apply").on("click", editApply);
 		$("#documentsTable tbody tr:last .consecutive").on("click", editConsecutive);
 		$("#documentsTable tbody tr:last .amount").on("click", editAmount);
 		$("#documentsTable tbody tr:last .discountPPP").on("click", editDiscountPPP);
+		$("#documentsTable tbody tr:last .deleteDocument").on("click", function(){
+
+			var $killrow = $(this).parent('td').parent('tr');
+			var documentNum = $killrow.attr('id').split('-')[1];
+
+			// Actualizar importe total
+			if(aCxcD[documentNum])
+				updateTotalAmount(aCxcD[documentNum].amount, 0);
+
+			aCxcD[documentNum] = null;
+			aCxcDocs[documentNum] = null;
+
+			$killrow.remove();
+
+			//documentsNumber--;
+		});
 	@endif
 	//$("#documentsTable tbody tr:last .apply").on("click", editApply);
 
@@ -216,8 +232,8 @@ function addChargeRow(charge){
 
 	//var indexNumber = aCharges.indexOf(null);
 	//var chargeNumber = indexNumber + 1
-
-	$('#charges').append(
+	@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+		$('#charges').append(
 		"<div class='form-group' id='charge-"+chargeNumber+"'>" +	    	
 			"<div class='col-sm-4'>" +
 				"<label for='amount"+chargeNumber+"'>Importe</label>" +
@@ -241,6 +257,31 @@ function addChargeRow(charge){
 			"</div>" +
 			"<hr>" + 
 		"</div>");
+	@else
+		$('#charges').append(
+		"<div class='form-group' id='charge-"+chargeNumber+"'>" +	    	
+			"<div class='col-sm-4'>" +
+				"<label for='amount"+chargeNumber+"'>Importe</label>" +
+				"<div class='input-group'>"+
+					"<div class='input-group-addon'>$</div>"+
+					"<input type='number' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' value='"+ (charge.amount || '0.00') +"' min='0' step='any' readonly>"+
+				"</div>"+
+			"</div>" +
+			"<div class='col-sm-4'>" +
+				"<label for='charge_type"+chargeNumber+"'>Forma Cobro</label>"+
+				"<select id='charge_type"+chargeNumber+"' name='charge_type"+chargeNumber+"' class='form-control input-sm' disabled='true'>"+
+					options +
+				"</select>" +
+			"</div>" +
+			"<div class='col-sm-3'>" +
+				"<label for='reference"+chargeNumber+"'>Referencia</label>"+
+				"<input type='text' class='form-control input-sm' id='reference"+chargeNumber+"' name='reference"+chargeNumber+"' value='"+ (charge.reference || '') +"' readonly>"+
+			"</div>" + 
+			"<hr>" + 
+		"</div>");
+	@endif
+
+	
 
 	$('#charge_type'+chargeNumber).val(charge.payment_type || '');
 	
