@@ -124,30 +124,33 @@ var toolbar = {
 
 	verifyAffect: function(){
 		var success = false;
+		var movType = '{{$mov->Mov}}';
 
 		if(toolbar.movStatus && toolbar.movStatus != 'SINAFECTAR' && toolbar.movStatus != 'PENDIENTE'){
 			toolbar.showAlertModal('Solo se pueden afectar movimientos con estatus \'SINAFECTAR\' o \'PENDIENTE\'.');
 			return success;
 		}
 
-		var rounding = 1;
-		var totalAmount = parseFloat($('#totalAmount').val()) || 0;
-		var totalCharge = parseFloat($('#totalCharge').val()) || 0;
-		var change = parseFloat($('#change').val()) || 0;
-		var proBalance = parseFloat($('#pro_balance').val()) || 0;
+		if(movType == 'Cobro'){
+			var rounding = 1;
+			var totalAmount = parseFloat($('#totalAmount').val()) || 0;
+			var totalCharge = parseFloat($('#totalCharge').val()) || 0;
+			var change = parseFloat($('#change').val()) || 0;
+			var proBalance = parseFloat($('#pro_balance').val()) || 0;
 
-		totalAmount = new Decimal(totalAmount);
-		totalCharge = new Decimal(totalCharge);
+			totalAmount = new Decimal(totalAmount);
+			totalCharge = new Decimal(totalCharge);
 
-		var minimunAmount = totalAmount.minus(rounding);
-		var maximunAmount = totalAmount.plus(rounding);
+			var minimunAmount = totalAmount.minus(rounding);
+			var maximunAmount = totalAmount.plus(rounding);
 
-		//var total = totalAmount.plus(proBalance).minus(change);
-		var charge = totalCharge.plus(proBalance).minus(change);
+			//var total = totalAmount.plus(proBalance).minus(change);
+			var charge = totalCharge.plus(proBalance).minus(change);
 
-		if( charge < minimunAmount || charge > maximunAmount ){
-			toolbar.showAlertModal('El cobro no cuadra con el importe total.');
-			return success;
+			if( charge < minimunAmount || charge > maximunAmount ){
+				toolbar.showAlertModal('El cobro no cuadra con el importe total.');
+				return success;
+			}
 		}
 
 		success = true;
