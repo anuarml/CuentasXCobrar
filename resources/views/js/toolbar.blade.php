@@ -7,12 +7,17 @@ var toolbar = {
 
 	confirmSaveChanges : function(defaultCallback, action){
 
-		$('#confirmModalBody').html('<img width="25px" src="{{asset("img/save.png")}}">&nbsp;&nbsp;&nbsp;&nbsp;¿Guardar cambios?');
-		$('#confirmModal').find('.btn-default').click(defaultCallback);
-		$('#confirmModal').find('.btn-primary').click(function(){
-			toolbar.saveMov(action);
-		});
-		$('#confirmModal').modal('show');
+		if( !toolbar.movStatus || toolbar.movStatus == 'SINAFECTAR'){
+			$('#confirmModalBody').html('<img width="25px" src="{{asset("img/save.png")}}">&nbsp;&nbsp;&nbsp;&nbsp;¿Guardar cambios?');
+			$('#confirmModal').find('.btn-default').click(defaultCallback);
+			$('#confirmModal').find('.btn-primary').click(function(){
+				toolbar.saveMov(action);
+			});
+			$('#confirmModal').modal('show');
+		}
+		else {
+			defaultCallback();
+		}
 	},
 
 	confirmCancelMov : function(){
