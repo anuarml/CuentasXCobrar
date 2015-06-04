@@ -93,7 +93,8 @@ class Cxc extends Model {
 	}
 
 	public function getEmissionDateAttribute(){
-		return (new \Carbon\Carbon($this->FechaEmision))->__toString();
+		//return (new \Carbon\Carbon($this->FechaEmision))->__toString();
+		return (new \Carbon\Carbon($this->FechaEmision))->formatLocalized('%d/%b/%Y');
 	}
 
 	public function getEmissionDateStrAttribute(){

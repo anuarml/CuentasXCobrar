@@ -14,7 +14,9 @@ class DateFormat {
 	 */
 	public function handle($request, Closure $next)
 	{
-		Carbon::setToStringFormat('d/M/Y');
+		setlocale(LC_ALL,'esm');
+		//Carbon::setToStringFormat('d/M/Y');
+		//Carbon::setToStringFormat('%d/%b/%Y');
 		return $next($request);
 	}
 
