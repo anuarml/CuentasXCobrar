@@ -32,6 +32,26 @@ class ShipmentMov extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['Mov', 'MovID'];
+	protected $visible = ['Mov', 'MovID','total', 'client','charged'];
 
+	protected $appends = ['total', 'client'];
+
+	public function getTotalAttribute(){
+		return $this->Importe + $this->Impuestos;
+	}
+
+	public function getClientAttribute(){
+		return $this->Cliente;
+	}
+
+	public static function getAsignedDocuments($chargeOrderID){
+
+		$assignedDocuments = null;
+		
+		if($chargeOrderID){
+			$assignedDocuments = self::where('AsignadoID',$chargeOrderID)->get(['Importe','Impuestos','Cliente','Mov','MovID']);
+		}
+
+		return $assignedDocuments;
+	}
 }

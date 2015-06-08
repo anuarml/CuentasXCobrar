@@ -39,14 +39,15 @@
 								</div>
 							@endif
 							<div class="row">
-								<table id="showTable" data-toggle="table" data-url="{{ url($dataURL) }}" data-search="true" data-show-columns="true" data-click-to-select="true">
+								<table id="showTable" data-toggle="table" data-url="{{ url($dataURL) }}" data-search="true" data-show-columns="true" data-show-refresh="true">
 									<thead>
 										<tr>
-										    <th data-field="Mov" data-align="center" data-sortable="true">Mov</th>
-										    <th data-field="MovID" data-align="center" data-sortable="true">MovID</th>
-										    <th data-field="amount" data-align="center" data-sortable="true">Importe</th>
-										    <th data-field="charged" data-align="center" data-sortable="true">Cobrado</th>
-										    <th data-field="assigned" data-align="center" data-sortable="true">Asignado</th>
+											<th data-field="client" data-align="center" data-sortable="true">Cliente</th>
+										    <th data-field="mov" data-align="center" data-sortable="true">Mov</th>
+										    <th data-field="movID" data-align="center" data-sortable="true">MovID</th>
+										    <th data-field="balance" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Saldo</th>
+										    <th data-field="cashed" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Cobrado</th>
+										    <th data-field="assigned" data-align="center" data-sortable="true" data-formatter="booleanFormatter">Asignado</th>
 										</tr>
 									</thead>
 								</table>
@@ -65,6 +66,25 @@
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
 	<script type="text/javascript">
+		function moneyFormatter(value){
+			var valueFormatted = parseFloat(value) || 0;
+
+			return '$'+valueFormatted.toFixed(2);
+		}
+		function booleanFormatter(value){
+			var icon = '';
+			
+			if(value == true){
+				style = 'color:green';
+				icon = 'glyphicon glyphicon-ok';
+			}
+			else {
+				style = 'color:red';
+				icon = 'glyphicon glyphicon-remove';
+			}
+
+			return '<span class="'+icon+'" aria-hidden="true" style="'+style+'"></span>';
+		}
 		
 		$('#showTable').attr('data-height',$( window ).height() - 90 );
 	</script>

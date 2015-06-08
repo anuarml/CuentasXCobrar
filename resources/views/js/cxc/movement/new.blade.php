@@ -568,10 +568,10 @@ function calcTaxes(amountWithTaxes){
 	amountWithTaxes = parseFloat(amountWithTaxes) || 0;
 	amountWithTaxes = new Decimal(amountWithTaxes);
 
-	amount = amountWithTaxes.div(IVA).toNumber();
+	amount = amountWithTaxes.div(IVA);
 	taxes = amountWithTaxes.minus(amount).toNumber();
 
-	$('#amount').val(amount.toFixed(2));
+	$('#amount').val(amount.toNumber().toFixed(2));
 	$('#taxes').val(taxes.toFixed(2));
 }
 

@@ -141,11 +141,14 @@ var toolbar = {
 			totalAmount = new Decimal(totalAmount);
 			totalCharge = new Decimal(totalCharge);
 
-			var minimunAmount = totalAmount.minus(rounding);
-			var maximunAmount = totalAmount.plus(rounding);
+			var minimunAmount = totalAmount.minus(rounding).toNumber();
+			var maximunAmount = totalAmount.plus(rounding).toNumber();
 
 			//var total = totalAmount.plus(proBalance).minus(change);
-			var charge = totalCharge.plus(proBalance).minus(change);
+			var charge = totalCharge.plus(proBalance).minus(change).toNumber();
+
+			//console.log(charge+' '+totalAmount);
+			//calcTaxes(charge);
 
 			if( charge < minimunAmount || charge > maximunAmount ){
 				toolbar.showAlertModal('El cobro no cuadra con el importe total.');

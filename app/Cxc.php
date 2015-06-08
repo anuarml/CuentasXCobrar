@@ -505,4 +505,27 @@ class Cxc extends Model {
 
 		return $charges;
 	}
+
+	public static function getChargedDocuments($chargeOrder){
+
+		$chargedDocuments = null;
+
+		$chargeMovs = self::where('Mov','Cobro')->where('ThoAsignadoWeb',$chargeOrder)->get();
+
+		//dd($chargeMovs);
+
+		foreach ($chargeMovs as $chargeMov) {
+
+			if($chargedDocuments){
+				foreach ($chargeMov->details as $detail) {
+					$chargedDocuments->push($detail);
+				}
+			}
+			else {
+				$chargedDocuments = $chargeMov->details;
+			}
+		}
+
+		return $chargedDocuments;
+	}
 }

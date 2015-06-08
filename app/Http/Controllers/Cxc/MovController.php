@@ -13,6 +13,7 @@ use App\Mon;
 use App\MovType;
 use App\Office;
 use App\PaymentType;
+use App\Shipment;
 use App\ThoUserAccess;
 
 use App\Http\Controllers\Controller;
@@ -133,7 +134,9 @@ class MovController extends Controller {
 		$cxc->last_change = Carbon::now()->format('d/m/Y');
 		$cxc->expiration = $cxcArray['emission_date_str'];
 		$cxc->condition = 'Contado';
-		$cxc->tho_web_assigned = $user->shipment->ID;
+
+		// Obtiene el ID de la orden de cobro asignada al usuario autenticado.
+		$cxc->tho_web_assigned = Shipment::getChargeOrderID();
 
 		$changeType = 1;
 		$currency = Currency::find($cxc->currency);
