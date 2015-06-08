@@ -44,24 +44,24 @@ class Shipment extends Model {
 		return $this->MovID;
 	}*/
 
-	public static function getChargeOrderID(){
+	public static function getChargeOrdersID(){
 
-		$chargeOrderID = null;
+		$chargeOrdersID = [];
 		$user = \Auth::user();
 
 		if (!$user) {
-			return $chargeOrder;
+			return $chargeOrdersID;
 		}
 
 		$company = $user->getSelectedCompany();
 		$agent = $user->agent;
 
-		$chargeOrder = self::where('Mov','Orden Cobro')->where('Estatus','PENDIENTE')->where('Empresa',$company)->where('Agente',$agent)->first(['ID']);
+		$chargeOrders = self::where('Mov','Orden Cobro')->where('Estatus','PENDIENTE')->where('Empresa',$company)->where('Agente',$agent)->get(['ID']);
 
-		if($chargeOrder){
-			$chargeOrderID = $chargeOrder->ID;
+		foreach($chargeOrders as $chargeOrder){
+			$chargeOrdersID[] = $chargeOrder->ID;
 		}
 
-		return $chargeOrderID;
+		return $chargeOrdersID;
 	}
 }

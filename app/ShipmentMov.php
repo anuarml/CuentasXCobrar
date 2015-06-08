@@ -46,11 +46,7 @@ class ShipmentMov extends Model {
 
 	public static function getAsignedDocuments($chargeOrderID){
 
-		$assignedDocuments = null;
-		
-		if($chargeOrderID){
-			$assignedDocuments = self::where('AsignadoID',$chargeOrderID)->get(['Importe','Impuestos','Cliente','Mov','MovID']);
-		}
+		$assignedDocuments = self::whereIn('AsignadoID',$chargeOrderID)->get(['Importe','Impuestos','Cliente','Mov','MovID']);
 
 		return $assignedDocuments;
 	}

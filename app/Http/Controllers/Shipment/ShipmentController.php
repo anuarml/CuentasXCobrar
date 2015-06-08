@@ -34,7 +34,7 @@ class ShipmentController extends Controller {
 		$chargeOrderCompare = collect([]);
 
 		// Se obtiene el ID de la orden de cobro asignada al usuario.
-		$chargeOrderID = Shipment::getChargeOrderID();
+		$chargeOrderID = Shipment::getChargeOrdersID();
 		// Se obtienen los documentos asignados al usuario en la orden de cobro.
 		$assignedDocuments = ShipmentMov::getAsignedDocuments($chargeOrderID);
 		// Se obtienen los documentos que ha cobrado el usuario durante la ruta de cobro asignada.
@@ -49,11 +49,16 @@ class ShipmentController extends Controller {
 			$documentOrigin = Cxc::where('Mov',$mov)->where('MovID',$movID)->where('Empresa',$user->getSelectedCompany())->first(['Saldo','Cliente']);
 
 			$document = new \stdClass;
+
+			if($documentOrigin){
+				$document->balance = $documentOrigin->balance;
+			} else{
+				$document->balance = 0;
+			}
+			$document->client = $assignedDocument->client;
 			$document->assigned = true;
 			$document->charged = false;
 			$document->cashed = 0;
-			$document->balance = $documentOrigin->balance;
-			$document->client = $documentOrigin->client_id;
 			$document->mov = $mov;
 			$document->movID = $movID;
 			
