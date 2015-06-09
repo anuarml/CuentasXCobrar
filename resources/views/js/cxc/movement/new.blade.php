@@ -739,6 +739,7 @@ function calculateTotalAmount(){
 	total += nProBalance;
 	//console.log("Total: " + total); 	
 	return total;
+}
 
 function calcTaxes(amountWithTaxes){
 	var amount;
