@@ -381,9 +381,15 @@ class MovController extends Controller {
 	}
 
 	public function getListaMovimientos(){
-		//$movList = Cxc::all();
-		$movList = Cxc::where('Mov', 'Cobro')->orWhere('Mov', 'Anticipo')->get();
-		//$movList->emission_date = $movList->emission_date->format('d/M/Y');
+		$user = \Auth::user();
+		$company = $user->getSelectedCompany();
+		$username = $user->username;
+
+		$movList = Cxc::where(function ($query) {
+			$query->where('Mov', 'Cobro')
+				->orWhere('Mov', 'Anticipo');
+		})->where('Empresa',$company)
+		  ->where('Usuario',$username)->get();
 
 		return response()->json($movList);
 	}

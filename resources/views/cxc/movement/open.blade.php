@@ -7,7 +7,7 @@
     <th data-field="Mov" data-align="center" data-sortable="true">Movimiento</th>
     <th data-field="concept" data-sortable="true">Concepto</th>
     <th data-field="client_id" data-sortable="true">Cliente</th>
-    <th data-field="amount" data-sortable="true" data-formatter="moneyFormatter">Importe</th>
+    <th data-field="total_amount" data-sortable="true" data-formatter="moneyFormatter">Importe</th>
     <th data-field="status" data-sortable="true">Estatus</th>
     <th data-field="emission_date" data-sortable="true">Emision</th>
 @endsection
