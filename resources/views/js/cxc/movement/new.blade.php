@@ -677,22 +677,13 @@ function clearRowInfo(element){
 function updateTotalAmount(previousAmount, actualAmount){
 	var totalChargeInput = $('#totalAmount');
 	var totalCharge = new Decimal(totalChargeInput.val() || 0);
-	var amount = 0;
-	var taxes = 0;
-	var IVA = 1.16;
 
 	actualAmount = new Decimal(actualAmount || 0);
 
 	totalCharge = totalCharge.plus(actualAmount.minus(previousAmount));
 
-	amount = totalCharge.div(IVA);
-	taxes = totalCharge.minus(amount);
-
 	totalChargeInput.val(totalCharge.toNumber().toFixed(2));
 
-
-	$('#amount').val(amount.toNumber().toFixed(2));
-	$('#taxes').val(taxes.toNumber().toFixed(2));
 }
 
 function showPPSuggest(){
@@ -748,6 +739,21 @@ function calculateTotalAmount(){
 	total += nProBalance;
 	//console.log("Total: " + total); 	
 	return total;
+
+function calcTaxes(amountWithTaxes){
+	var amount;
+	var taxes;
+	var IVA = 1.16;
+
+	amountWithTaxes = parseFloat(amountWithTaxes) || 0;
+	amountWithTaxes = new Decimal(amountWithTaxes);
+
+	amount = amountWithTaxes.div(IVA).toNumber();
+	taxes = amountWithTaxes.minus(amount).toNumber();
+
+	$('#amount').val(amount.toFixed(2));
+	$('#taxes').val(taxes.toFixed(2));
+
 }
 
 </script>
