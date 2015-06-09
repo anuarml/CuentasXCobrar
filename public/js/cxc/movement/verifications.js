@@ -10,6 +10,8 @@ function verifyMov(/*movToVerify*/){
 			//console.log($('#documentos'));
 			$('#tabDocs').remove();
 			$('#dvProBalance').attr('hidden', true);
+			$('#dvTotalAmount').attr('hidden', true);
+			$('#dvDifference').attr('hidden', true);
 			//tabDocs
 			//var tabDocuments = document.getElementById("documentos");
 			//console.log(tabDocuments);

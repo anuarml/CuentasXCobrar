@@ -296,51 +296,36 @@
 				    					
 				    				</div>
 				    			</div>
-				    			@if($mov->Mov == 'Anticipo')
-					    			<div class='col-sm-2' hidden>
-					    				<label for="totalCharge">Importe Total</label>
-					    				<div class='input-group'>
-					    					<div class='input-group-addon'>$</div>
-					    					<input type='number' class='form-control input-sm' id='totalCharge' min='0' step='any' value='0.00' readonly >
-					    				</div>
-					    			</div>
-				    			@else
-					    			<div class='col-sm-2'>
-					    				<label for="totalCharge">Importe Total</label>
-					    				<div class='input-group'>
-					    					<div class='input-group-addon'>$</div>
-					    					<input type='number' class='form-control input-sm' id='totalCharge' min='0' step='any' value='0.00' readonly>
-					    				</div>
-					    			</div>
-				    			@endif
-				    			<div class='col-sm-2'>
+				    			<div class='col-sm-2' id='dvTotalCharge'>
+				    				<label for="totalCharge">Importe Total</label>
+				    				<div class='input-group'>
+				    					<div class='input-group-addon'>$</div>
+				    					<input type='number' class='form-control input-sm' id='totalCharge' min='0' step='any' value='0.00' readonly>
+				    				</div>
+				    			</div>
+				    			<div class='col-sm-2' id='dvTotalAmount'>
 				    				<label for="totalAmount">Total</label>
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-
 				    					<input type='number' class='form-control input-sm' id='totalAmount' min='0' step='any' value='0.00' readonly>
 				    					<input type="hidden" name="amount" id="amount">
 				    					<input type="hidden" name="taxes" id="taxes">
-
+				    				</div>
+				    			</div>	
+				    			<div class='col-sm-2' id='dvDifference'>
+				    				<label for="difference">Por Cobrar</label>
+				    				<div class='input-group'>
+				    					<div class='input-group-addon'>$</div>
+				    					<input type='number' class='form-control input-sm' id='difference' min='0' step='any' value='0.00' readonly>
 				    				</div>
 				    			</div>
-				    			@if($mov->Mov == 'Anticipo')
-					    			<div class='col-sm-2' hidden>
-					    				<label for="difference">Por Cobrar</label>
-					    				<div class='input-group'>
-					    					<div class='input-group-addon'>$</div>
-					    					<input type='number' class='form-control input-sm' id='difference' min='0' step='any' value='0.00' readonly>
-					    				</div>
-					    			</div>
-				    			@else
-					    			<div class='col-sm-2'>
-					    				<label for="difference">Por Cobrar</label>
-					    				<div class='input-group'>
-					    					<div class='input-group-addon'>$</div>
-					    					<input type='number' class='form-control input-sm' id='difference' min='0' step='any' value='0.00' readonly>
-					    				</div>
-					    			</div>
-				    			@endif
+				    			<div class='col-sm-2' id='dvTotalChangeAllowed'>
+				    				<label for="totalChangeAllowed">Cambio Permitido</label>
+				    				<div class='input-group'>
+				    					<div class='input-group-addon'>$</div>
+				    					<input type='number' class='form-control input-sm' id='totalChangeAllowed' min='0' step='any' value='0' readonly>
+				    				</div>
+				    			</div>	
 				    		</div>
 				    		</div>
 					    </div>
@@ -406,6 +391,7 @@
 	}
 
 	paymentTypeList = JSON.parse('{!! $paymentTypeList !!}');
+	paymentTypeListChangeAllowed = JSON.parse('{!! $paymentTypeListChangeAllowed !!}');
 
 	function showChargeDetails(){
 		var movCharges = JSON.parse('{!!$movCharges!!}');
