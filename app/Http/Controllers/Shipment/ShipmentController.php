@@ -108,6 +108,8 @@ class ShipmentController extends Controller {
 			}
 		}
 
+		//$chargeOrderCompare->sum('cashed');
+
 		//dd([$assignedDocuments,$unassignedChargedDocuments]);
 		//dd($chargeOrderCompare);
 		return response()->json($chargeOrderCompare);
