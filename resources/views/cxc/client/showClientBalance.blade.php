@@ -44,7 +44,7 @@
 										<tr>
 										    <th data-field="Mov" data-align="center" data-sortable="true">Mov</th>
 										    <th data-field="MovID" data-align="center" data-sortable="true">MovID</th>
-										    <th data-field="balance" data-align="center" data-sortable="true">Saldo</th>
+										    <th data-field="balance" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Saldo</th>
 										    <th data-field="expiration" data-align="center" data-sortable="true">Vencimiento</th>
 										    <th data-field="delinquent_days" data-align="center" data-sortable="true">Dias Moratarios</th>
 										</tr>

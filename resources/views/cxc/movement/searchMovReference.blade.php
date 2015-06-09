@@ -6,7 +6,7 @@
     <th data-field="MovID" data-align="center" data-sortable="true">MovID</th>
     <th data-field="emission_date" data-align="center" data-sortable="true">Fecha de Emisión</th>
     <th data-field="expiration_date" data-align="center" data-sortable="true">Fecha de Vencimiento</th>
-    <th data-field="balance" data-align="center" data-sortable="true">Saldo</th>
+    <th data-field="balance" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Saldo</th>
 @endsection
 
 @section('action')
