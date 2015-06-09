@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Tabla Embarque</title>
+	<title>Reporte de cobranza</title>
 
 	<link rel="icon" type="image/jpg" href="{{ asset('/img/money.jpg') }}" />
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
@@ -26,7 +26,7 @@
 			<div class="col-sm-10 col-sm-offset-1">
 				<div class="row">
 					<div class="panel panel-default">
-						<div class="panel-heading">Embarque</div>
+						<div class="panel-heading">Reporte de cobranza</div>
 						<div class="panel-body">
 							@if (count($errors) > 0)
 								<div class="alert alert-danger">
@@ -39,14 +39,38 @@
 								</div>
 							@endif
 							<div class="row">
-								<table id="showTable" data-toggle="table" data-url="{{ url($dataURL) }}" data-search="true" data-show-columns="true" data-click-to-select="true">
+								<div class="col-xs-6 col-sm-4">
+									<label for="totalCharged">Total cobrado:</label>
+									<div class='input-group'>
+				    					<div class='input-group-addon'>$</div>
+										<input class="form-control input-sm" type="text" id="totalCharged" name="totalCharged" value="0.00">
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4">
+									<label for="assignedCharged">Asignado cobrado:</label>
+									<div class='input-group'>
+				    					<div class='input-group-addon'>$</div>
+										<input class="form-control input-sm" type="text" id="assignedCharged" name="assignedCharged" value="0.00">
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4">
+									<label for="unassignedCharged">No asignado cobrado:</label>
+									<div class='input-group'>
+				    					<div class='input-group-addon'>$</div>
+										<input class="form-control input-sm" type="text" id="unassignedCharged" name="unassignedCharged" value="0.00">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<table id="showTable" data-toggle="table" data-url="{{ url($dataURL) }}" data-search="true" data-show-columns="true" data-show-refresh="true">
 									<thead>
 										<tr>
-										    <th data-field="Mov" data-align="center" data-sortable="true">Mov</th>
-										    <th data-field="MovID" data-align="center" data-sortable="true">MovID</th>
-										    <th data-field="amount" data-align="center" data-sortable="true">Importe</th>
-										    <th data-field="charged" data-align="center" data-sortable="true">Cobrado</th>
-										    <th data-field="assigned" data-align="center" data-sortable="true">Asignado</th>
+											<th data-field="client" data-align="center" data-sortable="true">Cliente</th>
+										    <th data-field="mov" data-align="center" data-sortable="true">Mov</th>
+										    <th data-field="movID" data-align="center" data-sortable="true">MovID</th>
+										    <th data-field="balance" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Saldo</th>
+										    <th data-field="cashed" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Cobrado</th>
+										    <th data-field="assigned" data-align="center" data-sortable="true" data-formatter="booleanFormatter">Asignado</th>
 										</tr>
 									</thead>
 								</table>
@@ -65,9 +89,59 @@
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
 	<script type="text/javascript">
+		function moneyFormatter(value){
+			var valueFormatted = parseFloat(value) || 0;
+
+			return '$'+valueFormatted.toFixed(2);
+		}
+		function booleanFormatter(value){
+			var icon = '';
+			
+			if(value == true){
+				style = 'color:green';
+				icon = 'glyphicon glyphicon-ok';
+			}
+			else {
+				style = 'color:red';
+				icon = 'glyphicon glyphicon-remove';
+			}
+
+			return '<span class="'+icon+'" aria-hidden="true" style="'+style+'"></span>';
+		}
 		
 		$('#showTable').attr('data-height',$( window ).height() - 90 );
+
+		$('#showTable').bootstrapTable({}).on('load-success.bs.table', function (e, data) {
+            var charges = $('#showTable').bootstrapTable('getData');
+			var nTotalCharged = 0;
+			var nAssignedCharged = 0;
+			var nUnassignedCharged = 0;
+
+			if(charges){
+
+				for(var i=0; i<charges.length; i++){
+
+					var charge = charges[i];
+					var chargeCashed = parseFloat(charge.cashed) || 0;
+
+					nTotalCharged += chargeCashed;
+
+					if(charge.assigned){
+						nAssignedCharged += chargeCashed;
+					}
+					else{
+						nUnassignedCharged += chargeCashed;
+					}
+				}
+
+				$('#totalCharged').val(nTotalCharged.toFixed(2));
+				$('#assignedCharged').val(nAssignedCharged.toFixed(2));
+				$('#unassignedCharged').val(nUnassignedCharged.toFixed(2));
+			}
+        });
+
+		
 	</script>
 
 </body>
-</html>
+</html> 
