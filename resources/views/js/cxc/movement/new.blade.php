@@ -685,11 +685,11 @@ function clearRowInfo(element){
 
 function updateTotalAmount(previousAmount, actualAmount){
 	var totalChargeInput = $('#totalAmount');
-	var totalCharge = new Decimal(totalChargeInput.val() || 0);
+	var totalCharge = new Decimal(parseFloat(totalChargeInput.val()) || 0);
 
-	actualAmount = new Decimal(actualAmount || 0);
+	actualAmount = new Decimal(parseFloat(actualAmount) || 0);
 
-	totalCharge = totalCharge.plus(actualAmount.minus(previousAmount));
+	totalCharge = totalCharge.plus(actualAmount.minus(parseFloat(previousAmount) || 0));
 
 	totalChargeInput.val(totalCharge.toNumber().toFixed(2));
 
