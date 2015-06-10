@@ -57,7 +57,10 @@ class Cxc extends Model {
 		return $this->Sucursal;
 	}
 	public function setOfficeIdAttribute($officeID){
-		return $this->Sucursal = $officeID;
+		if($officeID == ''){
+			$officeID = null;
+		}
+		$this->Sucursal = $officeID;
 	}
 
 
@@ -65,7 +68,10 @@ class Cxc extends Model {
 		return $this->SucursalOrigen;
 	}
 	public function setOriginOfficeIdAttribute($originOfficeID){
-		return $this->SucursalOrigen = $originOfficeID;
+		if($originOfficeID == ''){
+			$originOfficeID = null;
+		}
+		$this->SucursalOrigen = $originOfficeID;
 	}
 
 
@@ -73,7 +79,10 @@ class Cxc extends Model {
 		return $this->Cliente;
 	}
 	public function setClientIdAttribute($clientID){
-		return $this->Cliente = $clientID;
+		if($clientID == ''){
+			$clientID = null;
+		}
+		$this->Cliente = $clientID;
 	}
 
 
@@ -81,7 +90,10 @@ class Cxc extends Model {
 		return $this->ClienteEnviarA;
 	}
 	public function setClientSendToAttribute($clientSendTo){
-		return $this->ClienteEnviarA = $clientSendTo;
+		if($clientSendTo == ''){
+			$clientSendTo = null;
+		}
+		$this->ClienteEnviarA = $clientSendTo;
 	}
 
 
@@ -89,7 +101,10 @@ class Cxc extends Model {
 		return $this->Empresa;
 	}
 	public function setCompanyAttribute($company){
-		return $this->Empresa = $company;
+		if($company == ''){
+			$company = null;
+		}
+		$this->Empresa = $company;
 	}
 
 	public function getEmissionDateAttribute(){
@@ -102,11 +117,19 @@ class Cxc extends Model {
 	}
 
 	public function setEmissionDateAttribute($emissionDate){
-		return $this->FechaEmision = $emissionDate;
+		if($emissionDate == ''){
+			$emissionDate = null;
+		}
+		$this->FechaEmision = $emissionDate;
 	}
 
 	public function setEmissionDateStrAttribute($emissionDate){
-		return $this->FechaEmision = (new \Carbon\Carbon($emissionDate))->format('d/m/Y');
+		if($emissionDate == ''){
+			$this->FechaEmision = null;
+		}
+		else {
+			$this->FechaEmision = (new \Carbon\Carbon($emissionDate))->format('d/m/Y');
+		}
 	}
 
 	
@@ -115,7 +138,10 @@ class Cxc extends Model {
 		return $this->Importe;
 	}
 	public function setAmountAttribute($amount){
-		return $this->Importe = $amount;
+		if($amount == ''){
+			$amount = null;
+		}
+		$this->Importe = $amount;
 	}
 
 
@@ -123,7 +149,10 @@ class Cxc extends Model {
 		return $this->Impuestos;
 	}
 	public function setTaxesAttribute($taxes){
-		return $this->Impuestos = $taxes;
+		if($taxes == ''){
+			$taxes = null;
+		}
+		$this->Impuestos = $taxes;
 	}
 
 
@@ -131,7 +160,10 @@ class Cxc extends Model {
 		return $this->Moneda;
 	}
 	public function setCurrencyAttribute($currency){
-		return $this->Moneda = $currency;
+		if($currency == ''){
+			$currency = null;
+		}
+		$this->Moneda = $currency;
 	}
 
 
@@ -139,7 +171,10 @@ class Cxc extends Model {
 		return $this->TipoCambio;
 	}
 	public function setChangeTypeAttribute($changeType){
-		return $this->TipoCambio = $changeType;
+		if($changeType == ''){
+			$changeType = null;
+		}
+		$this->TipoCambio = $changeType;
 	}
 
 
@@ -147,7 +182,10 @@ class Cxc extends Model {
 		return $this->ClienteMoneda;
 	}
 	public function setClientCurrencyAttribute($clientCurrency){
-		return $this->ClienteMoneda = $clientCurrency;
+		if($clientCurrency == ''){
+			$clientCurrency = null;
+		}
+		$this->ClienteMoneda = $clientCurrency;
 	}
 
 
@@ -155,7 +193,10 @@ class Cxc extends Model {
 		return $this->ClienteTipoCambio;
 	}
 	public function setClientChangeTypeAttribute($clientChangeType){
-		return $this->ClienteTipoCambio = $clientChangeType;
+		if($clientChangeType == ''){
+			$clientChangeType = null;
+		}
+		$this->ClienteTipoCambio = $clientChangeType;
 	}
 
 
@@ -163,7 +204,10 @@ class Cxc extends Model {
 		return $this->Usuario;
 	}
 	public function setUserAttribute($user){
-		return $this->Usuario = $user;
+		if($user == ''){
+			$user = null;
+		}
+		$this->Usuario = $user;
 	}
 
 
@@ -171,7 +215,10 @@ class Cxc extends Model {
 		return $this->Estatus;
 	}
 	public function setStatusAttribute($status){
-		return $this->Estatus = $status;
+		if($status == ''){
+			$status = null;
+		}
+		$this->Estatus = $status;
 	}
 
 
@@ -179,7 +226,10 @@ class Cxc extends Model {
 		return $this->Cajero;
 	}
 	public function setCashierAttribute($cashier){
-		return $this->Cajero = $cashier;
+		if($cashier == ''){
+			$cashier = null;
+		}
+		$this->Cajero = $cashier;
 	}
 
 
@@ -187,7 +237,10 @@ class Cxc extends Model {
 		return $this->OrigenTipo;
 	}
 	public function setOriginTypeAttribute($originType){
-		return $this->OrigenTipo = $originType;
+		if($originType == ''){
+			$originType = null;
+		}
+		$this->OrigenTipo = $originType;
 	}
 
 
@@ -195,7 +248,10 @@ class Cxc extends Model {
 		return $this->Origen;
 	}
 	public function setOriginAttribute($origin){
-		return $this->Origen = $origin;
+		if($origin == ''){
+			$origin = null;
+		}
+		$this->Origen = $origin;
 	}
 
 
@@ -203,7 +259,10 @@ class Cxc extends Model {
 		return $this->AplicaManual;
 	}
 	public function setManualApplyAttribute($manualApply){
-		return $this->AplicaManual = $manualApply;
+		if($manualApply == ''){
+			$manualApply = null;
+		}
+		$this->AplicaManual = $manualApply;
 	}
 
 
@@ -211,7 +270,10 @@ class Cxc extends Model {
 		return $this->Referencia;
 	}
 	public function setReferenceAttribute($reference){
-		return $this->Referencia = $reference;
+		if($reference == ''){
+			$reference = null;
+		}
+		$this->Referencia = $reference;
 	}
 
 
@@ -219,7 +281,10 @@ class Cxc extends Model {
 		return $this->Concepto;
 	}
 	public function setConceptAttribute($concept){
-		return $this->Concepto = $concept;
+		if($concept == ''){
+			$concept = null;
+		}
+		$this->Concepto = $concept;
 	}
 
 
@@ -227,7 +292,10 @@ class Cxc extends Model {
 		return $this->Observaciones;
 	}
 	public function setObservationsAttribute($observations){
-		return $this->Observaciones = $observations;
+		if($observations == ''){
+			$observations = null;
+		}
+		$this->Observaciones = $observations;
 	}
 
 
@@ -235,7 +303,10 @@ class Cxc extends Model {
 		return $this->ConDesglose;
 	}
 	public function setWithBreakdownAttribute($withBreakdown){
-		return $this->ConDesglose = $withBreakdown;
+		if($withBreakdown == ''){
+			$withBreakdown = null;
+		}
+		$this->ConDesglose = $withBreakdown;
 	}
 
 
@@ -243,7 +314,10 @@ class Cxc extends Model {
 		return $this->FormaCobro;
 	}
 	public function setChargeTypeAttribute($chargeType){
-		return $this->FormaCobro = $chargeType;
+		if($chargeType == ''){
+			$chargeType = null;
+		}
+		$this->FormaCobro = $chargeType;
 	}
 
 
@@ -251,7 +325,10 @@ class Cxc extends Model {
 		return $this->FormaCobro1;
 	}
 	public function setChargeType1Attribute($chargeType1){
-		return $this->FormaCobro1 = $chargeType1;
+		if($chargeType1 == ''){
+			$chargeType1 = null;
+		}
+		$this->FormaCobro1 = $chargeType1;
 	}
 
 
@@ -259,7 +336,10 @@ class Cxc extends Model {
 		return $this->FormaCobro2;
 	}
 	public function setChargeType2Attribute($chargeType2){
-		return $this->FormaCobro2 = $chargeType2;
+		if($chargeType2 == ''){
+			$chargeType2 = null;
+		}
+		$this->FormaCobro2 = $chargeType2;
 	}
 
 
@@ -267,7 +347,10 @@ class Cxc extends Model {
 		return $this->FormaCobro3;
 	}
 	public function setChargeType3Attribute($chargeType3){
-		return $this->FormaCobro3 = $chargeType3;
+		if($chargeType3 == ''){
+			$chargeType3 = null;
+		}
+		$this->FormaCobro3 = $chargeType3;
 	}
 
 
@@ -275,7 +358,10 @@ class Cxc extends Model {
 		return $this->FormaCobro4;
 	}
 	public function setChargeType4Attribute($chargeType4){
-		return $this->FormaCobro4 = $chargeType4;
+		if($chargeType4 == ''){
+			$chargeType4 = null;
+		}
+		$this->FormaCobro4 = $chargeType4;
 	}
 
 
@@ -283,7 +369,10 @@ class Cxc extends Model {
 		return $this->FormaCobro5;
 	}
 	public function setChargeType5Attribute($chargeType5){
-		return $this->FormaCobro5 = $chargeType5;
+		if($chargeType5 == ''){
+			$chargeType5 = null;
+		}
+		$this->FormaCobro5 = $chargeType5;
 	}
 
 
@@ -291,7 +380,10 @@ class Cxc extends Model {
 		return $this->Importe1;
 	}
 	public function setAmount1Attribute($amount1){
-		return $this->Importe1 = $amount1;
+		if($amount1 == ''){
+			$amount1 = null;
+		}
+		$this->Importe1 = $amount1;
 	}
 
 
@@ -299,7 +391,10 @@ class Cxc extends Model {
 		return $this->Importe2;
 	}
 	public function setAmount2Attribute($amount2){
-		return $this->Importe2 = $amount2;
+		if($amount2 == ''){
+			$amount2 = null;
+		}
+		$this->Importe2 = $amount2;
 	}
 
 
@@ -307,7 +402,10 @@ class Cxc extends Model {
 		return $this->Importe3;
 	}
 	public function setAmount3Attribute($amount3){
-		return $this->Importe3 = $amount3;
+		if($amount3 == ''){
+			$amount3 = null;
+		}
+		$this->Importe3 = $amount3;
 	}
 
 
@@ -315,7 +413,10 @@ class Cxc extends Model {
 		return $this->Importe4;
 	}
 	public function setAmount4Attribute($amount4){
-		return $this->Importe4 = $amount4;
+		if($amount4 == ''){
+			$amount4 = null;
+		}
+		$this->Importe4 = $amount4;
 	}
 
 
@@ -323,7 +424,10 @@ class Cxc extends Model {
 		return $this->Importe5;
 	}
 	public function setAmount5Attribute($amount5){
-		return $this->Importe5 = $amount5;
+		if($amount5 == ''){
+			$amount5 = null;
+		}
+		$this->Importe5 = $amount5;
 	}
 
 
@@ -331,7 +435,10 @@ class Cxc extends Model {
 		return $this->Referencia1;
 	}
 	public function setReference1Attribute($reference){
-		return $this->Referencia1 = $reference;
+		if($reference == ''){
+			$reference = null;
+		}
+		$this->Referencia1 = $reference;
 	}
 
 
@@ -339,7 +446,10 @@ class Cxc extends Model {
 		return $this->Referencia2;
 	}
 	public function setReference2Attribute($reference){
-		return $this->Referencia2 = $reference;
+		if($reference == ''){
+			$reference = null;
+		}
+		$this->Referencia2 = $reference;
 	}
 
 
@@ -347,7 +457,10 @@ class Cxc extends Model {
 		return $this->Referencia3;
 	}
 	public function setReference3Attribute($reference){
-		return $this->Referencia3 = $reference;
+		if($reference == ''){
+			$reference = null;
+		}
+		$this->Referencia3 = $reference;
 	}
 
 
@@ -355,7 +468,10 @@ class Cxc extends Model {
 		return $this->Referencia4;
 	}
 	public function setReference4Attribute($reference){
-		return $this->Referencia4 = $reference;
+		if($reference == ''){
+			$reference = null;
+		}
+		$this->Referencia4 = $reference;
 	}
 
 
@@ -363,7 +479,10 @@ class Cxc extends Model {
 		return $this->Referencia5;
 	}
 	public function setReference5Attribute($reference){
-		return $this->Referencia5 = $reference;
+		if($reference == ''){
+			$reference = null;
+		}
+		$this->Referencia5 = $reference;
 	}
 
 
@@ -371,7 +490,10 @@ class Cxc extends Model {
 		return $this->Cambio;
 	}
 	public function setChangeAttribute($change){
-		return $this->Cambio = $change;
+		if($change == ''){
+			$change = null;
+		}
+		$this->Cambio = $change;
 	}
 
 
@@ -379,7 +501,10 @@ class Cxc extends Model {
 		return $this->DelEfectivo;
 	}
 	public function setProBalanceAttribute($proBalance){
-		return $this->DelEfectivo = $proBalance;
+		if($proBalance == ''){
+			$proBalance = null;
+		}
+		$this->DelEfectivo = $proBalance;
 	}
 
 
@@ -387,7 +512,10 @@ class Cxc extends Model {
 		return $this->Saldo;
 	}
 	public function setBalanceAttribute($balance){
-		return $this->Saldo = $balance;
+		if($balance == ''){
+			$balance = null;
+		}
+		$this->Saldo = $balance;
 	}
 
 
@@ -395,7 +523,10 @@ class Cxc extends Model {
 		return $this->ThoAsignadoWeb;
 	}
 	public function setThoWebAssignedAttribute($thoWebAssigned){
-		return $this->ThoAsignadoWeb = $thoWebAssigned;
+		if($thoWebAssigned == ''){
+			$thoWebAssigned = null;
+		}
+		$this->ThoAsignadoWeb = $thoWebAssigned;
 	}
 
 	public function getLastChangeAttribute(){
@@ -403,7 +534,10 @@ class Cxc extends Model {
 	}
 
 	public function setLastChangeAttribute($lastChange){
-		return $this->UltimoCambio = $lastChange;
+		if($lastChange == ''){
+			$lastChange = null;
+		}
+		$this->UltimoCambio = $lastChange;
 	}
 
 	public function getConditionAttribute(){
@@ -411,6 +545,9 @@ class Cxc extends Model {
 	}
 
 	public function setConditionAttribute($condition){
+		if($condition == ''){
+			$condition = null;
+		}
 		$this->Condicion = $condition;
 	}
 
@@ -419,7 +556,12 @@ class Cxc extends Model {
 	}
 
 	public function setExpirationAttribute($expiration){
-		$this->Vencimiento = (new \Carbon\Carbon($expiration))->format('d/m/Y');
+		if($expiration == ''){
+			$this->Vencimiento = null;
+		}
+		else {
+			$this->Vencimiento = (new \Carbon\Carbon($expiration))->format('d/m/Y');
+		}
 	}
 
 	public function getTotalAmountAttribute(){
