@@ -43,21 +43,21 @@
 									<label for="totalCharged">Total cobrado:</label>
 									<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-										<input class="form-control input-sm" type="text" id="totalCharged" name="totalCharged" value="0.00">
+										<input class="form-control input-sm" type="text" id="totalCharged" name="totalCharged" value="0.00" readonly>
 									</div>
 								</div>
 								<div class="col-xs-6 col-sm-4">
 									<label for="assignedCharged">Asignado cobrado:</label>
 									<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-										<input class="form-control input-sm" type="text" id="assignedCharged" name="assignedCharged" value="0.00">
+										<input class="form-control input-sm" type="text" id="assignedCharged" name="assignedCharged" value="0.00" readonly>
 									</div>
 								</div>
 								<div class="col-xs-6 col-sm-4">
 									<label for="unassignedCharged">No asignado cobrado:</label>
 									<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-										<input class="form-control input-sm" type="text" id="unassignedCharged" name="unassignedCharged" value="0.00">
+										<input class="form-control input-sm" type="text" id="unassignedCharged" name="unassignedCharged" value="0.00" readonly>
 									</div>
 								</div>
 							</div>

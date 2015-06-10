@@ -306,7 +306,7 @@
 				    					<input type='number' class='form-control input-sm' id='difference' min='0' step='any' value='0.00' readonly>
 				    				</div>
 				    			</div>
-				    			<div class='col-sm-2' id='dvTotalChangeAllowed'>
+				    			<div class='col-sm-2' id='dvTotalChangeAllowed' hidden>
 				    				<label for="totalChangeAllowed">Cambio Permitido</label>
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>

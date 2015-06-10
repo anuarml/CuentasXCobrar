@@ -395,7 +395,7 @@ function addChargeRow(charge){
 			totalChangeAllowed.val(ntotalChangeAllowed.toFixed(2));
 			totalChangeAllowed.change();
 			var change = $('#change');
-			//change.change();
+			change.change();
 			/*isChangeAllowed = parseInt(paymentTypeListChangeAllowed[aCharges[chargeNumber-1].payment_type]);
 			console.log(isChangeAllowed);
 			if(isChangeAllowed){
