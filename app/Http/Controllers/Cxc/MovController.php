@@ -71,10 +71,11 @@ class MovController extends Controller {
 		$currencyList = Mon::getCurrencyList();
 		$paymentTypeList = PaymentType::getPaymentTypeList();
 		$paymentTypeListChangeAllowed = PaymentType::getPaymentTypeChangeAllowed();
+		$totalChangeAllowedAmount = 0;
 		$movCharges = json_encode(null);
 		
 		//return view('cxc.movement.new', compact('clientName'));
-		return view('cxc.movement.mov', compact('mov', 'user', 'clientBalance','officeName','movTypeList','currencyList','paymentTypeList','movCharges', 'paymentTypeListChangeAllowed'));
+		return view('cxc.movement.mov', compact('mov', 'user', 'clientBalance','officeName','movTypeList','currencyList','paymentTypeList','movCharges', 'paymentTypeListChangeAllowed','totalChangeAllowedAmount'));
 	}
 
 	public function postNuevo(){
@@ -353,12 +354,14 @@ class MovController extends Controller {
 		$currencyList = Mon::getCurrencyList();
 		$paymentTypeList = PaymentType::getPaymentTypeList();
 		$paymentTypeListChangeAllowed = PaymentType::getPaymentTypeChangeAllowed();
+		$totalChangeAllowedAmount = $mov->getChangeAllowed();
+		
 		$movCharges = json_encode($mov->getCharges());
 
 		// Se guarda en la sesión del usuario el ID del movimiento.
 		Cxc::setSessionMovID($movID);
 
-		return view('cxc.movement.mov',compact('mov','clientBalance','movTypeList','currencyList','paymentTypeList','user','officeName','movCharges','paymentTypeListChangeAllowed'));
+		return view('cxc.movement.mov',compact('mov','clientBalance','movTypeList','currencyList','paymentTypeList','user','officeName','movCharges','paymentTypeListChangeAllowed','totalChangeAllowedAmount'));
 	}
 
 

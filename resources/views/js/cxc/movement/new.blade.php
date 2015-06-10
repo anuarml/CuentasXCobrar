@@ -194,7 +194,7 @@ function addDocumentRow(cxcD, cxcDocument){
 var numberOfCharges = 1;
 var charges = [null,null,null,null,null];
 var paymentTypeList = [];
-
+var nChangeAmount = "{{$mov->change}}";
 $("#newChargeRow").on("click", function() {addChargeRow();});
 
 function addChargeRow(charge){
@@ -391,11 +391,11 @@ function addChargeRow(charge){
 			aCharges[chargeNumber-1].reference = $('#reference'+chargeNumber).val();
 			var totalChangeAllowed = $('#totalChangeAllowed');
 			var ntotalChangeAllowed = parseFloat(totalChangeAllowed.val());
-			var change = $('#change');
 			ntotalChangeAllowed = calculateTotalChangeAllowed();
 			totalChangeAllowed.val(ntotalChangeAllowed.toFixed(2));
 			totalChangeAllowed.change();
-			change.change();
+			var change = $('#change');
+			//change.change();
 			/*isChangeAllowed = parseInt(paymentTypeListChangeAllowed[aCharges[chargeNumber-1].payment_type]);
 			console.log(isChangeAllowed);
 			if(isChangeAllowed){
@@ -487,7 +487,16 @@ function addChargeRow(charge){
 
 
 	//charges[indexNumber] = numberOfCharges;
+	
+	//var totalChangeAllowed = $('#totalChangeAllowed');
+	//var ntotalChangeAllowed = parseFloat(totalChangeAllowed.val());
+	//ntotalChangeAllowed = calculateTotalChangeAllowed();
+	//console.log(ntotalChangeAllowed);
+	//totalChangeAllowed.val(ntotalChangeAllowed.toFixed(2));
+	//console.log(totalChangeAllowed.val());
+	//totalChangeAllowed.change();
 	$('#amount'+chargeNumber).change();
+	$('#charge_type'+chargeNumber).change();
 	numberOfCharges++;
 }//);
 
