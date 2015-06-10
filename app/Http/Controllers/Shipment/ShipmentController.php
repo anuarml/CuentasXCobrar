@@ -93,11 +93,18 @@ class ShipmentController extends Controller {
 				$documentOrigin = Cxc::where('Mov',$apply)->where('MovID',$apply_id)->where('Empresa',$user->getSelectedCompany())->first(['Saldo','Cliente']);
 
 				$document = new \stdClass;
+				if($documentOrigin){
+					$document->balance = $documentOrigin->balance;
+					$document->client = $documentOrigin->client_id;
+				} else{
+					$document->balance = 0;
+					$document->client = null;
+				}
 				$document->assigned = false;
 				$document->charged = true;
 				$document->cashed = $unassignedChargedDocument->amount;
-				$document->balance = $documentOrigin->balance;
-				$document->client = $documentOrigin->client_id;
+				//$document->balance = $documentOrigin->balance;
+				//$document->client = $documentOrigin->client_id;
 				$document->mov = $apply;
 				$document->movID = $apply_id;
 
