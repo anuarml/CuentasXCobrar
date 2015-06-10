@@ -122,6 +122,9 @@ change.change(function(){
 		var ntotalChangeAllowed = parseFloat(totalChangeAllowed.val());
 		var totalCharge = $('#totalCharge');
 		var nTotalCharge = parseFloat(totalCharge.val());
+		//ntotalChangeAllowed = calculateTotalChangeAllowed();
+		//totalChangeAllowed.val(ntotalChangeAllowed.toFixed(2));
+		//totalChangeAllowed.change();
 		if(nChange > ntotalChangeAllowed){
 			change.val('0.00')
 			nChange = 0;
@@ -404,9 +407,25 @@ var amount5 = $("#amount5");*/
 
 $(document).ready(function(){
 	proBalance.change();
-	change.change();
+	//change.change();
 	totalCharge.change();
-	$('#totalChangeAllowed').val('0.00');
+	//$('#totalChangeAllowed').val('0.00');
+	//var totalChangeAllowed = $('#totalChangeAllowed');
+	//var ntotalChangeAllowed = parseFloat(totalChangeAllowed.val());
+	//ntotalChangeAllowed = calculateTotalChangeAllowed();
+	//console.log(ntotalChangeAllowed);
+	//totalChangeAllowed.val(ntotalChangeAllowed.toFixed(2));
+	//console.log(totalChangeAllowed.val());
+	//totalChangeAllowed.change();
+	//for(var i=0; i<aCharges.length; i++){
+
+	//}
+
+	/*for (var i = 1; i < 6; i++) {
+		if($('#amount'+i)){
+			$('#amount'+i).change();
+		}
+	}*/
 	/*if(amount1 && amount2 && amount3 && amount4 && amount5){
 		$("#newChargeRow").prop('disabled',true);
 	}*/
@@ -419,4 +438,10 @@ $(document).ready(function(){
 	//console.log("hola");
 	//calculateTotalCharge();
 
+});
+
+$(window).load(function(){
+	//alert(nChangeAmount);
+	change.val(nChangeAmount);
+	change.change();
 });

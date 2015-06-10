@@ -283,15 +283,17 @@
 				    				</div>
 				    			</div>
 				    			<div class='col-sm-3'>
-				    				<!--label for="change">Cambio</label>-->
-				    				{!! Form::label('change','Cambio') !!}
+				    				<label for="change">Cambio</label>
+				    				
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-				    					<!--<input type='number' class='form-control input-sm' name='change' id='change' min='0' step='any'>-->
+				    					
 				    					@if($mov->status == 'SINAFECTAR' || $mov->status == '')
-											{!! Form::number('change', null, array('min'=>'0', 'class'=>'form-control input-sm', 'value'=>'0.00')) !!}
+											
+											<input type='number' class='form-control input-sm' name='change' id='change' min='0' value='0.00' step='any'>
 										@else
-											{!! Form::number('change', null, array('min'=>'0', 'class'=>'form-control input-sm', 'readOnly'=>'true', 'value'=>'0.00')) !!}
+											
+											<input type='number' class='form-control input-sm' name='change' id='change' min='0' value='0.00' step='any' readonly>
 										@endif
 				    					
 				    				</div>
@@ -319,11 +321,11 @@
 				    					<input type='number' class='form-control input-sm' id='difference' min='0' step='any' value='0.00' readonly>
 				    				</div>
 				    			</div>
-				    			<div class='col-sm-2' id='dvTotalChangeAllowed' hidden>
+				    			<div class='col-sm-2' id='dvTotalChangeAllowed'>
 				    				<label for="totalChangeAllowed">Cambio Permitido</label>
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-				    					<input type='number' class='form-control input-sm' id='totalChangeAllowed' min='0' step='any' value='0' readonly>
+				    					<input type='number' class='form-control input-sm' id='totalChangeAllowed' min='0' step='any' value='{{$totalChangeAllowedAmount}}' readonly>
 				    				</div>
 				    			</div>	
 				    		</div>

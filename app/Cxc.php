@@ -509,7 +509,27 @@ class Cxc extends Model {
 
 		$charges = array($charge1,$charge2,$charge3,$charge4,$charge5);
 
+
 		return $charges;
+	}
+
+	public function getChangeAllowed(){
+		$charges = $this->getCharges();
+		$paymentTypeListChangeAllowed = json_decode(PaymentType::getPaymentTypeChangeAllowed(),true);
+		$totalChangeAllowedAmount = 0; 
+		//dd($charges);
+		for ($i=0; $i < count($charges); $i++) { 
+			if($charges[$i] && $charges[$i]['payment_type']){
+				//dd($paymentTypeListChangeAllowed);
+				//dd($charges[$i]['payment_type']);
+				//dd((bool)$paymentTypeListChangeAllowed[$charges[$i]['payment_type']]);
+				if((bool)$paymentTypeListChangeAllowed[$charges[$i]['payment_type']]){
+					$totalChangeAllowedAmount += $charges[$i]['amount'];
+				}
+			}
+		}
+		//dd($totalChangeAllowedAmount);
+		return $totalChangeAllowedAmount;
 	}
 
 	public static function getChargedDocuments($chargeOrder){
