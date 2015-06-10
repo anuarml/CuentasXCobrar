@@ -441,7 +441,10 @@ $(document).ready(function(){
 });
 
 $(window).load(function(){
-	//alert(nChangeAmount);
-	change.val(nChangeAmount);
+	if(nChangeAmount){
+		change.val(nChangeAmount);
+	}else{
+		change.val('0.00');
+	}
 	change.change();
 });
