@@ -69,7 +69,7 @@
 										    <th data-field="mov" data-align="center" data-sortable="true">Mov</th>
 										    <th data-field="movID" data-align="center" data-sortable="true">MovID</th>
 										    <th data-field="balance" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Saldo</th>
-										    <th data-field="cashed" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Cobrado</th>
+										    <th data-field="cashed" data-align="center" data-sortable="true" data-formatter="moneyFormatterRed">Cobrado</th>
 										    <th data-field="assigned" data-align="center" data-sortable="true" data-formatter="booleanFormatter">Asignado</th>
 										</tr>
 									</thead>
@@ -94,8 +94,17 @@
 
 			return '$'+valueFormatted.toFixed(2);
 		}
+		function moneyFormatterRed(value){
+			var valueFormatted = parseFloat(value) || 0;
+			var style = '';
+			if(value==0){
+				style = 'color:red';
+			}
+			return '<span style="'+style+'">$'+valueFormatted.toFixed(2)+'</span>';
+		}
 		function booleanFormatter(value){
 			var icon = '';
+			var style = '';
 			
 			if(value == true){
 				style = 'color:green';

@@ -26,7 +26,7 @@ function CxcDocument(doc){
 		}
 
 		var difference = new Decimal(this.balance).minus(amount).toNumber();
-		return difference.toFixed(2);
+		return '$'+difference.toFixed(2);
 	};
 	this.diferencePercent = function(amount){
 		if(!this.balance || !amount){

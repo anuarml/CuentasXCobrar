@@ -65,7 +65,11 @@
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
 	<script type="text/javascript">
-		
+		function moneyFormatter(value){
+			var valueFormatted = parseFloat(value) || 0;
+
+			return '$'+valueFormatted.toFixed(2);
+		}
 		$('#showTable').attr('data-height',$( window ).height() - 90 );
 	</script>
 

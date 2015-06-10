@@ -54,11 +54,13 @@ class MovController extends Controller {
 			if($client = $mov->client){
 				// Se obtiene el saldo del cliente.
 				$clientBalance = $client->balance()->where('Empresa', $user->getSelectedCompany())->where('Moneda','Pesos')->first();
+
 			} 
 			else {
 				$mov->client_id = null;
 			}
 		}
+		$clientBalance = json_encode($clientBalance);
 
 		// Se obtiene el nombre de la oficina seleccionada por el usuario en el login.
 		// Se utiliza en la impresión del ticket.
@@ -137,7 +139,13 @@ class MovController extends Controller {
 		$cxc->condition = 'Contado';
 
 		// Obtiene el ID de la orden de cobro asignada al usuario autenticado.
-		$cxc->tho_web_assigned = Shipment::getChargeOrderID();
+		$chargeOrders = Shipment::getChargeOrdersID();
+		$chargeOrdersLength = count($chargeOrders);
+		$chargeOrderID = null;
+		if($chargeOrdersLength > 0){
+			$chargeOrderID = $chargeOrders[$chargeOrdersLength-1];
+		}
+		$cxc->tho_web_assigned = $chargeOrderID;
 
 		$changeType = 1;
 		$currency = Currency::find($cxc->currency);
@@ -339,6 +347,7 @@ class MovController extends Controller {
 			// Se obtiene el saldo del cliente.
 			$clientBalance = $mov->client->balance()->where('Empresa', $user->getSelectedCompany())->where('Moneda','Pesos')->get()->first();
 		}
+		$clientBalance = json_encode($clientBalance);
 		// Se obtienen las opciones de las listas desplegables.
 		$movTypeList = MovType::getMovTypeList();
 		$currencyList = Mon::getCurrencyList();

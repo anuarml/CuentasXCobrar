@@ -135,22 +135,15 @@ var toolbar = {
 			var rounding = 1;
 			var totalAmount = parseFloat($('#totalAmount').val()) || 0;
 			var totalCharge = parseFloat($('#totalCharge').val()) || 0;
-			var change = parseFloat($('#change').val()) || 0;
-			var proBalance = parseFloat($('#pro_balance').val()) || 0;
 
 			totalAmount = new Decimal(totalAmount);
-			totalCharge = new Decimal(totalCharge);
 
-			var minimunAmount = totalAmount.minus(rounding).toNumber();
-			var maximunAmount = totalAmount.plus(rounding).toNumber();
+			var minimunCharge = totalAmount.minus(rounding).toNumber();
+			var maximunCharge = totalAmount.plus(rounding).toNumber();
+			
+			calcTaxes(totalCharge);
 
-			//var total = totalAmount.plus(proBalance).minus(change);
-			var charge = totalCharge.plus(proBalance).minus(change).toNumber();
-
-			//console.log(charge+' '+totalAmount);
-			//calcTaxes(charge);
-
-			if( charge < minimunAmount || charge > maximunAmount ){
+			if( totalCharge < minimunCharge || totalCharge > maximunCharge ){
 				toolbar.showAlertModal('El cobro no cuadra con el importe total.');
 				return success;
 			}

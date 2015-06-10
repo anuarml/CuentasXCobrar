@@ -82,7 +82,7 @@ function addDocumentRow(cxcD, cxcDocument){
 		"<tr id='document-"+insertedDocumentPlace+"'>"+
 			"<td style='text-align: center;' class='apply'>"+(cxcD.apply || '')+"</td>"+
 			"<td style='text-align: center;' class='consecutive'>"+(cxcD.apply_id || '')+"</td>"+
-			"<td style='text-align: center;' class='amount'>"+(cxcD.amount.toFixed(2) || '')+"</td>"+
+			"<td style='text-align: center;' class='amount'>$"+(cxcD.amount.toFixed(2) || '')+"</td>"+
 			"<td style='text-align: center;' class='difference'>"+cxcDocument.difference(cxcD.amount)+"</td>"+
 			"<td style='text-align: center;' class='differencePercentage'>"+cxcDocument.diferencePercent(cxcD.amount)+"</td>"+
 			"<td style='text-align: center;' class='concept'>"+(cxcDocument.concept || '')+"</td>"+

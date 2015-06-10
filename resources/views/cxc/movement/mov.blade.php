@@ -3,9 +3,7 @@
 @section('content')
 
 	<div class="container">
-		<!--<form id="cxcMovForm" role="form" action="{{ url('cxc/movimiento/guardar-nuevo') }}" method="POST">-->
 		{!! Form::model( $mov, array('url' => array('cxc/movimiento/guardar'), 'id'=>'cxcMovForm' ) ) !!}
-			<!--<input type="hidden" name="_token" value="{{ csrf_token() }}">-->
 			{!! Form::hidden('action', null, array('id'=>'action' )) !!}
 			{!! Form::hidden('clickedRow', null, array('id'=>'clickedRow' )) !!}
 			<div class="row">
@@ -57,23 +55,19 @@
 											<div class="col-sm-6 ">
 												<div class="form-group">
 													{!! Form::label('client_id', 'Cliente:') !!}
-													<!--<label class="control-label" for="client_id">Cliente:</label>-->
 													<div class='input-group'>
 														<span class='input-group-btn'>
 															<button type='button' class='btn btn-default' id='searchClient'>
 																<span class='glyphicon glyphicon-search'></span>
 															</button>
 														</span>
-														<!--<input type="text" name="client_id" id="client_id" class="form-control" tabindex="1" value="{--\Session::get('selected_client_id')--}" readonly>-->
 														{!! Form::text('client_id', null, array('class'=>'form-control', 'readonly'=>'true')) !!}
 													</div>
 												</div>
 											</div>
 											<div class="col-sm-6 ">
 												<div class="form-group">
-													<!--<label for="ClientName">Nombre Cliente:</label>-->
 													{!! Form::label('client[name]', 'Nombre Cliente:') !!}
-													<!--<input type="text" id="ClientName" value="" class="form-control" tabindex="2" readonly>-->
 													{!! Form::text('client[name]', null, array('class'=>'form-control', 'readonly'=>'true')) !!}
 												</div>
 											</div>
@@ -81,13 +75,7 @@
 										<div class="row">
 											<div class="col-sm-6 ">
 												<div class="form-group">
-													<!--<label for="Mov">Movimiento:</label>-->
 													{!! Form::label('Mov', 'Movimiento:') !!}
-							                        <!--<select class="form-control" id="Mov" name="Mov" tabindex="1">
-													  <option hidden></option>
-													  <option>Anticipo</option>
-													  <option>Cobro</option>
-													</select>-->
 													{!! Form::select('Mov', $movTypeList, null, array('class'=>'form-control')) !!}
 													{!! Form::hidden('Mov', null, array('id'=>'hidden_mov')) !!}
 												</div>
@@ -95,9 +83,7 @@
 
 											<div class="col-sm-6 ">
 												<div class="form-group">
-													<!--<label for="emission_date">Fecha Emisión:</label>-->
 													{!! Form::label('emission_date_str', 'Fecha Emisión:') !!}
-													<!--<input type="date" name="emission_date" id="emission_date" value="{--isset($mov)?$mov->emission_date->toDateString():Carbon\Carbon::now()->toDateString()--}" class="form-control " tabindex="2" readonly>-->
 													{!! Form::date('emission_date_str', null, array('type'=>'date', 'class'=>'form-control', 'readonly'=>'true')) !!}
 												</div>
 											</div>
@@ -106,7 +92,6 @@
 										<div class="row">
 											<div class="col-sm-6 ">
 												<div class="form-group">
-													<!--<label for="client_send_to">Sucursal Cliente:</label>-->
 													{!! Form::label('client_send_to', 'Sucursal Cliente:') !!}
 													<div class='input-group'>
 														<span class='input-group-btn'>
@@ -114,23 +99,23 @@
 																<span class='glyphicon glyphicon-search'></span>
 															</button>
 														</span>
-														<!--<input type="text" name="client_send_to" id="client_send_to" class="form-control" tabindex="1" readonly>-->
 														{!! Form::text('client_send_to', null, array('class'=>'form-control', 'readonly'=>'true')) !!}
 													</div>
 												</div>
 											</div>
 											<div class="col-sm-6 ">
 												<div class="form-group">
-													<!--<label for="ClientBalance">Saldo Cliente:</label>-->
 													{!! Form::label('clientBalance', 'Saldo Cliente:') !!}
 													<div class='input-group'>
+														<span class='input-group-addon'>
+															$
+														</span>
+														{!! Form::text('clientBalance', null, array('class'=>'form-control', 'readonly'=>'true')) !!}
 														<span class='input-group-btn'>
 															<button type='button' class='btn btn-default' id='showClientBalance'>
 																<span>...</span>
 															</button>
-														</span>							                        	
-														<!--<input type="text" id="ClientBalance" class="form-control" tabindex="2" readonly>-->
-														{!! Form::text('clientBalance', $clientBalance?$clientBalance->balance:'', array('class'=>'form-control', 'readonly'=>'true')) !!}
+														</span>
 													</div>
 												</div>
 											</div>
@@ -375,7 +360,19 @@
 
 	$('#change').val( new Number($('#change').val()).toFixed(2) );
 	$('#pro_balance').val( new Number($('#pro_balance').val()).toFixed(2) );
-	$('#clientBalance').val( new Number($('#clientBalance').val()).toFixed(2) );
+
+	var clientBalanceInput = $('#clientBalance');
+	var clientBalance =  JSON.parse('{!!$clientBalance!!}');
+	var clientBalanceAmount = 0;
+	
+	if(clientBalance != ''){
+
+		if(clientBalance != null){
+			clientBalanceAmount = parseFloat(clientBalance.balance) || 0;
+		}
+		clientBalanceInput.val( clientBalanceAmount.toFixed(2) );
+	}
+	
 
 	function showMovDetails(){
 		var movDetails = JSON.parse('{!! $mov->details->toJson() !!}');
