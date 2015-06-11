@@ -48,7 +48,17 @@
 							<div class="clearfix"></div>
 
 							<div class="row">
-								<table id="searchTable" data-toggle="table" data-url="{{ url($dataURL) }}" data-search="true" data-show-columns="true" data-click-to-select="true">
+								<table id="searchTable" data-toggle="table" 
+								data-url="{{ url($dataURL) }}" 
+								data-search="true" 
+								data-show-columns="true" 
+								data-click-to-select="true" 
+								data-pagination="true"
+								data-side-pagination="server"
+								
+								data-page-list="[5, 10, 20, 50, 100, 200]"
+
+								>
 									<thead>
 										<tr>
 											@yield('table-header')

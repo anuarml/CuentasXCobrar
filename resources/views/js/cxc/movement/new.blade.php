@@ -82,7 +82,7 @@ function addDocumentRow(cxcD, cxcDocument){
 		"<tr id='document-"+insertedDocumentPlace+"'>"+
 			"<td style='text-align: center;' class='apply'>"+(cxcD.apply || '')+"</td>"+
 			"<td style='text-align: center;' class='consecutive'>"+(cxcD.apply_id || '')+"</td>"+
-			"<td style='text-align: center;' class='amount'>$"+(cxcD.amount.toFixed(2) || '')+"</td>"+
+			"<td style='text-align: center;' class='amount' id='tdDocumentAmount'>$"+(cxcD.amount.toFixed(2) || '')+"</td>"+
 			"<td style='text-align: center;' class='difference'>"+cxcDocument.difference(cxcD.amount)+"</td>"+
 			"<td style='text-align: center;' class='differencePercentage'>"+cxcDocument.diferencePercent(cxcD.amount)+"</td>"+
 			"<td style='text-align: center;' class='concept'>"+(cxcDocument.concept || '')+"</td>"+
@@ -165,10 +165,13 @@ function addDocumentRow(cxcD, cxcDocument){
 	$("#documentsTable tbody tr:last .amount").on("focusout", function(e){
 		var amountTD = $(this);
 		var amountValue = $("#documentAmount").val();
-
+		//console.log("documentAmount: " + amountValue);
 		amountTD.on("click", editAmount);
 		amountTD.empty();
-		amountTD.html(amountValue);
+		if(amountValue != '')
+		amountTD.html('$' + parseFloat(amountValue).toFixed(2));
+		else
+		amountTD.html('$' + parseFloat(cxcD.amount).toFixed(2))
 	});
 
 	//$("#documentsTable tbody tr:last .discountPPP").on("click", editDiscountPPP);
@@ -188,6 +191,7 @@ function addDocumentRow(cxcD, cxcDocument){
 	updateTotalAmount(0, cxcD.amount);
 
 	//documentsNumber++;
+	tdDocumentAmount
 
 }
 
