@@ -393,17 +393,38 @@ class MovController extends Controller {
 	}
 
 	public function getListaMovimientos(){
+		//dd(\Input::get('limits'));
 		$user = \Auth::user();
 		$company = $user->getSelectedCompany();
 		$username = $user->username;
-
-		$movList = Cxc::where(function ($query) {
+		$limit = \Input::get('limit');
+		$order = \Input::get('order');
+		$sort = \Input::get('sort');
+		//dd($limit);
+		$offset = \Input::get('offset');
+		//$allMovs = Cxc::all();
+		$numberOfDocuments = Cxc::where(function ($query) {
 			$query->where('Mov', 'Cobro')
 				->orWhere('Mov', 'Anticipo');
 		})->where('Empresa',$company)
-		  ->where('Usuario',$username)->get();
+		  ->where('Usuario',$username)->get()->count();
 
-		return response()->json($movList);
+		$movListquery = Cxc::where(function ($query) {
+			$query->where('Mov', 'Cobro')
+				->orWhere('Mov', 'Anticipo');
+		})->where('Empresa',$company)
+		  ->where('Usuario',$username);
+
+		if($sort && $order){
+			$sort = Cxc::getColumnName($sort);
+			$movListquery = $movListquery->orderBy($sort, $order);
+		}
+
+		$movList = $movListquery ->take($limit)->offset($offset)->get();//paginate(20)->items();//get();
+		//dd($movListquery);
+		$result = ['total'=>$numberOfDocuments,'rows'=>$movList->toArray()];
+		//dd($result);
+		return response()->json($result);
 	}
 
 	public static function showMovementSearch(){
