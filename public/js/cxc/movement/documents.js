@@ -26,7 +26,7 @@ function CxcDocument(doc){
 		}
 
 		var difference = new Decimal(this.balance).minus(amount).toNumber();
-		return difference.toFixed(2);
+		return '$'+difference.toFixed(2);
 	};
 	this.diferencePercent = function(amount){
 		if(!this.balance || !amount){
@@ -45,7 +45,7 @@ var aCharges = [];
 function Charge(charge){
 	if(!charge) charge = {};
 	
-	this.amount = charge.amount || null;
+	this.amount = parseFloat(charge.amount) || 0.00;
 	this.payment_type = charge.payment_type || null;
 	this.reference = charge.reference || null;
 }

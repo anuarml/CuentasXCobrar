@@ -45,15 +45,30 @@ class PaymentType extends Model {
 
 	public static function getPaymentTypeList(){
 
-		$paymentTypeList = [null => ''];
+		$paymentTypeList = [['payment_type'=> '','change_allowed'=>0]];
 
 		$paymentTypes = self::where('CXCWEB', true)->get();
 
 		foreach ($paymentTypes as $paymentType) {
-			$paymentTypeList[$paymentType->payment_type] = $paymentType->payment_type;
+			$paymentTypeList[] = $paymentType;
+			//$paymentTypeList[$paymentType->payment_type] = $paymentType;
 		}
 
-		return $paymentTypeList;
+		return json_encode($paymentTypeList);
+	}
+
+	public static function getPaymentTypeChangeAllowed(){
+
+		$paymentTypeList = [];
+
+		$paymentTypes = self::where('CXCWEB', true)->get();
+
+		foreach ($paymentTypes as $paymentType) {
+			//$paymentTypeList[] = $paymentType;
+			$paymentTypeList[$paymentType->payment_type] = $paymentType->change_allowed;
+		}
+
+		return json_encode($paymentTypeList);
 	}
 
 }

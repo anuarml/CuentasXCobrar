@@ -13,6 +13,7 @@ use App\Mon;
 use App\MovType;
 use App\Office;
 use App\PaymentType;
+use App\Shipment;
 use App\ThoUserAccess;
 
 use App\Http\Controllers\Controller;
@@ -53,11 +54,13 @@ class MovController extends Controller {
 			if($client = $mov->client){
 				// Se obtiene el saldo del cliente.
 				$clientBalance = $client->balance()->where('Empresa', $user->getSelectedCompany())->where('Moneda','Pesos')->first();
+
 			} 
 			else {
 				$mov->client_id = null;
 			}
 		}
+		$clientBalance = json_encode($clientBalance);
 
 		// Se obtiene el nombre de la oficina seleccionada por el usuario en el login.
 		// Se utiliza en la impresión del ticket.
@@ -67,10 +70,12 @@ class MovController extends Controller {
 		$movTypeList = MovType::getMovTypeList();
 		$currencyList = Mon::getCurrencyList();
 		$paymentTypeList = PaymentType::getPaymentTypeList();
+		$paymentTypeListChangeAllowed = PaymentType::getPaymentTypeChangeAllowed();
+		$totalChangeAllowedAmount = 0;
 		$movCharges = json_encode(null);
 		
 		//return view('cxc.movement.new', compact('clientName'));
-		return view('cxc.movement.mov', compact('mov', 'user', 'clientBalance','officeName','movTypeList','currencyList','paymentTypeList','movCharges'));
+		return view('cxc.movement.mov', compact('mov', 'user', 'clientBalance','officeName','movTypeList','currencyList','paymentTypeList','movCharges', 'paymentTypeListChangeAllowed','totalChangeAllowedAmount'));
 	}
 
 	public function postNuevo(){
@@ -134,6 +139,15 @@ class MovController extends Controller {
 		$cxc->expiration = $cxcArray['emission_date_str'];
 		$cxc->condition = 'Contado';
 
+		// Obtiene el ID de la orden de cobro asignada al usuario autenticado.
+		$chargeOrders = Shipment::getChargeOrdersID();
+		$chargeOrdersLength = count($chargeOrders);
+		$chargeOrderID = null;
+		if($chargeOrdersLength > 0){
+			$chargeOrderID = $chargeOrders[$chargeOrdersLength-1];
+		}
+		$cxc->tho_web_assigned = $chargeOrderID;
+
 		$changeType = 1;
 		$currency = Currency::find($cxc->currency);
 		if($currency){
@@ -142,7 +156,7 @@ class MovController extends Controller {
 
 		$cxc->client_change_type = $cxc->change_type = $changeType;
 		$cxc->client_currency = $cxc->currency;
-
+		//dd($cxc);
 		$cxc->save();
 
 		/*foreach ($cxc->details as $cxcDetail) {
@@ -170,8 +184,10 @@ class MovController extends Controller {
 		}
 
 		$action = \Input::get('action');
+		Cxc::setSessionMovID($cxc->ID);
 		switch ($action) {
 			case 'new':
+				Cxc::removeSessionMovID($cxc->ID);
 				return redirect('cxc/movimiento/nuevo');
 				break;
 			case 'open':
@@ -196,7 +212,10 @@ class MovController extends Controller {
 				} 
 				break;
 			case 'resultCalculator':
-				return redirect('cxc/movimiento/mov/'.$cxc->ID.'#documentos'); 	 
+				return redirect('cxc/movimiento/mov/'.$cxc->ID.'#documentos');
+			case 'affect':
+				return redirect('cxc/movimiento/affect');
+				break;	 
 			case 'save':
 			default:
 				return redirect('cxc/movimiento/mov/'.$cxc->ID);
@@ -329,16 +348,20 @@ class MovController extends Controller {
 			// Se obtiene el saldo del cliente.
 			$clientBalance = $mov->client->balance()->where('Empresa', $user->getSelectedCompany())->where('Moneda','Pesos')->get()->first();
 		}
+		$clientBalance = json_encode($clientBalance);
 		// Se obtienen las opciones de las listas desplegables.
 		$movTypeList = MovType::getMovTypeList();
 		$currencyList = Mon::getCurrencyList();
 		$paymentTypeList = PaymentType::getPaymentTypeList();
+		$paymentTypeListChangeAllowed = PaymentType::getPaymentTypeChangeAllowed();
+		$totalChangeAllowedAmount = $mov->getChangeAllowed();
+		
 		$movCharges = json_encode($mov->getCharges());
 
 		// Se guarda en la sesión del usuario el ID del movimiento.
 		Cxc::setSessionMovID($movID);
 
-		return view('cxc.movement.mov',compact('mov','clientBalance','movTypeList','currencyList','paymentTypeList','user','officeName','movCharges'));
+		return view('cxc.movement.mov',compact('mov','clientBalance','movTypeList','currencyList','paymentTypeList','user','officeName','movCharges','paymentTypeListChangeAllowed','totalChangeAllowedAmount'));
 	}
 
 
@@ -370,11 +393,38 @@ class MovController extends Controller {
 	}
 
 	public function getListaMovimientos(){
-		//$movList = Cxc::all();
-		$movList = Cxc::where('Mov', 'Cobro')->orWhere('Mov', 'Anticipo')->get();
-		//$movList->emission_date = $movList->emission_date->format('d/M/Y');
+		//dd(\Input::get('limits'));
+		$user = \Auth::user();
+		$company = $user->getSelectedCompany();
+		$username = $user->username;
+		$limit = \Input::get('limit');
+		$order = \Input::get('order');
+		$sort = \Input::get('sort');
+		//dd($limit);
+		$offset = \Input::get('offset');
+		//$allMovs = Cxc::all();
+		$numberOfDocuments = Cxc::where(function ($query) {
+			$query->where('Mov', 'Cobro')
+				->orWhere('Mov', 'Anticipo');
+		})->where('Empresa',$company)
+		  ->where('Usuario',$username)->get()->count();
 
-		return response()->json($movList);
+		$movListquery = Cxc::where(function ($query) {
+			$query->where('Mov', 'Cobro')
+				->orWhere('Mov', 'Anticipo');
+		})->where('Empresa',$company)
+		  ->where('Usuario',$username);
+
+		if($sort && $order){
+			$sort = Cxc::getColumnName($sort);
+			$movListquery = $movListquery->orderBy($sort, $order);
+		}
+
+		$movList = $movListquery ->take($limit)->offset($offset)->get();//paginate(20)->items();//get();
+		//dd($movListquery);
+		$result = ['total'=>$numberOfDocuments,'rows'=>$movList->toArray()];
+		//dd($result);
+		return response()->json($result);
 	}
 
 	public static function showMovementSearch(){
@@ -518,7 +568,7 @@ class MovController extends Controller {
 		return response()->json($applyList);
 	}
 
-	public function postAffect(){
+	public function getAffect(){
 	
 		$movID = Cxc::getSessionMovID();
 		$username = \Auth::user()->username;
@@ -536,12 +586,34 @@ class MovController extends Controller {
 			]);
 		}
 
+		$cxc = Cxc::find($movID);
+		if(!$cxc) {
+			return redirect()->back()->withInput()->withErrors([
+				'Mov'=>'El movimiento '.$movID.' ya no existe.',
+			]);
+		}
+		// El movimiento debe tener el estatus SINAFECTAR o PENDIENTE para poder ser eliminado.
+		if($cxc->status != 'SINAFECTAR' && $cxc->status != 'PENDIENTE'){
+			return redirect()->back()->withInput()->withErrors([
+				'Status'=>'Solo puedes AFECTAR movimientos con estatus \'SINAFECTAR\' o \'PENDIENTE\'.',
+			]);
+		}
+
 		$result = Cxc::affect($movID, $username, $action);
 
 		if(!$result){
 			return redirect()->back()->withInput()->withErrors([
 				'Affect'=>'No se pudo afectar el movimiento.',
 			]);
+		}
+
+		$message = new \stdClass();
+		if($result['message'] == null){
+			$message->type = 'INFO';
+			$message->description = 'Movimiento afectado.';
+			$message->code = '';
+			$message->reference = '';
+			return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
 		}
 
 		$message = MessageList::find($result['message']);
@@ -568,12 +640,34 @@ class MovController extends Controller {
 			]);
 		}
 
+		$cxc = Cxc::find($movID);
+		if(!$cxc) {
+			return redirect()->back()->withInput()->withErrors([
+				'Mov'=>'El movimiento '.$movID.' ya no existe.',
+			]);
+		}
+		// El movimiento debe tener el estatus CONCLUIDO O PENDIENTE para poder ser eliminado.
+		if($cxc->status != 'CONCLUIDO' && $cxc->status != 'PENDIENTE'){
+			return redirect()->back()->withInput()->withErrors([
+				'Status'=>'Solo puedes AFECTAR movimientos con estatus \'CONCLUIDO\' o \'PENDIENTE\'.',
+			]);
+		}
+
 		$result = Cxc::affect($movID, $username, $action);
 
 		if(!$result){
 			return redirect()->back()->withInput()->withErrors([
 				'Affect'=>'No se pudo cancelar el movimiento.',
 			]);
+		}
+
+		$message = new \stdClass();
+		if($result['message'] == null){
+			$message->type = 'INFO';
+			$message->description = 'Movimiento cancelado.';
+			$message->code = '';
+			$message->reference = '';
+			return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
 		}
 
 		$message = MessageList::find($result['message']);

@@ -40,7 +40,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $visible = ['username', 'name', 'account', 'cashier', 'can_cancel', 'agent', 'shipments', 'def_currency','payment_type'];
+	protected $visible = ['username', 'name', 'account', 'cashier', 'can_cancel', 'agent', 'payment_type'];
 
 	protected $with = [];
 
@@ -74,8 +74,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->DefAgente;
 	}
 
-	public function shipments(){
-		return $this->hasMany('App\Shipment','Agente','DefAgente');
+	public function shipment(){
+		return $this->hasOne('App\Shipment','Agente','DefAgente');
 	}
 
 	public function defCurrency(){

@@ -4,7 +4,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Shipment extends Model {
 
-		/**
+	protected $primaryKey = 'ID';
+	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
@@ -42,4 +43,25 @@ class Shipment extends Model {
 	public function getMovIdAttribute(){
 		return $this->MovID;
 	}*/
+
+	public static function getChargeOrdersID(){
+
+		$chargeOrdersID = [];
+		$user = \Auth::user();
+
+		if (!$user) {
+			return $chargeOrdersID;
+		}
+
+		$company = $user->getSelectedCompany();
+		$agent = $user->agent;
+
+		$chargeOrders = self::where('Mov','Orden Cobro')->where('Estatus','PENDIENTE')->where('Empresa',$company)->where('Agente',$agent)->get(['ID']);
+
+		foreach($chargeOrders as $chargeOrder){
+			$chargeOrdersID[] = $chargeOrder->ID;
+		}
+
+		return $chargeOrdersID;
+	}
 }

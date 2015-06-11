@@ -37,7 +37,14 @@ class CxcInfo extends Model {
 	protected $appends = ['expiration', 'delinquent_days', 'balance'];
 
 	public function getExpirationAttribute(){
-		return $this->Vencimiento->__toString();
+		$expirationFormatted = null;
+		$expiration = $this->Vencimiento;
+
+		if($expiration){
+			$expirationFormatted = $expiration->formatLocalized('%d/%b/%Y');
+		}
+
+		return $expirationFormatted;
 	}
 
 	public function getDelinquentDaysAttribute(){

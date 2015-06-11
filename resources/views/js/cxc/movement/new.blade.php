@@ -82,7 +82,7 @@ function addDocumentRow(cxcD, cxcDocument){
 		"<tr id='document-"+insertedDocumentPlace+"'>"+
 			"<td style='text-align: center;' class='apply'>"+(cxcD.apply || '')+"</td>"+
 			"<td style='text-align: center;' class='consecutive'>"+(cxcD.apply_id || '')+"</td>"+
-			"<td style='text-align: center;' class='amount'>"+(cxcD.amount.toFixed(2) || '')+"</td>"+
+			"<td style='text-align: center;' class='amount' id='tdDocumentAmount'>$"+(cxcD.amount.toFixed(2) || '')+"</td>"+
 			"<td style='text-align: center;' class='difference'>"+cxcDocument.difference(cxcD.amount)+"</td>"+
 			"<td style='text-align: center;' class='differencePercentage'>"+cxcDocument.diferencePercent(cxcD.amount)+"</td>"+
 			"<td style='text-align: center;' class='concept'>"+(cxcDocument.concept || '')+"</td>"+
@@ -100,7 +100,7 @@ function addDocumentRow(cxcD, cxcDocument){
 		showPPSuggest();
 	}
 	
-	$("#documentsTable tbody tr:last .deleteDocument").on("click", function(){
+	/*$("#documentsTable tbody tr:last .deleteDocument").on("click", function(){
 
 		var $killrow = $(this).parent('td').parent('tr');
 		var documentNum = $killrow.attr('id').split('-')[1];
@@ -115,13 +115,29 @@ function addDocumentRow(cxcD, cxcDocument){
 		$killrow.remove();
 
 		//documentsNumber--;
-	});
+	});*/
 
 	@if($mov->status == 'SINAFECTAR' || $mov->status == '')
 		$("#documentsTable tbody tr:last .apply").on("click", editApply);
 		$("#documentsTable tbody tr:last .consecutive").on("click", editConsecutive);
 		$("#documentsTable tbody tr:last .amount").on("click", editAmount);
 		$("#documentsTable tbody tr:last .discountPPP").on("click", editDiscountPPP);
+		$("#documentsTable tbody tr:last .deleteDocument").on("click", function(){
+
+			var $killrow = $(this).parent('td').parent('tr');
+			var documentNum = $killrow.attr('id').split('-')[1];
+
+			// Actualizar importe total
+			if(aCxcD[documentNum])
+				updateTotalAmount(aCxcD[documentNum].amount, 0);
+
+			aCxcD[documentNum] = null;
+			aCxcDocs[documentNum] = null;
+
+			$killrow.remove();
+
+			//documentsNumber--;
+		});
 	@endif
 	//$("#documentsTable tbody tr:last .apply").on("click", editApply);
 
@@ -149,10 +165,13 @@ function addDocumentRow(cxcD, cxcDocument){
 	$("#documentsTable tbody tr:last .amount").on("focusout", function(e){
 		var amountTD = $(this);
 		var amountValue = $("#documentAmount").val();
-
+		//console.log("documentAmount: " + amountValue);
 		amountTD.on("click", editAmount);
 		amountTD.empty();
-		amountTD.html(amountValue);
+		if(amountValue != '')
+		amountTD.html('$' + parseFloat(amountValue).toFixed(2));
+		else
+		amountTD.html('$' + parseFloat(cxcD.amount).toFixed(2))
 	});
 
 	//$("#documentsTable tbody tr:last .discountPPP").on("click", editDiscountPPP);
@@ -172,12 +191,14 @@ function addDocumentRow(cxcD, cxcDocument){
 	updateTotalAmount(0, cxcD.amount);
 
 	//documentsNumber++;
+	tdDocumentAmount
 
 }
 
 var numberOfCharges = 1;
 var charges = [null,null,null,null,null];
-
+var paymentTypeList = [];
+var nChangeAmount = "{{$mov->change}}";
 $("#newChargeRow").on("click", function() {addChargeRow();});
 
 function addChargeRow(charge){
@@ -206,10 +227,17 @@ function addChargeRow(charge){
 
 	}
 
+	var options = '';
+
+	for(var i=1; i < paymentTypeList.length; i++){
+		var paymentType = paymentTypeList[i];
+		options += '<option value="'+paymentType.payment_type+'">'+paymentType.payment_type+'</option>';
+	}
+
 	//var indexNumber = aCharges.indexOf(null);
 	//var chargeNumber = indexNumber + 1
-
-	$('#charges').append(
+	@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+		$('#charges').append(
 		"<div class='form-group' id='charge-"+chargeNumber+"'>" +	    	
 			"<div class='col-sm-4'>" +
 				"<label for='amount"+chargeNumber+"'>Importe</label>" +
@@ -221,7 +249,8 @@ function addChargeRow(charge){
 			"<div class='col-sm-4'>" +
 				"<label for='charge_type"+chargeNumber+"'>Forma Cobro</label>"+
 				"<select id='charge_type"+chargeNumber+"' name='charge_type"+chargeNumber+"' class='form-control input-sm'>"+
-					"<option>"+ (charge.payment_type || '') +"</option>" +
+					
+					options +
 				"</select>" +
 			"</div>" +
 			"<div class='col-sm-3'>" +
@@ -233,6 +262,33 @@ function addChargeRow(charge){
 			"</div>" +
 			"<hr>" + 
 		"</div>");
+	@else
+		$('#charges').append(
+		"<div class='form-group' id='charge-"+chargeNumber+"'>" +	    	
+			"<div class='col-sm-4'>" +
+				"<label for='amount"+chargeNumber+"'>Importe</label>" +
+				"<div class='input-group'>"+
+					"<div class='input-group-addon'>$</div>"+
+					"<input type='number' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' value='"+ (charge.amount || '0.00') +"' min='0' step='any' readonly>"+
+				"</div>"+
+			"</div>" +
+			"<div class='col-sm-4'>" +
+				"<label for='charge_type"+chargeNumber+"'>Forma Cobro</label>"+
+				"<select id='charge_type"+chargeNumber+"' name='charge_type"+chargeNumber+"' class='form-control input-sm' disabled='true'>"+
+					options +
+				"</select>" +
+			"</div>" +
+			"<div class='col-sm-3'>" +
+				"<label for='reference"+chargeNumber+"'>Referencia</label>"+
+				"<input type='text' class='form-control input-sm' id='reference"+chargeNumber+"' name='reference"+chargeNumber+"' value='"+ (charge.reference || '') +"' readonly>"+
+			"</div>" + 
+			"<hr>" + 
+		"</div>");
+	@endif
+
+	
+
+	$('#charge_type'+chargeNumber).val(charge.payment_type || '');
 	
 	/*var previousAmount = 0.00;
 	amount1.change(function(){
@@ -256,10 +312,16 @@ function addChargeRow(charge){
 	});*/
 	
 	var previousAmount = 0.00;
+	var previousChangeAllowed = 0.00;
+	var previousSelectedChargeType = '';
+	var selectedChargeType = '';
+	//var total = 0;
+	//previousAmount = parseFloat(previousAmount).toFixed(2);
 	$("#charges div#charge-" + chargeNumber + " #amount"+chargeNumber).on("change", function(){
 		var totalCharge = $('#totalCharge');
+		//var nTotalCharge = parseFloat(totalCharge.val()).toFixed(2);
 		var nTotalCharge = parseFloat(totalCharge.val());
-		var nAmount = parseFloat($(this).val());
+		var nAmount = $(this).val();
 		//console.log(nAmount);
 		if(nAmount < 0 || isNaN(nAmount)){
 			//console.log(isNaN(nAmount));
@@ -267,36 +329,142 @@ function addChargeRow(charge){
 				var changeAmount = 0;
 				$(this).val(changeAmount.toFixed(2));
 			}else{*/
+			previousAmount = parseFloat(previousAmount).toFixed(2)
 			$(this).val(previousAmount);
-			charge.amount = $(this).val();
+			charge.amount = parseFloat($(this).val());
 			
 			//}
 		}else{
 			//nTotalCharge += (nAmount-previousAmount);
-			var nTotalCharge2 = new Decimal(nTotalCharge).plus(nAmount).toNumber().toFixed(2);
+			//var nTotalCharge2 = new Decimal(nTotalCharge).plus(nAmount).toNumber();
 			//console.log(nTotalCharge2);
-			var nTotalCharge3 = new Decimal(nTotalCharge2).minus(previousAmount).toNumber().toFixed(2);
+			//var nTotalCharge3 = new Decimal(nTotalCharge2).minus(previousAmount).toNumber();
 			//console.log(nTotalCharge3);
-			nTotalCharge = nTotalCharge3;
+			//nTotalCharge = parseFloat(nTotalCharge3);
+			nAmount = parseFloat(nAmount);
+			nTotalCharge = calculateDifferenceOfSameAmount(nTotalCharge,nAmount,previousAmount);
 			//nTotalCharge = nTotalCharge + nAmount;
 			//nTotalCharge = nTotalCharge - previousAmount;
 			if(nTotalCharge<1) nTotalCharge = 0;
-			totalCharge.val(nTotalCharge);
+			//nTotalCharge = calculateTotalAmount();
+			totalCharge.val(nTotalCharge.toFixed(2));
 			totalCharge.change();
+			//selectedChargeType = $('#charge_type'+chargeNumber+' option:selected').text();
+			//console.log(selectedChargeType);
+			//console.log(parseFloat($(this).val()).toFixed(2));
+			//var isChangeAllowed = parseInt(paymentTypeListChangeAllowed[selectedChargeType]);
+			//console.log(selectedChargeType);
+			//if(isChangeAllowed){
+				
+				//console.log('si acepto');
+				//var change = $('#change');
+				//var nchange = parseFloat(change.val());
+				//var totalChangeAllowed = $('#totalChangeAllowed');
+				//var ntotalChangeAllowed = parseFloat(totalChangeAllowed.val());
+				//console.log(ntotalChangeAllowed);
+				//console.log(nAmount);
+				//console.log(previousAmount);
+				//Caso cuando se pone primero el amount y luego se selecciona la forma de cobro
+				//if(nAmount == previousAmount){
+					//var ntotalChangeAllowed2 = new Decimal(ntotalChangeAllowed).plus(nAmount).toNumber();
+					//ntotalChangeAllowed = parseFloat(ntotalChangeAllowed2);
+					//ntotalChangeAllowed = nAmount;
+				//}else{
+					//var ntotalChangeAllowed2 = new Decimal(ntotalChangeAllowed).plus(nAmount).toNumber();
+					//var ntotalChangeAllowed3 = new Decimal(ntotalChangeAllowed2).minus(previousAmount).toNumber();
+					//ntotalChangeAllowed = parseFloat(ntotalChangeAllowed3);
+					//ntotalChangeAllowed = calculateDifferenceOfSameAmount(ntotalChangeAllowed,nAmount,previousAmount);
+				//}
+				//ntotalChangeAllowed = ntotalChangeAllowed + parseFloat($(this).val());
+				//console.log(ntotalChangeAllowed);
+				
+				//console.log(aCharges[chargeNumber-1]);
+				//console.log("Numoer de cargo: " + chargeNumber);
+				//Se guarda en el cobro lo que tiene al final
+				//totalChangeAllowed.val(ntotalChangeAllowed.toFixed(2));
+				//totalChangeAllowed.change();
+				//change.change();
+			//}
+			//console.log("Cargo: " + aCharges[0].reference);
 			previousAmount = nAmount;
+			//previousChangeAllowed = ntotalChangeAllowed; 
+			$(this).val(parseFloat($(this).val()).toFixed(2));
+			
+			aCharges[chargeNumber-1].amount = parseFloat($(this).val());
+			aCharges[chargeNumber-1].payment_type = selectedChargeType;
+			aCharges[chargeNumber-1].reference = $('#reference'+chargeNumber).val();
+			var totalChangeAllowed = $('#totalChangeAllowed');
+			var ntotalChangeAllowed = parseFloat(totalChangeAllowed.val());
+			ntotalChangeAllowed = calculateTotalChangeAllowed();
+			totalChangeAllowed.val(ntotalChangeAllowed.toFixed(2));
+			totalChangeAllowed.change();
+			var change = $('#change');
+			change.change();
+			/*isChangeAllowed = parseInt(paymentTypeListChangeAllowed[aCharges[chargeNumber-1].payment_type]);
+			console.log(isChangeAllowed);
+			if(isChangeAllowed){
+			total += aCharges[chargeNumber-1].amount;
+			}*/
+			
+			/*for(var i=0; i<aCharges.length; i++){
+				if(aCharges[i]){
+					if(isChangeAllowed){
+						total = total + aCharges[i].amount;
+					}
+				}
+			}*/
+			/*console.log("Amount: " + chargeNumber);
+			console.log(aCharges[chargeNumber-1].amount);
+			console.log("Payment Type: " + chargeNumber);
+			console.log(aCharges[chargeNumber-1].payment_type)
+			console.log("Total: " + total);*/
+			//var change = $('#change');
+			//change.change()
+			
 		}
-		
+		//previousSelectedChargeType = $('#charge_type'+chargeNumber+' option:selected').text();
+		//console.log("Antes:"+previousSelectedChargeType);
 		//previousAmount = $(this).val();
 	});
 
 	$("#charges div#charge-" + chargeNumber + " #amount"+chargeNumber).on("focus", function(){
-		
 		$(this).val('');
 	});
 
 	$("#charges div#charge-" + chargeNumber + " #amount"+chargeNumber).on("blur", function(){
 		if($(this).val()==''){
+			previousAmount = parseFloat(previousAmount).toFixed(2);
 			$(this).val(previousAmount);
+			//$(this).change();
+		}
+	});
+
+	$("#charges div#charge-" + chargeNumber + " #charge_type"+chargeNumber).on("change", function(){
+		selectedChargeType = $('#charge_type'+chargeNumber+' option:selected').text();
+		if(selectedChargeType != previousSelectedChargeType && 
+			parseInt(paymentTypeListChangeAllowed[selectedChargeType]) != parseInt(paymentTypeListChangeAllowed[previousSelectedChargeType])){
+			//console.log("Ahora:"+selectedChargeType);
+			//console.log("Antes:"+previousSelectedChargeType);
+			if(parseInt(paymentTypeListChangeAllowed[selectedChargeType])){
+				//console.log(parseFloat($('#amount'+chargeNumber).val()).toFixed(2));
+				//console.log($('#totalChangeAllowed').val())
+				$('#amount'+chargeNumber).change();
+				$('#totalChangeAllowed').change();
+			}else{
+				var totalChangeAllowed = $('#totalChangeAllowed');
+				var ntotalChangeAllowed = parseFloat(totalChangeAllowed.val());
+				var nAmount = parseFloat($('#amount'+chargeNumber).val());
+				var ntotalChangeAllowed2 = new Decimal(ntotalChangeAllowed).minus(nAmount).toNumber();
+				ntotalChangeAllowed = parseFloat(ntotalChangeAllowed2);
+				//ntotalChangeAllowed = ntotalChangeAllowed - nAmount;
+				if(ntotalChangeAllowed < 0) ntotalChangeAllowed =0;
+				totalChangeAllowed.val(ntotalChangeAllowed.toFixed(2));
+				totalChangeAllowed.change();
+				$('#amount'+chargeNumber).change();
+				//if(nAmount != previousAmount){
+					
+				//}
+			}
 		}
 	});
 
@@ -315,10 +483,54 @@ function addChargeRow(charge){
 		$killrow.remove();
 	});
 
+	$("#charges div#charge-" + chargeNumber + " #reference"+chargeNumber).on("change", function(){
+		$('#amount'+chargeNumber).change();
+	});
+
+
+
+
 	//charges[indexNumber] = numberOfCharges;
+	
+	//var totalChangeAllowed = $('#totalChangeAllowed');
+	//var ntotalChangeAllowed = parseFloat(totalChangeAllowed.val());
+	//ntotalChangeAllowed = calculateTotalChangeAllowed();
+	//console.log(ntotalChangeAllowed);
+	//totalChangeAllowed.val(ntotalChangeAllowed.toFixed(2));
+	//console.log(totalChangeAllowed.val());
+	//totalChangeAllowed.change();
 	$('#amount'+chargeNumber).change();
+	$('#charge_type'+chargeNumber).change();
 	numberOfCharges++;
 }//);
+
+function calculateTotalChangeAllowed(){
+	var total = 0;
+	//console.log(aCharges);
+	for(var i=0; i<aCharges.length; i++){
+		if(aCharges[i]){
+			var isChangeAllowed = parseInt(paymentTypeListChangeAllowed[aCharges[i].payment_type]);
+			if(isChangeAllowed){
+				/*var totalChangeAllowed = $('#totalChangeAllowed');
+				var ntotalChangeAllowed = parseFloat(totalChangeAllowed.val());
+				console.log("TotalChange: " + ntotalChangeAllowed);
+				var chargeNumber = i+1;
+				var charge = $('#amount'+chargeNumber);
+				console.log(charge)
+				var nChargeAmount = parseFloat(charge.val());
+				console.log("ChargeAmount: " + nChargeAmount);
+				total = calculateDifferenceOfTotalAmount(ntotalChangeAllowed, nChargeAmount, parseFloat(aCharges[i].amount));*/
+				total = total + aCharges[i].amount;
+				//console.log("Amount: " + i);
+				//console.log(aCharges[i].amount);
+				//console.log("Payment Type: " + i);
+				//console.log(aCharges[i].payment_type)
+			}
+		}
+	}
+	//console.log("Total: " + total);
+	return total;
+}
 
 function editApply(e){
 
@@ -477,21 +689,14 @@ function clearRowInfo(element){
 
 function updateTotalAmount(previousAmount, actualAmount){
 	var totalChargeInput = $('#totalAmount');
-	var totalCharge = new Decimal(totalChargeInput.val() || 0);
-	var amount = 0;
-	var taxes = 0;
-	var IVA = 1.16;
+	var totalCharge = new Decimal(parseFloat(totalChargeInput.val()) || 0);
 
-	actualAmount = new Decimal(actualAmount || 0);
+	actualAmount = new Decimal(parseFloat(actualAmount) || 0);
 
-	totalCharge = totalCharge.plus(actualAmount.minus(previousAmount));
-
-	amount = totalCharge.div(IVA);
-	taxes = totalCharge.minus(amount);
+	totalCharge = totalCharge.plus(actualAmount.minus(parseFloat(previousAmount) || 0));
 
 	totalChargeInput.val(totalCharge.toNumber().toFixed(2));
-	$('#amount').val(amount.toNumber().toFixed(2));
-	$('#taxes').val(taxes.toNumber().toFixed(2));
+
 }
 
 function showPPSuggest(){
@@ -504,6 +709,65 @@ function showPPSuggest(){
 		$('.discountPPPHeader').attr('hidden',false);
 		$('.suggestPPPHeader').attr('hidden',false);
 	}
+}
+
+function calculateDifferenceOfSameAmount(amount, actualAmount, previousAmount){
+	var amount2 = new Decimal(amount).plus(actualAmount);
+	//console.log("1: " + amount2);
+	var amount3 = amount2.minus(previousAmount).toNumber();
+	//console.log("2: " + amount3);
+	//console.log(amount3);
+	amount = parseFloat(amount3);
+	return amount;
+}
+
+function calculateDifferenceOfTotalAmount(amount, plusAmount, minusAmount){
+	//console.log("amount: " + amount);
+	//console.log("plusAmount: " + plusAmount);
+	//console.log("minusAmount: " + minusAmount);
+	var amount2 = new Decimal(amount).minus(minusAmount).toNumber();
+	//console.log("1: " + amount2);
+	var amount3 = new Decimal(amount2).plus(plusAmount).toNumber();
+	//console.log("2: " + amount3);
+	//var amount4 = new Decimal(amount3).minus(plusAmount).toNumber();
+	//console.log("3: " + amount4);
+	//var amount5 = new Decimal(amount4).minus(plusAmount).toNumber();
+	//console.log("3: " + amount5);
+	amount = parseFloat(amount3);
+	return amount;
+}
+
+function calculateTotalAmount(){
+	var total = 0;
+	var change = $('#change');
+	var proBalance = $('#pro_balance');
+	var nChange = parseFloat(change.val());
+	var nProBalance = parseFloat(proBalance.val());
+	for(var i=0; i<aCharges.length; i++){
+		if(aCharges[i]){
+			total +=  aCharges[i].amount;
+		}
+	}
+	total -= nChange;
+	total += nProBalance;
+	//console.log("Total: " + total); 	
+	return total;
+}
+
+function calcTaxes(amountWithTaxes){
+	var amount;
+	var taxes;
+	var IVA = 1.16;
+
+	amountWithTaxes = parseFloat(amountWithTaxes) || 0;
+	amountWithTaxes = new Decimal(amountWithTaxes);
+
+	amount = amountWithTaxes.div(IVA);
+	taxes = amountWithTaxes.minus(amount).toNumber();
+
+	$('#amount').val(amount.toNumber().toFixed(2));
+	$('#taxes').val(taxes.toFixed(2));
+
 }
 
 </script>

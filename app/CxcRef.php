@@ -37,11 +37,11 @@ class CxcRef extends Model {
 	protected $appends = ['emission_date', 'expiration_date', 'balance'];
 
 	public function getEmissionDateAttribute(){
-		return $this->FechaEmision->__toString();
+		return $this->FechaEmision->formatLocalized('%d/%b/%Y');;
 	}
 
 	public function getExpirationDateAttribute(){
-		return $this->Vencimiento->__toString();
+		return $this->Vencimiento->formatLocalized('%d/%b/%Y');;
 	}
 
 	public function getBalanceAttribute(){

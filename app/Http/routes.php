@@ -31,6 +31,6 @@ Route::controllers([
 	'cxc/cliente' => 'Cxc\ClientController',
 	'cxc/documento' => 'Cxc\DocumentController',
 	//'utileries' => 'UtileriesController',
-	//'embarques' => 'Shipment\ShipmentController',
+	'embarques' => 'Shipment\ShipmentController'
 ]);
 

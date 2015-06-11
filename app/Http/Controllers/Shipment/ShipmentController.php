@@ -15,90 +15,116 @@ class ShipmentController extends Controller {
 		$this->middleware('auth');
 	}
 
-	public function getEmbarques(/*$movID*/){
+	/*
+		Se utiliza el agente que tenga configurado el usuario para obtener el embarque(Orden de Cobro) que tiene asignado.
 		
-		/*$cxc = Cxc::findOrFail($movID);
-		$cxcD = CxcD::findOrFail($movID);
-		$cxcPending = CxcPending::findOrFail($movID);
-		$shipment = Shipment::findOrFail($movID);
-		$shipmentMov = ShipmentMov::findOrFail($movID);*/
-		$company = 'ASSIS';
-		$user = 'ADMIN';
-		$shipmentID = 3;
-		$status = 'CONCLUIDO';
-		$agent = 1;
-		$module = 'Cxc';
+		Para ver las facturas o documentos que debe cobrar el usuario:
+		  Estas se obtienen mediante el movimiento 'Orden Cobro' (Embarques) en estatus PENDIENTE
+		  que tenga asignada el agente configurado en el usuario.
+
+		Para ver las facturas o documentos que ha cobrado el usuario:
+		  Estas se obtienen de los movimiento 'Cobro' (CXC) en estatus CONCLUIDO que haya realizado
+		  el usuario.
+	*/
+
+	public function getEmbarques(){
+
+		$user = \Auth::user();
+
+		$chargeOrderCompare = collect([]);
+
+		// Se obtiene el ID de la orden de cobro asignada al usuario.
+		$chargeOrderID = Shipment::getChargeOrdersID();
+		// Se obtienen los documentos asignados al usuario en la orden de cobro.
+		$assignedDocuments = ShipmentMov::getAsignedDocuments($chargeOrderID);
+		// Se obtienen los documentos que ha cobrado el usuario durante la ruta de cobro asignada.
+		$chargedDocuments = Cxc::getChargedDocuments($chargeOrderID);
 
 
-		$cxc =  \DB::table('Cxc') -> join('CxcD', 'Cxc.id', '=', 'CxcD.id') -> leftJoin('CxcPendiente', function($leftJoin) use ($company, $user, $shipmentID, $status){
+		foreach ($assignedDocuments as &$assignedDocument) {
 
-				/*$leftJoin->on('CxcD.aplica', '=', 'CxcPendiente.Mov') -> on('CxcD.aplicaID', '=', 'CxcPendiente.MovID') -> on('Cxc.Empresa', '=', 'CxcPendiente.Empresa') -> on('CxcPendiente.Cliente', '=', 'Cxc.Cliente') -> where('Cxc.Empresa', '=',  DB::raw('"'.$company.'"')) -> where ('Usuario', '=', DB::raw('"'.$user.'"')) -> where('ThoAsignadoWeb', '=', DB::raw('"'.$shipmentID.'"')) -> where('Cxc.Estatus', '=', DB::raw('"'.$status.'"'));*/
-				$leftJoin -> on('CxcD.aplica', '=', 'CxcPendiente.Mov');
-				$leftJoin -> on('CxcD.aplicaID', '=', 'CxcPendiente.MovID');
-				$leftJoin -> on('Cxc.Empresa', '=', 'CxcPendiente.Empresa');
-				$leftJoin -> on('CxcPendiente.Cliente', '=', 'Cxc.Cliente');
-				$leftJoin -> where('Cxc.Empresa', '=',  $company);
-				$leftJoin -> where ('Usuario', '=', $user);
-				$leftJoin -> where('ThoAsignadoWeb', '=', $shipmentID);
-				$leftJoin -> where('Cxc.Estatus', '=', $status);
+			$mov = trim($assignedDocument->Mov);
+			$movID = trim($assignedDocument->MovID);
 
-			});
-		//dd($cxc);
+			$documentOrigin = Cxc::where('Mov',$mov)->where('MovID',$movID)->where('Empresa',$user->getSelectedCompany())->first(['Saldo','Cliente']);
 
-		//$shipmentMov = ShipmentMov::where('AsignadoID', $shipmentID)->query;
-		$shipmentMov = \DB::table('EmbarqueMov') -> where('AsignadoID', $shipmentID);
-		//dd($shipmentMov);
+			$document = new \stdClass;
 
-		$shipmentMov2 = \DB::table('Embarque') -> join('EmbarqueMov', 'Embarque.ID', '=', 'EmbarqueMov.AsignadoID') -> leftJoin('CxcPendiente', function($leftJoin) use ($shipmentID, $company, $agent, $module){
+			if($documentOrigin){
+				$document->balance = $documentOrigin->balance;
+			} else{
+				$document->balance = 0;
+			}
+			$document->client = $assignedDocument->client;
+			$document->assigned = true;
+			$document->charged = false;
+			$document->cashed = 0;
+			$document->mov = $mov;
+			$document->movID = $movID;
 			
-			/*$join->on('Embarque.ID', '=', 'EmbarqueMov.AsignadoID') -> leftJoin('CxcPendiente', function($leftJoin){
-				$leftJoin->on('EmbarqueMov.Mov', '=', 'CxcPendiente.Mov') -> on('EmbarqueMov.MovID', '=', 'CxcPendiente.MovID') -> on('EmbarqueMov.Empresa', '=', 'CxcPendiente.Empresa') -> on('CxcPendiente.Cliente', '=', 'EmbarqueMov.Cliente') -> where('AsignadoID', '=', DB::raw('"'.$shipmentID.'"')) -> where('EmbarqueMov.Empresa', '=', DB::raw('"'.$company.'"')) -> where('Embarque.Agente', '=', DB::raw('"'.$agent.'"')) -> where('EmbarqueMov', DB::raw('"'.$module.'"'));*/
+			foreach ($chargedDocuments as &$chargedDocument) {
 
-				$leftJoin -> on('EmbarqueMov.Mov', '=', 'CxcPendiente.Mov');
-				$leftJoin -> on('EmbarqueMov.MovID', '=', 'CxcPendiente.MovID');
-				$leftJoin -> on('EmbarqueMov.Empresa', '=', 'CxcPendiente.Empresa');
-				$leftJoin -> on('CxcPendiente.Cliente', '=', 'EmbarqueMov.Cliente');
-				$leftJoin -> where('AsignadoID', '=', $shipmentID);
-				$leftJoin -> where('EmbarqueMov.Empresa', '=', $company);
-				$leftJoin -> where('Embarque.Agente', '=', $agent);
-				$leftJoin -> where('EmbarqueMov.Modulo', '=', $module);
+				$apply = trim($chargedDocument->apply);
+				$applyID = trim($chargedDocument->apply_id);
 
-			});
-		//dd($shipmentMov2);
+				if( $mov == $apply && $movID == $applyID ){
+					$document->charged = true;
+					$document->cashed += $chargedDocument->amount;
+					$chargedDocument->assigned = true;
+				}
+			}
 
-		$cxc2 = \DB::table('Cxc') -> join('CxcD', function($join) use ($company, $user, $shipmentID, $status){
+			$chargeOrderCompare->push($document);
+		}
+
+
+		// Se obtienen los documentos que se cobraron y no estaban asignados.
+		$unassignedChargedDocuments = $chargedDocuments->where('assigned',null);
+
+		foreach ($unassignedChargedDocuments as &$unassignedChargedDocument) {
 			
-			/*$join->on('Cxc.id', '=', 'CxcD.id') -> where('Cxc.Empresa', '=', DB::raw('"'.$company.'"')) -> where ('Usuario', '=', DB::raw('"'.$user.'"')) -> where('ThoAsignadoWeb', '=', DB::raw('"'.$shipmentID.'"')) -> where('Cxc.Estatus', '=', DB::raw('"'.$status.'"'));*/
+			$apply = trim($unassignedChargedDocument->apply);
+			$apply_id = trim($unassignedChargedDocument->apply_id);
 
-			$join -> on('Cxc.id', '=', 'CxcD.id');
-			$join -> where('Cxc.Empresa', '=', $company);
-			$join -> where ('Usuario', '=', $user);
-			$join -> where('ThoAsignadoWeb', '=', $shipmentID);
-			$join -> where('Cxc.Estatus', '=', $status);
+			$coincidence = $chargeOrderCompare->where('mov',$apply)->where('movID',$apply_id);
 
-		});
+			if( $coincidence->isEmpty() ){
 
-		//dd($cxc2);
+				$documentOrigin = Cxc::where('Mov',$apply)->where('MovID',$apply_id)->where('Empresa',$user->getSelectedCompany())->first(['Saldo','Cliente']);
 
-		/*$assignedDocuments = $cxc -> leftJoin($shipmentMov, function($leftJoin){
-			
-			$leftJoin -> on('aplica', '=', 'EmbarqueMov.Mov');
-			$leftJoin -> on('AplicaID', '=', 'EmbarqueMov.MovID');
+				$document = new \stdClass;
+				if($documentOrigin){
+					$document->balance = $documentOrigin->balance;
+					$document->client = $documentOrigin->client_id;
+				} else{
+					$document->balance = 0;
+					$document->client = null;
+				}
+				$document->assigned = false;
+				$document->charged = true;
+				$document->cashed = $unassignedChargedDocument->amount;
+				//$document->balance = $documentOrigin->balance;
+				//$document->client = $documentOrigin->client_id;
+				$document->mov = $apply;
+				$document->movID = $apply_id;
 
-		})->get(); */
+				$chargeOrderCompare->push($document);
+			}
+			else{
+				$coincidence->first()->cashed += $unassignedChargedDocument->amount;
+			}
+		}
 
-		//dd([$shipmentMov,$cxc]);
-		
-		dd($assignedDocuments);
+		//$chargeOrderCompare->sum('cashed');
 
-		//$shipmentDocuments = CxcInfo::where('Empresa', $company) -> where ('Cliente', $client) -> where ('Moneda', $currency)->get();
-
-		//return response()->json($shipmentDocumentst);
+		//dd([$assignedDocuments,$unassignedChargedDocuments]);
+		//dd($chargeOrderCompare);
+		return response()->json($chargeOrderCompare);
 	}
 
 	public static function showShipmentDocuments(){
 		
-		$dataURL = '/embarques';
+		$dataURL = 'embarques/embarques';
 		
 		return view('shipment.shipmentDocuments', compact('dataURL'));
 	}

@@ -93,10 +93,30 @@
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 
+	<div class="modal fade" id="alertModal">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="alertModalTitle">Cuentas por cobrar</h4>
+	      </div>
+	      <div class="modal-body bg-warning" id="alertModalBody">
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
 	<!-- Scripts -->
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	@include('js.toolbar')
+	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
+	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
+	<script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+	@if(isset($mov))
+		@include('js.toolbar')
+	@endif
 	<script src="{{ asset('/js/cxc/movement/documents.js') }}"></script>
 	<script src="{{ asset('/js/bootstrap-table.min.js') }}"></script>
 	<script src="{{ asset('/js/cxc/movement/verifications.js') }}"></script>

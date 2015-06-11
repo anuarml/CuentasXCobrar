@@ -50,11 +50,11 @@ class CxcPending extends Model {
 	}
 
 	public function getExpirationAttribute(){
-		return $this->Vencimiento->__toString();
+		return $this->Vencimiento->formatLocalized('%d/%b/%Y');;
 	}
 
 	public function getEmissionDateAttribute(){
-		return $this->FechaEmision->__toString();
+		return $this->FechaEmision->formatLocalized('%d/%b/%Y');;
 	}
 
 	public function getConceptAttribute(){
