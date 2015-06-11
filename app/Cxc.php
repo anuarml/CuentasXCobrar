@@ -691,4 +691,28 @@ class Cxc extends Model {
 
 		return $chargedDocuments;
 	}
+
+	/*public static function getColumnName($name){
+		$columnName = null;
+
+		switch($name){
+		case 'concept':
+			$columnName = 'Concepto';
+			break;
+		case 'client_id':
+			$columnName = 'Cliente';
+			break;
+		case 'total_amount':
+			$columnName = 'Importe';
+			break;
+		case 'status':
+			$columnName = 'Estatus';
+			break;
+		default:
+			$columnName = $name;
+			break;
+		}
+
+		return $columnName;
+	}*/
 }
