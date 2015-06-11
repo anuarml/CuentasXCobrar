@@ -33,15 +33,22 @@ class CxcD extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['office','ID','row','apply', 'apply_id', 'amount', 'p_p_discount','origin'];
+	protected $visible = ['office','origin_office','ID','row','apply', 'apply_id', 'amount', 'p_p_discount','origin'];
 	
-	protected $appends = ['office','row','apply', 'apply_id', 'amount', 'p_p_discount'];
+	protected $appends = ['office','origin_office','row','apply', 'apply_id', 'amount', 'p_p_discount'];
 
 	public function getOfficeAttribute(){
 		return $this->Sucursal;
 	}
 	public function setOfficeAttribute($office){
 		return $this->Sucursal = $office;
+	}
+
+	public function getOriginOfficeAttribute(){
+		return $this->SucursalOrigen;
+	}
+	public function setOriginOfficeAttribute($office){
+		return $this->SucursalOrigen = $office;
 	}
 
 	public function getRowAttribute(){
@@ -96,6 +103,21 @@ class CxcD extends Model {
 			->update([
 				'Importe' => $this->amount,
 				'AplicaID' => $this->apply_id,
+			]);
+	}
+
+
+	public function insertRow(){
+		\DB::table($this->getTable())
+			->insert([
+				'ID'	  => $this->ID,
+				'Renglon' => $this->row,
+				'Importe' => $this->amount,
+				'Aplica'  => $this->apply,
+				'AplicaID'=> $this->apply_id,
+				'Sucursal'=> $this->office,
+				'SucursalOrigen'=> $this->origin_office,
+				//'DescuentoRecargos'=> $this->p_p_discount,
 			]);
 	}
 
