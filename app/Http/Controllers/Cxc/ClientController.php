@@ -14,9 +14,38 @@ class ClientController extends Controller {
 
 	public function getClientes(){
 		
-		$clients = Client::all();
+		$limit = \Input::get('limit');
+		$order = \Input::get('order');
+		$sort = \Input::get('sort');
+		$offset = \Input::get('offset');
+		$search = \Input::get('search');
 
-		return response()->json($clients);
+		$clientsQuery = Client::query();
+
+		if($search){
+			$clientsQuery->where(function ($query) use ($search) {
+				$comparator = 'LIKE';
+				$search = "%$search%";
+
+				$query->where('Cliente', $comparator, $search)
+					->orWhere('Nombre', $comparator, $search)
+					->orWhere('RFC', $comparator, $search);
+			});
+		}
+
+		if($sort && $order){
+			$sort = DBTranslations::getColumnName($sort);
+			$clientsQuery->orderBy($sort, $order);
+		}
+
+		$clientList = $clientsQuery->get(['Cliente','Nombre','RFC']);
+		$numberOfClients = $clientList->count();
+
+		$clientList = $clientList->slice($offset, $limit);
+
+		$result = ['total'=>$numberOfClients,'rows'=>$clientList->toArray()];
+
+		return response()->json($result);
 	}
 
 	public static function showClientSearch(){

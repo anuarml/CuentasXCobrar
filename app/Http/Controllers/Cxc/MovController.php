@@ -8,6 +8,7 @@ use App\Client;
 use App\CteSendTo;
 use App\Currency;
 use App\CxcPending;
+use App\DBTranslations;
 use App\MessageList;
 use App\Mon;
 use App\MovType;
@@ -395,21 +396,16 @@ class MovController extends Controller {
 	}
 
 	public function getListaMovimientos(){
-		//dd(\Input::get('limits'));
+
 		$user = \Auth::user();
 		$company = $user->getSelectedCompany();
 		$username = $user->username;
+		
 		$limit = \Input::get('limit');
 		$order = \Input::get('order');
 		$sort = \Input::get('sort');
-		//dd($limit);
 		$offset = \Input::get('offset');
-		//$allMovs = Cxc::all();
-		$numberOfDocuments = Cxc::where(function ($query) {
-			$query->where('Mov', 'Cobro')
-				->orWhere('Mov', 'Anticipo');
-		})->where('Empresa',$company)
-		  ->where('Usuario',$username)->get()->count();
+		$search = \Input::get('search');
 
 		$movListquery = Cxc::where(function ($query) {
 			$query->where('Mov', 'Cobro')
@@ -417,15 +413,37 @@ class MovController extends Controller {
 		})->where('Empresa',$company)
 		  ->where('Usuario',$username);
 
-		if($sort && $order){
-			$sort = Cxc::getColumnName($sort);
-			$movListquery = $movListquery->orderBy($sort, $order);
+		if($search){
+			$movListquery->where(function ($query) use ($search) {
+				$comparator = 'LIKE';
+				$search = "%$search%";
+
+				$query->where('Mov', $comparator, $search)
+					->orWhere('MovID', $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('concept'), $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('client_id'), $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('status'), $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('emission_date'), $comparator, $search)
+					->orWhere('ID', $comparator, $search)
+					->orWhere(\DB::raw('(Importe+Impuestos)'), $comparator, $search);
+			});
 		}
 
-		$movList = $movListquery ->take($limit)->offset($offset)->get();//paginate(20)->items();//get();
-		//dd($movListquery);
+		//$numberOfDocuments = $movListquery->get(['ID','Mov','MovID','Concepto','Cliente','Estatus','FechaEmision','Importe','Impuestos'])->count();
+
+		if($sort && $order){
+			$sort = DBTranslations::getColumnName($sort);
+			$movListquery->orderBy($sort, $order);
+		}
+
+		$movList = $movListquery->get(['ID','Mov','MovID','Concepto','Cliente','Estatus','FechaEmision','Importe','Impuestos']);
+		$numberOfDocuments = $movList->count();
+
+		//$movList = $movListquery ->take($limit)->offset($offset)->get();
+		$movList = $movList->slice($offset, $limit);
+
 		$result = ['total'=>$numberOfDocuments,'rows'=>$movList->toArray()];
-		//dd($result);
+
 		return response()->json($result);
 	}
 
