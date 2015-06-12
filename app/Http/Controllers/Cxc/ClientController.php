@@ -113,10 +113,41 @@ class ClientController extends Controller {
 		$company = $cxc->company;
 		$client = $cxc->client_id;
 		$currency = $cxc->currency;
-		//dd([$company,]);
-		$clientBalance = CxcInfo::where('Empresa', $company) -> where ('Cliente', $client) -> where ('Moneda', $currency)->get();
-		//dd($clientBalance);
-		return response()->json($clientBalance);
+
+		$limit = \Input::get('limit');
+		$order = \Input::get('order');
+		$sort = \Input::get('sort');
+		$offset = \Input::get('offset');
+		$search = \Input::get('search');
+
+		$clientBalanceQuery = CxcInfo::where('Empresa', $company) -> where ('Cliente', $client) -> where ('Moneda', $currency);
+
+		if($search){
+			$clientBalanceQuery->where(function ($query) use ($search) {
+				$comparator = 'LIKE';
+				$search = "%$search%";
+
+				$query->where('Mov', $comparator, $search)
+					->orWhere('MovID', $comparator, $search)
+					->orWhere('Vencimiento', $comparator, $search)
+					->orWhere('DiasMoratorios', $comparator, $search)
+					->orWhere('Saldo', $comparator, $search);
+			});
+		}
+
+		if($sort && $order){
+			$sort = DBTranslations::getColumnName($sort);
+			$clientBalanceQuery->orderBy($sort, $order);
+		}
+
+		$clientBalanceList = $clientBalanceQuery->get(['Mov','MovID','Vencimiento','DiasMoratorios','Saldo']);
+		$numberOfClientBalances = $clientBalanceList->count();
+
+		$clientBalanceList = $clientBalanceList->slice($offset, $limit);
+
+		$result = ['total'=>$numberOfClientBalances,'rows'=>$clientBalanceList->toArray()];
+
+		return response()->json($result);
 	}
 
 	public static function showClientBalance($movID){
