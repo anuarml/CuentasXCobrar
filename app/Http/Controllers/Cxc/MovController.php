@@ -432,7 +432,12 @@ class MovController extends Controller {
 		//$numberOfDocuments = $movListquery->get(['ID','Mov','MovID','Concepto','Cliente','Estatus','FechaEmision','Importe','Impuestos'])->count();
 
 		if($sort && $order){
-			$sort = DBTranslations::getColumnName($sort);
+			if($sort !='total_amount'){
+				$sort = DBTranslations::getColumnName($sort);
+			}
+			else {
+				$sort = \DB::raw('(Importe+Impuestos)');
+			}
 			$movListquery->orderBy($sort, $order);
 		}
 
