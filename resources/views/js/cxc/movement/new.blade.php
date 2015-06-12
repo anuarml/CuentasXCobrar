@@ -274,9 +274,10 @@ function addChargeRow(charge){
 			"</div>" +
 			"<div class='col-sm-4'>" +
 				"<label for='charge_type"+chargeNumber+"'>Forma Cobro</label>"+
-				"<select id='charge_type"+chargeNumber+"' name='charge_type"+chargeNumber+"' class='form-control input-sm' disabled='true'>"+
+				"<input type='text' class='form-control input-sm' id='charge_type"+chargeNumber+"' name='charge_type"+chargeNumber+"' value='"+ (charge.payment_type || '') +"' readonly>"+
+				/*"<select id='charge_type"+chargeNumber+"' name='charge_type"+chargeNumber+"' class='form-control input-sm' disabled='true'>"+
 					options +
-				"</select>" +
+				"</select>" +*/
 			"</div>" +
 			"<div class='col-sm-3'>" +
 				"<label for='reference"+chargeNumber+"'>Referencia</label>"+

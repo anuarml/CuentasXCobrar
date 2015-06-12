@@ -658,16 +658,29 @@ class Cxc extends Model {
 	public function getChangeAllowed(){
 		$charges = $this->getCharges();
 		$paymentTypeListChangeAllowed = json_decode(PaymentType::getPaymentTypeChangeAllowed(),true);
-		$totalChangeAllowedAmount = 0; 
+		$totalChangeAllowedAmount = 0;
+		$paymentTypeList = json_decode(PaymentType::getPaymentTypeList());
 		//dd($charges);
 		for ($i=0; $i < count($charges); $i++) { 
 			if($charges[$i] && $charges[$i]['payment_type']){
 				//dd($paymentTypeListChangeAllowed);
 				//dd($charges[$i]['payment_type']);
 				//dd((bool)$paymentTypeListChangeAllowed[$charges[$i]['payment_type']]);
-				if((bool)$paymentTypeListChangeAllowed[$charges[$i]['payment_type']]){
-					$totalChangeAllowedAmount += $charges[$i]['amount'];
+
+				//$key = array_search($charges[$i]['payment_type'], array_column($paymentTypeList,'payment_type'));
+				//echo($key);
+
+				foreach ($paymentTypeList as $paymentType) {
+					
+					if($charges[$i]['payment_type'] == $paymentType->payment_type){
+						if((bool)$paymentTypeListChangeAllowed[$charges[$i]['payment_type']]){
+							$totalChangeAllowedAmount += $charges[$i]['amount'];
+						}
+					}
 				}
+				/*if((bool)$paymentTypeListChangeAllowed[$charges[$i]['payment_type']]){
+					$totalChangeAllowedAmount += $charges[$i]['amount'];
+				}*/
 			}
 		}
 		//dd($totalChangeAllowedAmount);

@@ -357,6 +357,7 @@ class MovController extends Controller {
 		$currencyList = Mon::getCurrencyList();
 		$paymentTypeList = PaymentType::getPaymentTypeList();
 		$paymentTypeListChangeAllowed = PaymentType::getPaymentTypeChangeAllowed();
+		//if($mov->status =)
 		$totalChangeAllowedAmount = $mov->getChangeAllowed();
 		
 		$movCharges = json_encode($mov->getCharges());
