@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Cxc;
 use App\CteSendTo;
 use App\CxcInfo;
+use App\DBTranslations;
 
 class ClientController extends Controller {
 	
@@ -29,7 +30,7 @@ class ClientController extends Controller {
 
 				$query->where('Cliente', $comparator, $search)
 					->orWhere('Nombre', $comparator, $search)
-					->orWhere('RFC', $comparator, $search);
+					->orWhere('Direccion', $comparator, $search);
 			});
 		}
 
@@ -52,6 +53,7 @@ class ClientController extends Controller {
 
 		$searchType = 'cliente';
 		$dataURL = '/cxc/cliente/clientes';
+
 		
 		return view('cxc.client.search', compact('searchType','dataURL'));
 	}
@@ -61,10 +63,41 @@ class ClientController extends Controller {
 		$cxc = Cxc::findOrFail($movID);
 		$client = $cxc->client_id;
 		//dd($client = $cxc->client_id);
-		
-		$clientOffices = CteSendTo::where('Cliente', $client)->get();
+
+		$limit = \Input::get('limit');
+		$order = \Input::get('order');
+		$sort = \Input::get('sort');
+		$offset = \Input::get('offset');
+		$search = \Input::get('search');
+
+
+		$clientOfficesQuery = CteSendTo::where('Cliente', $client);//->get();
+
+		if($search){
+			$clientOfficesQuery->where(function ($query) use ($search) {
+				$comparator = 'LIKE';
+				$search = "%$search%";
+
+				$query->where('ID', $comparator, $search)
+					->orWhere('Nombre', $comparator, $search)
+					->orWhere('Direccion', $comparator, $search);
+			});
+		}
+
+		if($sort && $order){
+			$sort = DBTranslations::getColumnName($sort);
+			$clientOfficesQuery->orderBy($sort, $order);
+		}
+
+		$clientOffices = $clientOfficesQuery->get(['ID','Nombre','Direccion']);
+		$numberOfClientOffices = $clientOffices->count();
+
+		$clientOffices = $clientOffices->slice($offset, $limit);
+
+		$result = ['total'=>$numberOfClientOffices,'rows'=>$clientOffices->toArray()];
+
 		//dd($clientOffices);
-		return response()->json($clientOffices);
+		return response()->json($result);
 	}
 
 	public static function showClientOfficeSearch($movID){

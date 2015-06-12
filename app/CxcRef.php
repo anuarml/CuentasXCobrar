@@ -32,7 +32,7 @@ class CxcRef extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['Mov','MovID', 'emission_date', 'expiration_date', 'balance'];
+	protected $visible = ['ID','Mov','MovID', 'emission_date', 'expiration_date', 'balance'];
 
 	protected $appends = ['emission_date', 'expiration_date', 'balance'];
 
