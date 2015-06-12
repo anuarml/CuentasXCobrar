@@ -383,9 +383,42 @@ class MovController extends Controller {
 		$cxc = Cxc::findOrFail($movID);
 		$client = $cxc->client_id;
 
-		$clientOffices = CxcRef::where('Cliente', $client)->get();
+		$limit = \Input::get('limit');
+		$order = \Input::get('order');
+		$sort = \Input::get('sort');
+		$offset = \Input::get('offset');
+		$search = \Input::get('search');
 
-		return response()->json($clientOffices);
+		$clientOfficesQuery = CxcRef::where('Cliente', $client);//->get();
+		//dd($clientOfficesQuery);
+		if($search){
+			$clientOfficesQuery->where(function ($query) use ($search) {
+				$comparator = 'LIKE';
+				$search = "%$search%";
+
+				$query->where('Mov', $comparator, $search)
+					->orWhere('MovID', $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('emission_date'), $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('expiration_date'), $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('balance'), $comparator, $search);
+			});
+		}
+
+		if($sort && $order){
+			$sort = DBTranslations::getColumnName($sort);
+			$clientOfficesQuery->orderBy($sort, $order);
+		}
+
+		$clientOffices = $clientOfficesQuery->get(['Mov','MovID','FechaEmision','Vencimiento','Saldo']);
+		$numberOfClientOffices = $clientOffices->count();
+		
+		//$movList = $movListquery ->take($limit)->offset($offset)->get();
+		$clientOffices = $clientOffices->slice($offset, $limit);
+		
+		$result = ['total'=>$numberOfClientOffices,'rows'=>$clientOffices->toArray()];
+		//dd($result);
+
+		return response()->json($result);
 	}
 
 	public static function showMovementReferenceSearch($movID){

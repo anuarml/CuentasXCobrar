@@ -32,6 +32,7 @@ class DBTranslations {
 			$columnName = 'Saldo';
 			break;
 		case 'expiration':
+		case 'expiration_date':
 			$columnName = 'Vencimiento';
 			break;
 		default:
