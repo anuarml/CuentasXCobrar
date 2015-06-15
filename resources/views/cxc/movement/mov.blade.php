@@ -3,6 +3,7 @@
 @section('content')
 
 	<div class="container">
+		<div class="row">
 		{!! Form::model( $mov, array('url' => array('cxc/movimiento/guardar'), 'id'=>'cxcMovForm' ) ) !!}
 			{!! Form::hidden('action', null, array('id'=>'action' )) !!}
 			{!! Form::hidden('clickedRow', null, array('id'=>'clickedRow' )) !!}
@@ -190,21 +191,6 @@
 												</div>
 											</div>
 										</div>
-										<!--<div class="form-group">
-											<label for="Observations">Observaciones:</label>
-											<div class='input-group'>
-												<span class='input-group-btn'>
-													<button type='button' class='btn btn-default' id='searchMovObservations'>
-														<span class='glyphicon glyphicon-search'></span>
-													</button>
-												</span>
-					                        	<input type="text" name="Observations" id="Observations" class="form-control" tabindex="3">
-											</div>
-											<input list="Observations" name="browser" id="inpObservations" class="form-control" tabindex="3">
-											<datalist id="Observations" >
-											  <option value="Internet Explorer">
-											</datalist>
-										</div>-->
 									</div>
 								</div>
 							</div>
@@ -310,7 +296,7 @@
 				    				<label for="totalChangeAllowed">Cambio Permitido</label>
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-				    					<input type='number' class='form-control input-sm' id='totalChangeAllowed' min='0' step='any' value='{{$totalChangeAllowedAmount}}' readonly>
+				    					<input type='text' class='form-control input-sm' id='totalChangeAllowed' min='0' step='any' value='{{$totalChangeAllowedAmount}}' readonly>
 				    				</div>
 				    			</div>	
 				    		</div>
@@ -322,6 +308,7 @@
 			</div>
 		<!--</form>-->
 		{!! Form::close() !!}
+		</div>
 	</div>
 @endsection
 
@@ -397,7 +384,7 @@
 		if(movCharges){
 			for(var i = 0; i < movCharges.length; i++){
 				var charge = new Charge(movCharges[i]);
-				console.log(charge.payment_type);
+				//console.log(charge.payment_type);
 				if(parseInt(charge.amount) != 0)
 				addChargeRow(charge);
 			}

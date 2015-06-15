@@ -123,8 +123,14 @@ class MovController extends Controller {
 			return redirect()->back()->withInput()->withErrors($validator->messages());
 		}
 
+		//dd($cxcArray);
+
+		// Limpiar cobros.
+		$cxc->clearCharges();
+
 		//$cxc = new Cxc;
 		$cxc->fill($cxcArray);
+		//dd($cxc);
 		$cxc->user = $user->username;
 		$cxc->company = $user->getSelectedCompany();
 		$cxc->office_id = $user->getSelectedOffice();
@@ -359,7 +365,7 @@ class MovController extends Controller {
 		$paymentTypeListChangeAllowed = PaymentType::getPaymentTypeChangeAllowed();
 		//if($mov->status =)
 		$totalChangeAllowedAmount = $mov->getChangeAllowed();
-		
+		//dd($totalChangeAllowedAmount);
 		$movCharges = json_encode($mov->getCharges());
 
 		// Se guarda en la sesión del usuario el ID del movimiento.
