@@ -7,7 +7,7 @@
         <h4 class="modal-title">Calculadora</h4>
       </div>
       <div class="modal-body">
-        <div id="calculator" class="col-sm-offset-2" >
+        <div id="calculator" class="col-sm-offset-3" >
             <!-- Screen and clear key -->
             <div class="top">
                 <span class="clear">C</span>
