@@ -80,7 +80,7 @@ function addDocumentRow(cxcD, cxcDocument){
 			"<td style='text-align: center;' class='differencePercentage'>"+cxcDocument.diferencePercent(cxcD.amount)+"</td>"+
 			"<td style='text-align: center;' class='concept'>"+(cxcDocument.concept || '')+"</td>"+
 			"<td style='text-align: center;' class='reference'>"+(cxcDocument.reference || '')+"</td>"+
-			"<td style='text-align: center;' class='discountPPP' "+suggesPPVisibility+">"+(cxcD.p_p_discount.toFixed(2) || '')+"</td>"+
+			"<td style='text-align: center;' class='discountPPP' "+suggesPPVisibility+">$"+(cxcD.p_p_discount.toFixed(2) || '')+"</td>"+
 			"<td style='text-align: center;' class='suggestPPP' "+suggesPPVisibility+">"+(cxcDocument.pp_suggest.toFixed(2) || '')+"</td>"+
 			"<td style='text-align: center;'>"+
 				"<div class='deleteDocument'>"+
@@ -105,7 +105,7 @@ function addDocumentRow(cxcD, cxcDocument){
 
 			// Actualizar importe total
 			if(aCxcD[documentNum])
-				updateTotalAmount(aCxcD[documentNum].amount, 0);
+				updateTotalAmount(aCxcD[documentNum].amount + aCxcD[documentNum].p_p_discount , 0);
 
 			aCxcD[documentNum] = null;
 			aCxcDocs[documentNum] = null;
@@ -137,7 +137,7 @@ function addDocumentRow(cxcD, cxcDocument){
 	$("#documentsTable tbody tr:last .amount").on("focusout", function(e){
 		var amountTD = $(this);
 		var amountValue = $("#documentAmount").val();
-		//console.log("documentAmount: " + amountValue);
+
 		amountTD.on("click", editAmount);
 		amountTD.empty();
 		if(amountValue != '')
@@ -154,10 +154,17 @@ function addDocumentRow(cxcD, cxcDocument){
 		discountTD.on("click", editDiscountPPP);
 		discountTD.empty();
 		discountTD.html(discountValue);
+
+		if(discountValue == ''){
+			discountTD.html('$' + parseFloat(cxcD.p_p_discount).toFixed(2) );
+		}
+		else{
+			discountTD.html('$' + parseFloat(discountValue).toFixed(2) );
+		}
 	});
 
 	// Actualizar importe total
-	updateTotalAmount(0, cxcD.amount);
+	updateTotalAmount(0, cxcD.amount + cxcD.p_p_discount);
 }
 
 function editApply(e){
@@ -263,7 +270,15 @@ function editDiscountPPP(e){
 	var discountValue = discountTD.html();
 
 	discountTD.empty();
-	discountTD.append("<input type='number' class='form-control' id='discountPPP' min='0' step='any'>");
+	discountTD.append("<input type='number' class='form-control' id='discountPPP'>");
+
+	$("#discountPPP").change( function() {
+		var documentRow = getDocNumber(this);
+		var previousAmount = aCxcD[documentRow].p_p_discount;
+		var actualAmount = aCxcD[documentRow].p_p_discount = $(this).val();
+		// Actualizar importe total
+		updateTotalAmount(previousAmount, actualAmount);
+	});
 	
 	$("#discountPPP").focus();
 	$("#discountPPP").val(discountValue);
@@ -384,7 +399,7 @@ function addChargeRow(charge){
 				"<label for='amount"+chargeNumber+"'>Importe</label>" +
 				"<div class='input-group'>"+
 					"<div class='input-group-addon'>$</div>"+
-					"<input type='number' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' value='"+ (charge.amount || '0.00') +"' min='0' step='any'>"+
+					"<input type='number' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' value='"+ (charge.amount.toFixed(2) || '0.00') +"' min='0' step='any'>"+
 				"</div>"+
 			"</div>" +
 			"<div class='col-sm-4'>" +
@@ -410,7 +425,7 @@ function addChargeRow(charge){
 				"<label for='amount"+chargeNumber+"'>Importe</label>" +
 				"<div class='input-group'>"+
 					"<div class='input-group-addon'>$</div>"+
-					"<input type='number' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' value='"+ (charge.amount || '0.00') +"' min='0' step='any' readonly>"+
+					"<input type='number' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' value='"+ (charge.amount.toFixed(2) || '0.00') +"' min='0' step='any' readonly>"+
 				"</div>"+
 			"</div>" +
 			"<div class='col-sm-4'>" +
@@ -552,8 +567,6 @@ function addChargeRow(charge){
 
 		var $killrow = $(this).parent('div');
 		$killrow.remove();
-
-		console.log(aCharges);
 	});
 
 	$('#reference'+chargeNumber).change( function(){
@@ -577,7 +590,7 @@ function addChargeRow(charge){
 		totalCharge = calculateTotal(totalCharge, charge.amount, 0);
 
 		totalChargeInput.val(totalCharge.toFixed(2));
-		totalChargeInput.change();
+		//totalChargeInput.change();
 	}
 
 	numberOfCharges++;

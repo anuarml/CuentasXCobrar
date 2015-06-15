@@ -1,10 +1,9 @@
 	@extends('app')
 
 @section('content')
-
 	<div class="container">
 		<div class="row">
-		{!! Form::model( $mov, array('url' => array('cxc/movimiento/guardar'), 'id'=>'cxcMovForm' ) ) !!}
+		{!! Form::model( $mov, array('url' => array('cxc/movimiento/guardar'), 'id'=>'cxcMovForm','autocomplete'=>'off' ) ) !!}
 			{!! Form::hidden('action', null, array('id'=>'action' )) !!}
 			{!! Form::hidden('clickedRow', null, array('id'=>'clickedRow' )) !!}
 			<div class="row">
@@ -273,23 +272,23 @@
 				    				<label for="totalCharge">Importe Total</label>
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-				    					<input type='number' class='form-control input-sm' id='totalCharge' min='0' step='any' value='0.00' readonly>
+				    					<input type='number' class='form-control input-sm' id='totalCharge' min='0' value='0.00' readonly>
 				    				</div>
 				    			</div>
 				    			<div class='col-sm-2' id='dvTotalAmount'>
 				    				<label for="totalAmount">Total</label>
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-				    					<input type='number' class='form-control input-sm' id='totalAmount' min='0' step='any' value='0.00' readonly>
+				    					<input type='number' class='form-control input-sm' id='totalAmount' min='0' value='0.00' readonly>
 				    					<input type="hidden" name="amount" id="amount">
 				    					<input type="hidden" name="taxes" id="taxes">
 				    				</div>
-				    			</div>	
+				    			</div>
 				    			<div class='col-sm-2' id='dvDifference'>
 				    				<label for="difference">Por Cobrar</label>
 				    				<div class='input-group'>
 				    					<div class='input-group-addon'>$</div>
-				    					<input type='number' class='form-control input-sm' id='difference' min='0' step='any' value='0.00' readonly>
+				    					<input type='number' class='form-control input-sm' id='difference' min='0' value='0.00' readonly>
 				    				</div>
 				    			</div>
 				    			<div class='col-sm-2' id='dvTotalChangeAllowed' hidden>

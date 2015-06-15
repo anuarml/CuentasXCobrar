@@ -227,7 +227,12 @@ class MovController extends Controller {
 				break;	 
 			case 'save':
 			default:
-				return redirect('cxc/movimiento/mov/'.$cxc->ID);
+				$message = new \stdClass();
+				$message->type = 'INFO';
+				$message->description = 'Movimiento guardado.';
+				$message->code = $cxc->ID;
+				$message->reference = '';
+				return redirect('cxc/movimiento/mov/'.$cxc->ID)->withMessage($message);
 				break;
 		}
 		return redirect('cxc/movimiento/mov/'.$cxc->ID);

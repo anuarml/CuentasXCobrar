@@ -109,11 +109,6 @@ $('#totalChangeAllowed').change(function(){
 	change.change();
 });
 
-$(document).ready(function(){
-	proBalance.change();
-	//$('#totalCharge').change();
-});
-
 $(window).load(function(){
 	if(nChangeAmount){
 		change.val(nChangeAmount);
@@ -121,4 +116,5 @@ $(window).load(function(){
 		change.val('0.00');
 	}
 	change.change();
+	proBalance.change();
 });
