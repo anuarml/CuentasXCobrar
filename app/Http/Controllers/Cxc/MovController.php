@@ -123,8 +123,14 @@ class MovController extends Controller {
 			return redirect()->back()->withInput()->withErrors($validator->messages());
 		}
 
+		//dd($cxcArray);
+
+		// Limpiar cobros.
+		$cxc->clearCharges();
+
 		//$cxc = new Cxc;
 		$cxc->fill($cxcArray);
+		//dd($cxc);
 		$cxc->user = $user->username;
 		$cxc->company = $user->getSelectedCompany();
 		$cxc->office_id = $user->getSelectedOffice();
@@ -221,7 +227,12 @@ class MovController extends Controller {
 				break;	 
 			case 'save':
 			default:
-				return redirect('cxc/movimiento/mov/'.$cxc->ID);
+				$message = new \stdClass();
+				$message->type = 'INFO';
+				$message->description = 'Movimiento guardado.';
+				$message->code = $cxc->ID;
+				$message->reference = '';
+				return redirect('cxc/movimiento/mov/'.$cxc->ID)->withMessage($message);
 				break;
 		}
 		return redirect('cxc/movimiento/mov/'.$cxc->ID);
@@ -359,7 +370,7 @@ class MovController extends Controller {
 		$paymentTypeListChangeAllowed = PaymentType::getPaymentTypeChangeAllowed();
 		//if($mov->status =)
 		$totalChangeAllowedAmount = $mov->getChangeAllowed();
-		
+		//dd($totalChangeAllowedAmount);
 		$movCharges = json_encode($mov->getCharges());
 
 		// Se guarda en la sesión del usuario el ID del movimiento.
@@ -662,17 +673,30 @@ class MovController extends Controller {
 			]);
 		}
 
+		$cxc = Cxc::find($movID);
+		if(!$cxc) {
+			return redirect()->back()->withInput()->withErrors([
+				'Mov'=>'El movimiento '.$movID.' ya no existe.',
+			]);
+		}
+		
+		$movMovID = '';
+
+		if($cxc->MovID){
+			$movMovID = $cxc->MovID;
+		}
+
 		$message = new \stdClass();
 		if($result['message'] == null){
 			$message->type = 'INFO';
 			$message->description = 'Movimiento afectado.';
 			$message->code = '';
-			$message->reference = '';
+			$message->reference = $cxc->Mov.': '.$movMovID;
 			return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
 		}
 
 		$message = MessageList::find($result['message']);
-		$message->reference = $result['reference'];
+		$message->reference = $result['reference'] .'<br>'.$cxc->Mov.': '. $movMovID;
 
 		return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
 	}

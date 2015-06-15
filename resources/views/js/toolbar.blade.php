@@ -140,8 +140,6 @@ var toolbar = {
 
 			var minimunCharge = totalAmount.minus(rounding).toNumber();
 			var maximunCharge = totalAmount.plus(rounding).toNumber();
-			
-			calcTaxes(totalCharge);
 
 			if( totalCharge < minimunCharge || totalCharge > maximunCharge ){
 				toolbar.showAlertModal('El cobro no cuadra con el importe total.');

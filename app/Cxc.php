@@ -675,8 +675,10 @@ class Cxc extends Model {
 					if($charges[$i]['payment_type'] == $paymentType->payment_type){
 						if((bool)$paymentTypeListChangeAllowed[$charges[$i]['payment_type']]){
 							$totalChangeAllowedAmount += $charges[$i]['amount'];
+
 						}
 					}
+
 				}
 				/*if((bool)$paymentTypeListChangeAllowed[$charges[$i]['payment_type']]){
 					$totalChangeAllowedAmount += $charges[$i]['amount'];
@@ -705,27 +707,25 @@ class Cxc extends Model {
 		return $chargedDocuments;
 	}
 
-	/*public static function getColumnName($name){
-		$columnName = null;
+	public function clearCharges(){
+		$this->amount1 = null;
+		$this->charge_type1 = null;
+		$this->reference1 = null;
 
-		switch($name){
-		case 'concept':
-			$columnName = 'Concepto';
-			break;
-		case 'client_id':
-			$columnName = 'Cliente';
-			break;
-		case 'total_amount':
-			$columnName = 'Importe';
-			break;
-		case 'status':
-			$columnName = 'Estatus';
-			break;
-		default:
-			$columnName = $name;
-			break;
-		}
+		$this->amount2 = null;
+		$this->charge_type2 = null;
+		$this->reference2 = null;
 
-		return $columnName;
-	}*/
+		$this->amount3 = null;
+		$this->charge_type3 = null;
+		$this->reference3 = null;
+
+		$this->amount4 = null;
+		$this->charge_type4 = null;
+		$this->reference4 = null;
+
+		$this->amount5 = null;
+		$this->charge_type5 = null;
+		$this->reference5 = null;
+	}
 }

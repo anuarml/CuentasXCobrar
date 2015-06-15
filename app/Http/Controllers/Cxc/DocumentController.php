@@ -66,7 +66,7 @@ class DocumentController extends Controller {
 			$documentsQuery->orderBy($sort, $order);
 		}
 
-		$documentList = $documentsQuery->get(['MovID','FechaEmision','Vencimiento','ImporteTotal','Saldo','Concepto']);
+		$documentList = $documentsQuery->get(['Mov','MovID','FechaEmision','Vencimiento','ImporteTotal','Saldo','Concepto']);
 		$numberOfDocuments = $documentList->count();
 
 		$documentList = $documentList->slice($offset, $limit);
