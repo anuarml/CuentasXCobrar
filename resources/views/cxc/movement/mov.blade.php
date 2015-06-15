@@ -30,8 +30,8 @@
 							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							{{ \Session::get('message')->type }}
 							{{ '('.\Session::get('message')->code.')' }}
-							{{ \Session::get('message')->description }}<br>
-							<p>{{ \Session::get('message')->reference }}</p>
+							{!! \Session::get('message')->description !!}<br>
+							<p>{!! \Session::get('message')->reference !!}</p>
 						</div>
 					@endif
 					<div role="tabpanel">

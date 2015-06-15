@@ -42,7 +42,7 @@ class CxcPending extends Model {
 	}*/
 
 	public function getBalanceAttribute(){
-		return $this->Saldo;
+		return $this->Saldo * $this->getFactor();
 	}
 
 	public function getTotalAmountAttribute(){
@@ -67,5 +67,18 @@ class CxcPending extends Model {
 
 	public function getTableName(){
 		return $this->table;
+	}
+
+	private function getFactor(){
+
+		$factor = 1;
+
+		$movType = MovType::where('Modulo','CXC')->where('Mov',$this->Mov)->first();
+
+		if($movType){
+			$factor = $movType->Factor;
+		}
+
+		return $factor;
 	}
 }

@@ -673,17 +673,30 @@ class MovController extends Controller {
 			]);
 		}
 
+		$cxc = Cxc::find($movID);
+		if(!$cxc) {
+			return redirect()->back()->withInput()->withErrors([
+				'Mov'=>'El movimiento '.$movID.' ya no existe.',
+			]);
+		}
+		
+		$movMovID = '';
+
+		if($cxc->MovID){
+			$movMovID = $cxc->MovID;
+		}
+
 		$message = new \stdClass();
 		if($result['message'] == null){
 			$message->type = 'INFO';
 			$message->description = 'Movimiento afectado.';
 			$message->code = '';
-			$message->reference = '';
+			$message->reference = $cxc->Mov.': '.$movMovID;
 			return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
 		}
 
 		$message = MessageList::find($result['message']);
-		$message->reference = $result['reference'];
+		$message->reference = $result['reference'] .'<br>'.$cxc->Mov.': '. $movMovID;
 
 		return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
 	}
