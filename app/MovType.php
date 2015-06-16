@@ -31,7 +31,7 @@ class MovType extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['Mov'];
+	protected $visible = ['Mov','Factor'];
 
 	protected $appends = [];
 

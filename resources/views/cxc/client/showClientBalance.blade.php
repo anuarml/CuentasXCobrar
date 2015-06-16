@@ -19,6 +19,11 @@
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<style type="text/css">
+		.pagination-detail{
+			display: none;
+		}
+	</style>
 </head>
 <body>
 	<div class="container-fluid">
@@ -39,7 +44,15 @@
 								</div>
 							@endif
 							<div class="row">
-								<table id="showTable" data-toggle="table" data-url="{{ url($dataURL) }}" data-search="true" data-show-columns="true" data-click-to-select="true">
+								<table id="showTable"
+								data-toggle="table"
+								data-url="{{ url($dataURL) }}"
+								data-search="true"
+								data-show-columns="true"
+								data-pagination="true"
+								data-side-pagination="server"
+								data-page-list="[]"
+								data-page-size="100">
 									<thead>
 										<tr>
 										    <th data-field="Mov" data-align="center" data-sortable="true">Mov</th>
@@ -70,7 +83,15 @@
 
 			return '$'+valueFormatted.toFixed(2);
 		}
-		$('#showTable').attr('data-height',$( window ).height() - 90 );
+		$.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-MX']);
+		$(window).resize(function () {
+            var searchTable = $('#showTable');
+
+            
+            searchTable.bootstrapTable('resetView',{'height':$(this).height()-30});
+        });
+
+        $('#showTable').attr('data-height',$( window ).height() - 30);
 	</script>
 
 </body>

@@ -8,6 +8,7 @@ use App\Client;
 use App\CteSendTo;
 use App\Currency;
 use App\CxcPending;
+use App\DBTranslations;
 use App\MessageList;
 use App\Mon;
 use App\MovType;
@@ -122,8 +123,14 @@ class MovController extends Controller {
 			return redirect()->back()->withInput()->withErrors($validator->messages());
 		}
 
+		//dd($cxcArray);
+
+		// Limpiar cobros.
+		$cxc->clearCharges();
+
 		//$cxc = new Cxc;
 		$cxc->fill($cxcArray);
+		//dd($cxc);
 		$cxc->user = $user->username;
 		$cxc->company = $user->getSelectedCompany();
 		$cxc->office_id = $user->getSelectedOffice();
@@ -175,6 +182,8 @@ class MovController extends Controller {
 			    $cxcD = new CxcD;
 				$cxcD->fill((array)$cxcDA);
 				$cxcD->row = $rowNum++ * $ROW_MULTIPLIER;
+				$cxcD->office = $user->getSelectedOffice();
+				$cxcD->origin_office = $user->getSelectedOffice();
 				if($cxcDA->tableRowID == $clickedRow){
 					$tableRowID = $cxcD->row;
 				}
@@ -212,13 +221,18 @@ class MovController extends Controller {
 				} 
 				break;
 			case 'resultCalculator':
-				return redirect('cxc/movimiento/mov/'.$cxc->ID.'#documentos');
+				return redirect('cxc/movimiento/mov/'.$cxc->ID);
 			case 'affect':
 				return redirect('cxc/movimiento/affect');
 				break;	 
 			case 'save':
 			default:
-				return redirect('cxc/movimiento/mov/'.$cxc->ID);
+				$message = new \stdClass();
+				$message->type = 'INFO';
+				$message->description = 'Movimiento guardado.';
+				$message->code = $cxc->ID;
+				$message->reference = '';
+				return redirect('cxc/movimiento/mov/'.$cxc->ID)->withMessage($message);
 				break;
 		}
 		return redirect('cxc/movimiento/mov/'.$cxc->ID);
@@ -354,8 +368,9 @@ class MovController extends Controller {
 		$currencyList = Mon::getCurrencyList();
 		$paymentTypeList = PaymentType::getPaymentTypeList();
 		$paymentTypeListChangeAllowed = PaymentType::getPaymentTypeChangeAllowed();
+		//if($mov->status =)
 		$totalChangeAllowedAmount = $mov->getChangeAllowed();
-		
+		//dd($totalChangeAllowedAmount);
 		$movCharges = json_encode($mov->getCharges());
 
 		// Se guarda en la sesión del usuario el ID del movimiento.
@@ -380,9 +395,42 @@ class MovController extends Controller {
 		$cxc = Cxc::findOrFail($movID);
 		$client = $cxc->client_id;
 
-		$clientOffices = CxcRef::where('Cliente', $client)->get();
+		$limit = \Input::get('limit');
+		$order = \Input::get('order');
+		$sort = \Input::get('sort');
+		$offset = \Input::get('offset');
+		$search = \Input::get('search');
 
-		return response()->json($clientOffices);
+		$clientOfficesQuery = CxcRef::where('Cliente', $client);//->get();
+		//dd($clientOfficesQuery);
+		if($search){
+			$clientOfficesQuery->where(function ($query) use ($search) {
+				$comparator = 'LIKE';
+				$search = "%$search%";
+
+				$query->where('Mov', $comparator, $search)
+					->orWhere('MovID', $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('emission_date'), $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('expiration_date'), $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('balance'), $comparator, $search);
+			});
+		}
+
+		if($sort && $order){
+			$sort = DBTranslations::getColumnName($sort);
+			$clientOfficesQuery->orderBy($sort, $order);
+		}
+
+		$clientOffices = $clientOfficesQuery->get(['Mov','MovID','FechaEmision','Vencimiento','Saldo']);
+		$numberOfClientOffices = $clientOffices->count();
+		
+		//$movList = $movListquery ->take($limit)->offset($offset)->get();
+		$clientOffices = $clientOffices->slice($offset, $limit);
+		
+		$result = ['total'=>$numberOfClientOffices,'rows'=>$clientOffices->toArray()];
+		//dd($result);
+
+		return response()->json($result);
 	}
 
 	public static function showMovementReferenceSearch($movID){
@@ -393,21 +441,16 @@ class MovController extends Controller {
 	}
 
 	public function getListaMovimientos(){
-		//dd(\Input::get('limits'));
+
 		$user = \Auth::user();
 		$company = $user->getSelectedCompany();
 		$username = $user->username;
+		
 		$limit = \Input::get('limit');
 		$order = \Input::get('order');
 		$sort = \Input::get('sort');
-		//dd($limit);
 		$offset = \Input::get('offset');
-		//$allMovs = Cxc::all();
-		$numberOfDocuments = Cxc::where(function ($query) {
-			$query->where('Mov', 'Cobro')
-				->orWhere('Mov', 'Anticipo');
-		})->where('Empresa',$company)
-		  ->where('Usuario',$username)->get()->count();
+		$search = \Input::get('search');
 
 		$movListquery = Cxc::where(function ($query) {
 			$query->where('Mov', 'Cobro')
@@ -415,15 +458,42 @@ class MovController extends Controller {
 		})->where('Empresa',$company)
 		  ->where('Usuario',$username);
 
-		if($sort && $order){
-			$sort = Cxc::getColumnName($sort);
-			$movListquery = $movListquery->orderBy($sort, $order);
+		if($search){
+			$movListquery->where(function ($query) use ($search) {
+				$comparator = 'LIKE';
+				$search = "%$search%";
+
+				$query->where('Mov', $comparator, $search)
+					->orWhere('MovID', $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('concept'), $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('client_id'), $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('status'), $comparator, $search)
+					->orWhere(DBTranslations::getColumnName('emission_date'), $comparator, $search)
+					->orWhere('ID', $comparator, $search)
+					->orWhere(\DB::raw('(Importe+Impuestos)'), $comparator, $search);
+			});
 		}
 
-		$movList = $movListquery ->take($limit)->offset($offset)->get();//paginate(20)->items();//get();
-		//dd($movListquery);
+		//$numberOfDocuments = $movListquery->get(['ID','Mov','MovID','Concepto','Cliente','Estatus','FechaEmision','Importe','Impuestos'])->count();
+
+		if($sort && $order){
+			if($sort !='total_amount'){
+				$sort = DBTranslations::getColumnName($sort);
+			}
+			else {
+				$sort = \DB::raw('(Importe+Impuestos)');
+			}
+			$movListquery->orderBy($sort, $order);
+		}
+
+		$movList = $movListquery->get(['ID','Mov','MovID','Concepto','Cliente','Estatus','FechaEmision','Importe','Impuestos']);
+		$numberOfDocuments = $movList->count();
+
+		//$movList = $movListquery ->take($limit)->offset($offset)->get();
+		$movList = $movList->slice($offset, $limit);
+
 		$result = ['total'=>$numberOfDocuments,'rows'=>$movList->toArray()];
-		//dd($result);
+
 		return response()->json($result);
 	}
 
@@ -478,44 +548,40 @@ class MovController extends Controller {
 		
 		$cxc = Cxc::findOrFail($movID);
 
-		$validator = \Validator::make(\Input::only('movID'), [
-			'movID' => 'required',
+		$validator = \Validator::make(\Input::only('json-documents'), [
+			'json-documents' => 'required',
 		]);
 
 		if($validator->fails()){
-			return Response::back()->withErrors(['movID','Se requiere seleccionar un documento.']);
+			return Response::back()->withErrors(['json-documents','Se requiere seleccionar un documento.']);
 		}
 
-		//$cxcD = CxcD::where('Renglon', $row)->get();
-		//$cxcD = $cxc->details->where('Renglon', '=', $row)->get();
+		$jsonDocuments = \Input::get('json-documents');
+		$selectedDocuments = json_decode($jsonDocuments);
+		$firstDocument = true;
+		$cxcDLength = $cxc->details->count();
 		$cxcD = $cxc->details()->where('Renglon', '=', $row)->first();
-		$cxcD->apply_id = \Input::get('movID');
-		$cxcD->amount = \Input::get('balance');
 
-		$cxcD->updateRow();
+		foreach ($selectedDocuments as $document) {
 
-		//dd($cxcD);
-		/*$cxcDSize = count($cxcD);
-		//dd(count($cxcD));
-		for ($i=0; $i < $cxcDSize; $i++) { 
-			$detailRow = $cxcD[$i]->row;
-			dd($cxcD[$i]);
-			if($detailRow == $row){
-				$cxcD[$i]->apply_id = \Input::get('movID');
-				//dd($cxcD[$i]->apply_id);
-				$cxcD[$i]->amount = \Input::get('balance');
-				//dd($cxcD[$i]->amount);
+			if(!$firstDocument){
+				$cxcDLength++;
+				$cxcD->row = $cxcDLength * 2048;
+				$cxcD->apply_id = $document->movID;
+				$cxcD->amount = $document->balance;
+				$cxcD->insertRow();				
 			}
-		}*/
-		/*if($cxcD == $row){
-			$cxcD->apply_id = \Input::get('movID');
-			$cxcD->amount = \Input::get('balance');
-		}*/
-		//$cxc->client_id = \Input::get('movID');
-		//$cxc->details()->save($cxcD);
-		//$cxc->save();
+			else {
+				
+				$cxcD->apply_id = $document->movID;
+				$cxcD->amount = $document->balance;
+				$cxcD->updateRow();
 
-		return redirect('cxc/movimiento/mov/'.$movID.'/#documentos');
+				$firstDocument = false;
+			}
+		}
+
+		return redirect('cxc/movimiento/mov/'.$movID);
 	}
 
 	public function getConceptList($movType){
@@ -607,17 +673,30 @@ class MovController extends Controller {
 			]);
 		}
 
+		$cxc = Cxc::find($movID);
+		if(!$cxc) {
+			return redirect()->back()->withInput()->withErrors([
+				'Mov'=>'El movimiento '.$movID.' ya no existe.',
+			]);
+		}
+		
+		$movMovID = '';
+
+		if($cxc->MovID){
+			$movMovID = $cxc->MovID;
+		}
+
 		$message = new \stdClass();
 		if($result['message'] == null){
 			$message->type = 'INFO';
 			$message->description = 'Movimiento afectado.';
 			$message->code = '';
-			$message->reference = '';
+			$message->reference = $cxc->Mov.': '.$movMovID;
 			return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
 		}
 
 		$message = MessageList::find($result['message']);
-		$message->reference = $result['reference'];
+		$message->reference = $result['reference'] .'<br>'.$cxc->Mov.': '. $movMovID;
 
 		return redirect('cxc/movimiento/mov/'.$movID)->withMessage($message);
 	}

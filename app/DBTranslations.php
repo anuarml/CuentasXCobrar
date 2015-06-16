@@ -14,7 +14,7 @@ class DBTranslations {
 			$columnName = 'Cliente';
 			break;
 		case 'total_amount':
-			$columnName = 'Importe';
+			$columnName = 'ImporteTotal';
 			break;
 		case 'status':
 			$columnName = 'Estatus';
@@ -32,7 +32,11 @@ class DBTranslations {
 			$columnName = 'Saldo';
 			break;
 		case 'expiration':
+		case 'expiration_date':
 			$columnName = 'Vencimiento';
+			break;
+		case 'delinquent_days':
+			$columnName = 'DiasMoratorios';
 			break;
 		default:
 			$columnName = $name;

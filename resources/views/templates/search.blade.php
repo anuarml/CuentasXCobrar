@@ -19,15 +19,20 @@
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<style type="text/css">
+		.pagination-detail{
+			display: none;
+		}
+	</style>
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-10 col-sm-offset-1">
 				<div class="row">
-					<div class="panel panel-default">
+					<div class="panel panel-default" style="margin-bottom:0;">
 						<div class="panel-heading">Buscar {{ $searchType }}</div>
-						<div class="panel-body">
+						<div class="panel-body" style="padding-bottom:0">
 							@if (count($errors) > 0)
 								<div class="alert alert-danger">
 									Resuelve los siguientes problemas.<br><br>
@@ -55,10 +60,8 @@
 								data-click-to-select="true" 
 								data-pagination="true"
 								data-side-pagination="server"
-								
-								data-page-list="[5, 10, 20, 50, 100, 200]"
-
-								>
+								data-page-list="[]"
+								data-page-size="100">
 									<thead>
 										<tr>
 											@yield('table-header')
@@ -114,13 +117,25 @@
 	<script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-table-es-MX.min.js') }}"></script>
 	<script type="text/javascript">
+		
+
 		function moneyFormatter(value){
 			var valueFormatted = parseFloat(value) || 0;
 
 			return '$'+valueFormatted.toFixed(2);
 		}
-		$('#searchTable').attr('data-height',$( window ).height() - 90 );
+		$.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-MX']);
+		$(window).resize(function () {
+            var searchTable = $('#searchTable');
+
+            
+            searchTable.bootstrapTable('resetView',{'height':$(this).height()- 80});
+        });
+
+        $('#searchTable').attr('data-height',$( window ).height() - 80 );
+		
 	</script>
 	@yield('scripts')
 </body>
