@@ -252,9 +252,11 @@ function generateText(){
 			var reference1 = $('#reference1').val();
 		}
 	}*/
-
+	var movMovID = '{{$mov->MovID}}';
+	console.log(movMovID);
 	var TextOfTicket = putSpaces(1, fourteenSpaces + date + " " + hour);
 	TextOfTicket += putSpaces(1, fourteenSpaces + userCompany + " " + userOffice);
+	TextOfTicket += putSpaces(1, fourteenSpaces + "Cobro: " + movMovID);
     TextOfTicket += putSpaces(1,"-----------------------------------------------");
     /*for(var i=0;i<nDocumentsLenght;i++){
 		var docName = documents[i].apply;
