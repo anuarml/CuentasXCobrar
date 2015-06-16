@@ -221,7 +221,7 @@ class MovController extends Controller {
 				} 
 				break;
 			case 'resultCalculator':
-				return redirect('cxc/movimiento/mov/'.$cxc->ID.'#documentos');
+				return redirect('cxc/movimiento/mov/'.$cxc->ID);
 			case 'affect':
 				return redirect('cxc/movimiento/affect');
 				break;	 
@@ -581,7 +581,7 @@ class MovController extends Controller {
 			}
 		}
 
-		return redirect('cxc/movimiento/mov/'.$movID.'/#documentos');
+		return redirect('cxc/movimiento/mov/'.$movID);
 	}
 
 	public function getConceptList($movType){
