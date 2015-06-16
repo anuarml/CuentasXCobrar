@@ -233,7 +233,6 @@ function generateText(){
     var date = actualDate.getDate() + "/" + (actualDate.getMonth() + 1) + "/" + actualDate.getFullYear();
 	var hour = actualDate.getHours() + ":" + actualDate.getMinutes() + ":" + actualDate.getSeconds();
 	//var mov = $('#cxcMovForm').serializeArray();
-
 	/*var userName = '{{--$user->name--}}';
 	var userCompany = '{{--$user->getSelectedCompany()--}}';
 	var userOffice = '{{--$officeName--}}';*/
