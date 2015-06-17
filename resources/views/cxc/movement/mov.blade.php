@@ -198,7 +198,7 @@
 					    <div role="tabpanel" class="tab-pane" id="documentos">
 					    	<br>
 					    	@if($mov->status == 'SINAFECTAR' || $mov->status == '')
-								<button type="button" id="newDocumentRow" class='btnz btn-primary' >Agregar <span class="glyphicon glyphicon-plus"></span></button>
+								<button type="button" id="newDocumentRow" class='btn btn-primary' >Agregar <span class="glyphicon glyphicon-plus"></span></button>
 							@endif
 					    	<!--<button type="button" id="newDocumentRow" class='btnz btn-primary'>Agregar <span class="glyphicon glyphicon-plus"></span></button>-->
 					    	<input type="hidden" id="documentsJson" name="documentsJson">
@@ -229,7 +229,7 @@
 					    	<div class="container-fluid">
 					    	<br>
 					    	@if($mov->status == 'SINAFECTAR' || $mov->status == '')
-								<button type="button" id="newChargeRow" class='btnz btn-primary'>Agregar <span class="glyphicon glyphicon-plus"></span></button>
+								<button type="button" id="newChargeRow" class='btn btn-primary'>Agregar <span class="glyphicon glyphicon-plus"></span></button>
 							@endif
 					    	<!--<button type="button" id="newChargeRow" class='btnz btn-primary'>Agregar <span class="glyphicon glyphicon-plus"></span></button>-->
 					    	<hr class="colorgraph">
