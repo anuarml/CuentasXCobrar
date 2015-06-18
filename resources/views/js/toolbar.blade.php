@@ -50,6 +50,9 @@ var toolbar = {
 		}
 
 		console.log('save');
+
+		$('#loading').show();
+
 		$('#action').val(actionType);
 		$('#documentsJson').val( JSON.stringify(aCxcD) );
 		$('#cxcMovForm').submit();
@@ -61,6 +64,7 @@ var toolbar = {
 
 	openMov : function(){
 		//toolbar.redirect("{{ url('cxc/movimiento/abrir') }}", 'GET');
+		$('#loading').show();
 		window.location = "{{ url('cxc/movimiento/abrir')}}";
 	},
 

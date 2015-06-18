@@ -44,7 +44,33 @@ $("#Mov").on("change", function(e){
 /*
 	Pestaña Documentos(Detalle).
 */
-$("#newDocumentRow").on("click", function() {addDocumentRow();});
+var applyOptions = '';
+
+
+$("#newDocumentRow").on("click", function() {
+	var clientID = $('#client_id').val();
+
+	if(!clientID){
+		toolbar.showAlertModal('Selecciona un cliente.');
+		return;
+	}
+
+	var confirmModalBody = $('#confirmModalBody');
+	
+	confirmModalBody.empty();
+	addApplySelect(confirmModalBody);
+	addConsecutiveInput(confirmModalBody);
+
+	$('#confirmModal').find('.btn-primary').click(function(){
+		var apply = $('#documentApply').val();
+
+		$('#confirmModal').modal('hide');
+
+		addDocumentRow(new CxcD({apply:apply}));
+	});
+
+	$('#confirmModal').modal('show');
+});
 
 var suggesPPVisibility = 'hidden';
 
@@ -71,7 +97,26 @@ function addDocumentRow(cxcD, cxcDocument){
 		aCxcDocs[emptyPlace] = cxcDocument;
 	}
 
-	$('#documentsTable tbody').append(
+	$('#documentsTable').bootstrapTable('insertRow',{
+		index:insertedDocumentPlace,
+		row:{
+			id:insertedDocumentPlace,
+			apply: cxcD.apply,
+			apply_id: cxcD.apply_id,
+			amount: cxcD.amount,
+			difference: cxcDocument.difference(cxcD.amount),
+			difference_percent: cxcDocument.diferencePercent(cxcD.amount),
+			concept: cxcDocument.concept,
+			reference: cxcDocument.reference,
+			pp_discount: cxcD.p_p_discount,
+			pp_suggest: cxcDocument.pp_suggest,
+			actions: "<div class='deleteDocument'><div class='glyphicon glyphicon-remove'></div></div>"
+		}
+	});
+
+	//console.log($('#documentsTable').bootstrapTable('getData'));
+
+	/*$('#documentsTable tbody').append(
 		"<tr id='document-"+insertedDocumentPlace+"'>"+
 			"<td style='text-align: center;' class='apply'>"+(cxcD.apply || '')+"</td>"+
 			"<td style='text-align: center;' class='consecutive'>"+(cxcD.apply_id || '')+"</td>"+
@@ -87,8 +132,8 @@ function addDocumentRow(cxcD, cxcDocument){
 					"<div class='glyphicon glyphicon-remove'></div>"+
 				"</div>"+
 			"</td>"+
-		"</tr>");
-
+		"</tr>");*/
+/*
 	if(cxcDocument.pp_suggest != 0){
 		showPPSuggest();
 	}
@@ -98,7 +143,7 @@ function addDocumentRow(cxcD, cxcDocument){
 		$("#documentsTable tbody tr:last .consecutive").on("click", editConsecutive);
 		$("#documentsTable tbody tr:last .amount").on("click", editAmount);
 		$("#documentsTable tbody tr:last .discountPPP").on("click", editDiscountPPP);
-		$("#documentsTable tbody tr:last .deleteDocument").on("click", function(){
+		/*$("#documentsTable tbody tr:last .deleteDocument").on("click", function(){
 
 			var $killrow = $(this).parent('td').parent('tr');
 			var documentNum = $killrow.attr('id').split('-')[1];
@@ -161,10 +206,154 @@ function addDocumentRow(cxcD, cxcDocument){
 		else{
 			discountTD.html('$' + parseFloat(discountValue).toFixed(2) );
 		}
-	});
+	});*/
 
 	// Actualizar importe total
 	updateTotalAmount(0, cxcD.amount + cxcD.p_p_discount);
+
+	return insertedDocumentPlace;
+}
+
+var actionEvents = {
+    'click .deleteDocument' : function (e, value, row, index) {
+        //alert('You click like icon, row: ' + JSON.stringify(row));
+        console.log(value, row, index);
+        var documentNum = row.id;
+        // Actualizar importe total
+		if(aCxcD[documentNum])
+			updateTotalAmount(aCxcD[documentNum].amount + aCxcD[documentNum].p_p_discount , 0);
+
+		aCxcD[documentNum] = null;
+		aCxcDocs[documentNum] = null;
+
+        $('#documentsTable').bootstrapTable('removeByUniqueId', documentNum);
+    }/*,
+    'click .edit': function (e, value, row, index) {
+        alert('You click edit icon, row: ' + JSON.stringify(row));
+        console.log(value, row, index);
+    },
+    'click .remove': function (e, value, row, index) {
+        alert('You click remove icon, row: ' + JSON.stringify(row));
+        console.log(value, row, index);
+    }*/
+};
+
+function addApplySelect(element, value){
+
+	if(typeof value == 'undefined')
+		value = '';
+
+	element.append(
+		'<label for="documentApply">Aplica</label>'+
+		'<select class="form-control input-sm" id="documentApply">'+
+			applyOptions+
+		'</select>'
+	);
+
+	$('#documentApply').val(value);
+}
+
+function addConsecutiveInput(element,value){
+
+	if(typeof value == 'undefined')
+		value = '';
+
+	element.append(
+		'<label for="consecutive">Consecutivo</label>'+
+		'<div class="input-group">'+
+			'<span class="input-group-btn">'+
+				'<button type="button" class="btn btn-default btn-sm" id="searchConsecutive">'+
+					'<span class="glyphicon glyphicon-search"></span>'+
+				'</button>'+
+			'</span>'+
+			'<input type="text" class="form-control input-sm" id="consecutive" value="'+value+'" readonly>'+
+		'</div>'
+	);
+
+	$("#searchConsecutive").click( function(e){
+
+		//var documentsNum = aCxcD.length;
+		var apply = $('#documentApply').val();
+		$('#confirmModal').modal('hide');
+		var documentsNum = addDocumentRow(new CxcD({apply:apply}));
+
+		console.log(JSON.stringify(aCxcD));
+		
+		console.log(documentsNum);
+		$('#clickedRow').val(documentsNum);
+		toolbar.saveMov('searchConsecutive');
+	});
+}
+
+function addAmountInput(element,value){
+	if(typeof value == 'undefined')
+		value = '';
+
+	element.append(
+		'<label for="documentAmount">Importe</label>'+
+		'<div class="input-group">'+
+			'<span class="input-group-btn">'+
+				'<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#calculatorModal" id="btnCalculator">'+
+					'<span class="fa fa-calculator"></span>'+
+				'</button>'+
+			'</span>'+
+			'<input type="number" class="form-control input-sm" id="documentAmount" value="'+value+'">' +
+		'</div>'
+	);
+
+	$("#btnCalculator").on("click", function(e){
+		documentAmount = document.getElementById("documentAmount");
+		input.innerHTML = documentAmount.value;
+
+		docRow = $('#rowid').val();
+	});
+}
+
+function addDiscountInput(element,value){
+	if(typeof value == 'undefined')
+		value = '';
+
+	element.append(
+		'<label for="documentAmount">Importe</label>'+
+		'<div class="input-group">'+
+			'<span class="input-group-btn">'+
+				'<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#calculatorModal" id="btnCalculator">'+
+					'<span class="fa fa-calculator"></span>'+
+				'</button>'+
+			'</span>'+
+			'<input type="number" class="form-control input-sm" id="documentAmount">' +
+		'</div>'
+	);
+}
+
+function showEditRowModal(row){
+
+	var confirmModalBody = $('#confirmModalBody');
+	
+	confirmModalBody.empty();
+
+	confirmModalBody.append('<input type="hidden" id="rowid" value="'+row.id+'">');
+	addApplySelect(confirmModalBody, row.apply);
+	addConsecutiveInput(confirmModalBody, row.apply_id);
+	addAmountInput(confirmModalBody, row.amount);
+	addDiscountInput(confirmModalBody, row.pp_discount);
+
+	$('#confirmModal').find('.btn-primary').click(function(){
+		var apply = $('#documentApply').val();
+		var rowid = $('#rowid').val();
+
+		$('#confirmModal').modal('hide');
+
+		//addDocumentRow(new CxcD({apply:apply}));
+		$('#documentsTable').bootstrapTable('updateRow',{
+			index:rowid,
+			row:{
+				apply: apply,
+			}
+		});
+	});
+
+	$('#confirmModal').modal('show');
 }
 
 function editApply(e){
@@ -647,6 +836,12 @@ function calcTaxes(amountWithTaxes){
 	$('#amount').val(amount.toNumber().toFixed(2));
 	$('#taxes').val(taxes.toFixed(2));
 
+}
+
+function moneyFormatter(value){
+	var valueFormatted = parseFloat(value) || 0;
+
+	return '$'+valueFormatted.toFixed(2);
 }
 
 </script>
