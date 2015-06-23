@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -108,8 +108,14 @@
 	      <div class="modal-body" id="confirmModalBody">
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-	        <button type="button" class="btn btn-primary">Si</button>
+	      	<div class="row">
+	      		<div class="col-xs-offset-1 col-xs-5">
+		        	<button type="button" class="btn btn-default btn-block" data-dismiss="modal">No</button>
+		        </div>
+		        <div class="col-xs-5">
+		        	<button type="button" class="btn btn-primary btn-block">Si</button>
+		        </div>
+		    </div>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->

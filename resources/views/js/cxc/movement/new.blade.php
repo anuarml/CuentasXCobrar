@@ -18,6 +18,7 @@ $('.nav-tabs a').on('shown', function (e) {
 	Pestaña Datos Generales.
 */
 $("#searchClient").on("click", function(e){
+	$('#loading').show();
 	window.location= "{{ url('cxc/movimiento/buscar/cliente') }}";
 });
 
@@ -40,7 +41,36 @@ $("#Mov").on("change", function(e){
 	verifyMov();
 });
 
+@if($mov->status == 'SINAFECTAR' || $mov->status == '')
+$(document).ready(function(){
 
+	$('#documentsTable tbody').on('contextmenu', function(e) {
+
+		var dataIndex = $(e.target).closest('tr').attr('data-index');
+
+		if(typeof dataIndex == 'undefined'){
+			return false;
+		}
+
+		var documentsTableData = $('#documentsTable').bootstrapTable('getData');
+		var row;
+
+		if(!documentsTableData || !documentsTableData.length || !(row = documentsTableData[dataIndex]) ) return false;
+
+		//console.log(row);
+		showEditRowModal(row)
+
+		if(e.preventDefault)
+			e.preventDefault();
+		else
+			e.returnValue= false;
+
+		return false;
+	});
+
+	$('#documentsTable').bootstrapTable('showColumn','actions');
+});
+@endif
 /*
 	Pestaña Documentos(Detalle).
 */
@@ -114,100 +144,6 @@ function addDocumentRow(cxcD, cxcDocument){
 		}
 	});
 
-	//console.log($('#documentsTable').bootstrapTable('getData'));
-
-	/*$('#documentsTable tbody').append(
-		"<tr id='document-"+insertedDocumentPlace+"'>"+
-			"<td style='text-align: center;' class='apply'>"+(cxcD.apply || '')+"</td>"+
-			"<td style='text-align: center;' class='consecutive'>"+(cxcD.apply_id || '')+"</td>"+
-			"<td style='text-align: center;' class='amount' id='tdDocumentAmount'>$"+(cxcD.amount.toFixed(2) || '')+"</td>"+
-			"<td style='text-align: center;' class='difference'>"+cxcDocument.difference(cxcD.amount)+"</td>"+
-			"<td style='text-align: center;' class='differencePercentage'>"+cxcDocument.diferencePercent(cxcD.amount)+"</td>"+
-			"<td style='text-align: center;' class='concept'>"+(cxcDocument.concept || '')+"</td>"+
-			"<td style='text-align: center;' class='reference'>"+(cxcDocument.reference || '')+"</td>"+
-			"<td style='text-align: center;' class='discountPPP' "+suggesPPVisibility+">$"+(cxcD.p_p_discount.toFixed(2) || '')+"</td>"+
-			"<td style='text-align: center;' class='suggestPPP' "+suggesPPVisibility+">"+(cxcDocument.pp_suggest.toFixed(2) || '')+"</td>"+
-			"<td style='text-align: center;'>"+
-				"<div class='deleteDocument'>"+
-					"<div class='glyphicon glyphicon-remove'></div>"+
-				"</div>"+
-			"</td>"+
-		"</tr>");*/
-/*
-	if(cxcDocument.pp_suggest != 0){
-		showPPSuggest();
-	}
-
-	@if($mov->status == 'SINAFECTAR' || $mov->status == '')
-		$("#documentsTable tbody tr:last .apply").on("click", editApply);
-		$("#documentsTable tbody tr:last .consecutive").on("click", editConsecutive);
-		$("#documentsTable tbody tr:last .amount").on("click", editAmount);
-		$("#documentsTable tbody tr:last .discountPPP").on("click", editDiscountPPP);
-		/*$("#documentsTable tbody tr:last .deleteDocument").on("click", function(){
-
-			var $killrow = $(this).parent('td').parent('tr');
-			var documentNum = $killrow.attr('id').split('-')[1];
-
-			// Actualizar importe total
-			if(aCxcD[documentNum])
-				updateTotalAmount(aCxcD[documentNum].amount + aCxcD[documentNum].p_p_discount , 0);
-
-			aCxcD[documentNum] = null;
-			aCxcDocs[documentNum] = null;
-
-			$killrow.remove();
-		});
-	@endif
-
-
-	$("#documentsTable tbody tr:last .apply").on("focusout", function(e){
-		var applyTD = $(this);
-		var applyText = $("#documentApply").val();
-		applyTD.on("click", editApply);
-		applyTD.empty();
-		applyTD.html(applyText);
-	});
-
-
-	$("#documentsTable tbody tr:last .consecutive").on("focusout", function(e){
-		var consecutiveTD = $(this);
-		var consecutiveText = $("#consecutive").val();
-
-		consecutiveTD.on("click", editConsecutive);
-		consecutiveTD.empty();
-		consecutiveTD.html(consecutiveText);
-	});
-
-
-	$("#documentsTable tbody tr:last .amount").on("focusout", function(e){
-		var amountTD = $(this);
-		var amountValue = $("#documentAmount").val();
-
-		amountTD.on("click", editAmount);
-		amountTD.empty();
-		if(amountValue != '')
-			amountTD.html('$' + parseFloat(amountValue).toFixed(2));
-		else
-			amountTD.html('$' + parseFloat(cxcD.amount).toFixed(2))
-	});
-
-
-	$("#documentsTable tbody tr:last .discountPPP").on("focusout", function(e){
-		var discountTD = $(this);
-		var discountValue = $("#discountPPP").val();
-		
-		discountTD.on("click", editDiscountPPP);
-		discountTD.empty();
-		discountTD.html(discountValue);
-
-		if(discountValue == ''){
-			discountTD.html('$' + parseFloat(cxcD.p_p_discount).toFixed(2) );
-		}
-		else{
-			discountTD.html('$' + parseFloat(discountValue).toFixed(2) );
-		}
-	});*/
-
 	// Actualizar importe total
 	updateTotalAmount(0, cxcD.amount + cxcD.p_p_discount);
 
@@ -217,7 +153,6 @@ function addDocumentRow(cxcD, cxcDocument){
 var actionEvents = {
     'click .deleteDocument' : function (e, value, row, index) {
         //alert('You click like icon, row: ' + JSON.stringify(row));
-        console.log(value, row, index);
         var documentNum = row.id;
         // Actualizar importe total
 		if(aCxcD[documentNum])
@@ -251,6 +186,15 @@ function addApplySelect(element, value){
 	);
 
 	$('#documentApply').val(value);
+
+	$('#documentApply').change(function(){
+		var rowid = $('#rowid').val();
+
+		if(typeof rowid == 'undefined')
+			return;
+		
+		clearRowInfo(rowid);
+	});
 }
 
 function addConsecutiveInput(element,value){
@@ -272,15 +216,25 @@ function addConsecutiveInput(element,value){
 
 	$("#searchConsecutive").click( function(e){
 
-		//var documentsNum = aCxcD.length;
 		var apply = $('#documentApply').val();
-		$('#confirmModal').modal('hide');
-		var documentsNum = addDocumentRow(new CxcD({apply:apply}));
 
-		console.log(JSON.stringify(aCxcD));
-		
-		console.log(documentsNum);
-		$('#clickedRow').val(documentsNum);
+		if(!apply){
+			toolbar.showAlertModal('Selecciona un aplica.');
+			return;
+		}
+
+		var rowid = $('#rowid').val();
+
+		if( typeof rowid == 'undefined' ){
+			rowid = addDocumentRow(new CxcD({apply:apply}));
+		}
+		else{
+			updateRowInfo();
+		}
+
+		$('#confirmModal').modal('hide');
+
+		$('#clickedRow').val(rowid);
 		toolbar.saveMov('searchConsecutive');
 	});
 }
@@ -307,6 +261,31 @@ function addAmountInput(element,value){
 
 		docRow = $('#rowid').val();
 	});
+
+	$("#documentAmount").on("change", function(){
+		//var documentRow = $('#rowid').val();
+		//var previousAmount = aCxcD[documentRow].amount;
+		//var actualAmount = aCxcD[documentRow].amount = $(this).val();
+
+		//Actualizar en el boton 'actualizar'
+		//updateRowDifference(documentRow);
+
+		// Actualizar importe total
+		//updateTotalAmount(previousAmount, actualAmount);
+
+		var rowid = $('#rowid').val();
+		var amount = parseFloat($(this).val()) || 0;
+		var balance = 0;
+		var doc = aCxcDocs[rowid];
+
+		if(doc){
+			balance = doc.balance;
+		}
+		//console.log(amount,balance,doc);
+		var difference = new Decimal(balance).minus(amount).toNumber();
+		//console.log(difference);
+		$('#doc-difference').val(difference.toFixed(2));
+	});
 }
 
 function addDiscountInput(element,value){
@@ -314,19 +293,45 @@ function addDiscountInput(element,value){
 		value = '';
 
 	element.append(
-		'<label for="documentAmount">Importe</label>'+
-		'<div class="input-group">'+
-			'<span class="input-group-btn">'+
-				'<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#calculatorModal" id="btnCalculator">'+
-					'<span class="fa fa-calculator"></span>'+
-				'</button>'+
-			'</span>'+
-			'<input type="number" class="form-control input-sm" id="documentAmount">' +
-		'</div>'
+		'<label for="discountPPP">Descuento</label>'+
+		'<input type="number" class="form-control input-sm" id="discountPPP" value="'+value+'">'
 	);
 }
 
+function addDifferenceInput(element, value){
+	informationInput =
+		'<label for="doc-difference" class="control-label">Diferencia</label>'+
+		'<div class="input-group">'+
+			'<div class="input-group-addon">$</div>'+
+			'<input type="text" id="doc-difference" class="form-control input-sm" readonly value="'+value+'">'+
+		'</div>';
+
+	element.append(informationInput);
+}
+
+function addInformationInput(element, label, id, value){
+	informationInput =
+		'<label for="'+id+'" class="control-label">'+label+'</label>'+
+		'<input type="text" id="'+id+'" class="form-control input-sm" readonly value="'+value+'">';
+
+	element.append(informationInput);
+}
+
+function addHiddenInput(element, id, value){
+	informationInput =
+		'<input type="hidden" id="'+id+'" value="'+value+'">';
+
+	element.append(informationInput);
+}
+
 function showEditRowModal(row){
+
+	$('#confirmModal').find('.btn-primary').html('Actualizar');
+	$('#confirmModal').find('.btn-default').html('Cancelar');
+
+	$('#confirmModal').find('.btn-primary').click(function(){
+		updateRowInfo();
+	});
 
 	var confirmModalBody = $('#confirmModalBody');
 	
@@ -335,144 +340,98 @@ function showEditRowModal(row){
 	confirmModalBody.append('<input type="hidden" id="rowid" value="'+row.id+'">');
 	addApplySelect(confirmModalBody, row.apply);
 	addConsecutiveInput(confirmModalBody, row.apply_id);
+
 	addAmountInput(confirmModalBody, row.amount);
-	addDiscountInput(confirmModalBody, row.pp_discount);
+	addDifferenceInput(confirmModalBody, row.difference);
+	
+	if(row.pp_suggest){
+		addDiscountInput(confirmModalBody, row.pp_discount);
+		addInformationInput(confirmModalBody, 'Sugerencia', 'suggestPPP', row.pp_suggest);
+	}
 
-	$('#confirmModal').find('.btn-primary').click(function(){
-		var apply = $('#documentApply').val();
-		var rowid = $('#rowid').val();
+	addInformationInput(confirmModalBody, 'Concepto', 'doc-concept', row.concept);
+	
+	if(row.reference)
+		addInformationInput(confirmModalBody, 'Referencia', 'doc-reference', row.reference);
+	//else
+		//addHiddenInput(confirmModalBody, 'doc-reference', row.reference);
 
-		$('#confirmModal').modal('hide');
-
-		//addDocumentRow(new CxcD({apply:apply}));
-		$('#documentsTable').bootstrapTable('updateRow',{
-			index:rowid,
-			row:{
-				apply: apply,
-			}
-		});
-	});
+	var balance = 0;
+	if(aCxcDocs[row.id] && aCxcDocs[row.id].balance){
+		balance = aCxcDocs[row.id].balance;
+	}
+	addHiddenInput(confirmModalBody, 'doc-balance', balance);
 
 	$('#confirmModal').modal('show');
 }
 
-function editApply(e){
+function updateRowInfo(){
+	
+	var rowid = $('#rowid').val();
+	var apply = $('#documentApply').val();
+	var apply_id = $('#consecutive').val();
+	var amount = parseFloat($('#documentAmount').val()) || 0;
+	var pp_discount = parseFloat($('#discountPPP').val()) || 0;
+	var pp_suggest = parseFloat($('#suggestPPP').val()) || 0;
+	var reference = $('#doc-reference').val() || '';
+	var concept = $('#doc-concept').val() || '';
+	var balance = $('#doc-balance').val() || 0;
 
-	var applyTD = $(e.target);
-	var applyTDText = applyTD.html();
+	var cxcD = aCxcD[rowid];
+	var cxcDoc = aCxcDocs[rowid];
 
-	var options = '';
-	for(var i=0; i < applyList.length; i++){
-		options += '<option value="'+applyList[i]+'">'+applyList[i]+'</option>';
-	}
+	var tableData = $('#documentsTable').bootstrapTable('getData');
+	var row = null;
 
-	applyTD.empty();
-	applyTD.append("<select class='form-control' id='documentApply'>"+options+"</select>");
+	if(!tableData || !(row = tableData[rowid]))
+		return;
 
-	$("#documentApply").on("change", function(){
-		var documentRow = getDocNumber(this);
+	//console.log(row);
+	//return;
+	//console.log(cxcD);
+	var difference = cxcDoc.difference(amount);
+	var diferencePercent = cxcDoc.diferencePercent(amount);
 
-		aCxcD[documentRow].apply =  $(this).val();
-		clearRowInfo(this);
+	var previousAmount = cxcD.amount;
+	var previousDiscount = cxcD.p_p_discount;
+
+	cxcD.amount = amount;
+	cxcD.p_p_discount = pp_discount;
+	cxcD.apply = apply;
+	cxcD.apply_id = apply_id;
+
+	cxcDoc.balance = balance;
+	cxcDoc.concept = concept;
+	cxcDoc.reference = reference;
+	cxcDoc.pp_suggest = pp_suggest;
+
+	console.log(cxcD);
+	$('#confirmModal').modal('hide');
+
+	//addDocumentRow(new CxcD({apply:apply}));
+	row.apply = apply;
+	row.apply_id = apply_id;
+	row.amount = amount;
+	row.pp_discount = pp_discount;
+	row.difference = difference;
+	row.difference_percent = diferencePercent;
+
+	row.pp_suggest = pp_suggest;
+	row.reference = reference;
+	row.concept = concept;
+
+	console.log(row,aCxcD,aCxcDocs);
+	//console.log(row);
+
+	$('#documentsTable').bootstrapTable('updateRow',{
+		index:rowid,
+		row:row
 	});
 
-	$("#documentApply").val(applyTDText);
-	$("#documentApply").focus();
-	applyTD.off('click');
+	// Actualizar importe total
+	updateTotalAmount(previousAmount + previousDiscount, cxcD.amount + cxcD.p_p_discount);
 }
 
-function editConsecutive(e){
-	
-	if($(e.currentTarget).children().length > 0) return;
-	
-	var consecutiveTD = $(e.target);
-	var consecutiveTDText = consecutiveTD.html();
-
-	consecutiveTD.empty();
-	consecutiveTD.append(
-		"<div class='input-group'>"+
-			"<span class='input-group-btn'>"+
-				"<button type='button' class='btn btn-default btn-sm' id='searchConsecutive'>"+
-					"<span class='glyphicon glyphicon-search'></span>"+
-				"</button>"+
-			"</span>"+
-			"<input type='text' class='form-control input-sm' id='consecutive' readonly>"+
-		"</div>");
-
-	$("#searchConsecutive").on("click", function(e){
-
-		$('#clickedRow').val(getDocNumber(this));
-		toolbar.saveMov('searchConsecutive');
-	});
-
-	$("#searchConsecutive").focus();
-
-	$("#consecutive").val(consecutiveTDText);
-
-	consecutiveTD.off('click');
-}
-
-function editAmount(e){
-	if($(e.currentTarget).children().length > 0) return;
-
-	var amountTD = $(e.target);
-	var amountValue = amountTD.html();
-
-	amountTD.empty();
-	amountTD.append(
-		"<div class='input-group'>"+
-			"<span class='input-group-btn'>"+
-				"<button type='button' class='btn btn-default' data-toggle='modal' data-target='#calculatorModal' id='btnCalculator'>"+
-					"<span class='fa fa-calculator'></span>"+
-				"</button>"+
-			"</span>"+
-			"<input type='number' class='form-control' id='documentAmount' min='0'>" +
-		"</div>");
-
-	
-	$("#btnCalculator").on("click", function(e){
-		documentAmount = document.getElementById("documentAmount");
-		input.innerHTML = documentAmount.value;
-
-		docRow = getDocNumber(this);
-	});
-
-	$("#documentAmount").on("change", function(){
-		var documentRow = getDocNumber(this);
-		var previousAmount = aCxcD[documentRow].amount;
-		var actualAmount = aCxcD[documentRow].amount = $(this).val();
-
-		updateRowDifference(this);
-
-		// Actualizar importe total
-		updateTotalAmount(previousAmount, actualAmount);
-	});
-
-	$("#documentAmount").val(amountValue);
-
-	amountTD.off('click');
-}
-
-function editDiscountPPP(e){
-
-	var discountTD = $(e.target);
-	var discountValue = discountTD.html();
-
-	discountTD.empty();
-	discountTD.append("<input type='number' class='form-control' id='discountPPP'>");
-
-	$("#discountPPP").change( function() {
-		var documentRow = getDocNumber(this);
-		var previousAmount = aCxcD[documentRow].p_p_discount;
-		var actualAmount = aCxcD[documentRow].p_p_discount = $(this).val();
-		// Actualizar importe total
-		updateTotalAmount(previousAmount, actualAmount);
-	});
-	
-	$("#discountPPP").focus();
-	$("#discountPPP").val(discountValue);
-	discountTD.off('click');
-}
 
 function showPPSuggest(){
 
@@ -504,29 +463,15 @@ function updateRowDifference(element){
 	row.find('.differencePercentage').html(cxcDoc.diferencePercent(cxcD.amount));
 }
 
-function clearRowInfo(element){
-	var row = $(element).closest('tr');
-	var docPosition = getDocNumber(element);
+function clearRowInfo(rowid){
 
-	var cxcD = aCxcD[docPosition];
-	var cxcDoc = aCxcDocs[docPosition];
-
-	cxcD.apply_id = null;
-	cxcD.amount = null;
-	cxcD.p_p_discount = null;
-
-	cxcDoc.balance = null;
-	cxcDoc.concept = null;
-	cxcDoc.reference = null;
-
-	row.find('.consecutive').html('');
-	row.find('.amount').html('');
-	row.find('.difference').html('');
-	row.find('.differencePercentage').html('');
-	row.find('.concept').html('');
-	row.find('.reference').html('');
-	row.find('.discountPPP').html('');
-	row.find('.suggestPPP').html('');
+	$('#consecutive').val('');
+	$('#documentAmount').val(0);
+	$('#discountPPP').val(0);
+	$('#doc-difference').val(0);
+	$('#doc-reference').val('');
+	$('#doc-concept').val('');
+	$('#suggestPPP').val(0);
 }
 
 function updateTotalAmount(previousAmount, actualAmount){

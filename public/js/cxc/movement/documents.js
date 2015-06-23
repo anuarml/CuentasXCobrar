@@ -13,8 +13,7 @@ function CxcD(doc){
 
 function CxcDocument(doc){
 	if(!doc) doc = {};
-
-	this.balance = parseFloat(doc.balance) || 0;
+	this.balance = (parseFloat(doc.balance) || 0) * doc.factor;
 	this.concept = doc.concept || '';
 	this.reference = doc.reference || '';
 	this.pp_suggest = parseFloat(doc.pp_suggest) || 0;
@@ -26,7 +25,8 @@ function CxcDocument(doc){
 		}
 
 		var difference = new Decimal(this.balance).minus(amount).toNumber();
-		return '$'+difference.toFixed(2);
+		//return '$'+difference.toFixed(2);
+		return difference;
 	};
 	this.diferencePercent = function(amount){
 		if(!this.balance || !amount){

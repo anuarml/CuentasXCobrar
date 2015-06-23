@@ -342,7 +342,7 @@ class MovController extends Controller {
 
 			if($movCompany && $apply && $apply_id){
 
-				$movDetailOrigin = Cxc::where('Empresa', $movCompany)->where('Mov', $apply)->where('MovID',$apply_id)->first(['Concepto','Referencia','Saldo']);
+				$movDetailOrigin = Cxc::where('Empresa', $movCompany)->where('Mov', $apply)->where('MovID',$apply_id)->first(['Mov','Concepto','Referencia','Saldo']);
 				$movDetailOrigin->pp_suggest = $movDetail->suggestPP();
 				$movDetail->origin = $movDetailOrigin;
 			}

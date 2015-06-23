@@ -207,33 +207,22 @@
 									<table id="documentsTable" data-unique-id="id" data-toggle="table" data-show-columns="true" data-height="400" data-show-toggle="true">
 								        <thead>
 								            <tr>
-								                <!--<th>Aplica</th>
-								                <th>Consecutivo</th>
-								                <th>Importe</th>
-								                <th>Diferencia</th>
-								                <th>Diferencia(%)</th>
-								                <th>Concepto</th>
-								                <th>Referencia</th>
-								                <th hidden class="discountPPPHeader">Descuento</th>
-								                <th hidden class="suggestPPPHeader">Sugerencia</th>
-								                <th></th>-->
-								                <th data-field="id" data-visible="true" data-switchable="false">ID</th>
+								                <th data-field="id" data-visible="false" data-switchable="false">ID</th>
 								                <th data-field="apply">Aplica</th>
-								                <th data-field="apply_id">Consecutivo</th>
+								                <th data-field="apply_id">Folio</th>
 								                <th data-field="amount" data-formatter="moneyFormatter">Importe</th>
-								                <th data-field="difference" data-visible="false">Diferencia</th>
+								                <th data-field="difference" data-formatter="moneyFormatter" data-visible="false">Diferencia</th>
 								                <th data-field="difference_percent" data-visible="false">%</th>
-								                <th data-field="concept" data-visible="false">Concepto</th>
+								                <th data-field="concept" data-visible="true">Concepto</th>
 								                <th data-field="reference" data-visible="false">Referencia</th>
 								                <th data-field="pp_discount" data-formatter="moneyFormatter" data-visible="false" class="discountPPPHeader">Descuento</th>
 								                <th data-field="pp_suggest" data-formatter="moneyFormatter" data-visible="false" class="suggestPPPHeader">Sugerencia</th>
-								                <th data-field="actions" data-events="actionEvents"></th>
+								                <th data-field="actions" data-visible="false" data-switchable="false" data-events="actionEvents"></th>
 								            </tr>
 								        </thead>
-								        <tbody>
+								        <tbody class="noselect">
 								        </tbody>
 								    </table>
-								    @include('utileries/calculator')
 							    </div>
 						    </div>
 						    <div role="tabpanel" class="tab-pane" id="desgloseCobro">
@@ -323,6 +312,7 @@
 @endsection
 
 @section('scripts')
+@include('utileries/calculator')
 <script src="{{ asset('js/decimal.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/cxc/movement/documents.js') }}"></script>
 <!--<script src="{{ asset('/js/cxc/movement/verifications.js') }}"></script>-->
@@ -403,10 +393,6 @@
 
 	$(window).load(function(){
 		showMovDetails();
-
-		$('#documentsTable').on('dbl-click-row.bs.table', function (event, row, element) {
-			showEditRowModal(row);
-		});
 	});
 //	showMovDetails();
 
@@ -428,11 +414,11 @@
 		getApplyOptions(clientID);
 	}
 
-	/*$(window).resize(function () {
+	$(window).resize(function () {
         var documentsTable = $('#documentsTable');
 
-        documentsTable.bootstrapTable('resetView',{'height':$(this).height()-220});
-    });*/
+        documentsTable.bootstrapTable('resetWidth');
+    });
 
     //$('#documentsTable').bootstrapTable('resetView',{'height':$(window).height()-20});
 

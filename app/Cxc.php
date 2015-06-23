@@ -44,13 +44,13 @@ class Cxc extends Model {
 							'taxes', 'currency', 'change_type', 'client_currency', 'client_change_type', 'user', 'status', 'CtaDinero', 'cashier',
 							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown','charge_type', 'charge_type1',
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
-							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'balance', 'tho_web_assigned','expiration','condition','pp_suggest','total_amount'];
+							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'balance', 'tho_web_assigned','expiration','condition','pp_suggest','total_amount','factor'];
 
 	protected $appends = ['last_change','office_id', 'origin_office_id', 'client_id', 'client_send_to', 'company', 'emission_date', 'emission_date_str', 'amount',
 							'taxes', 'currency', 'change_type', 'client_currency', 'client_change_type', 'user', 'status', 'cashier',
 							'origin_type', 'origin', 'manual_apply', 'reference', 'concept', 'observations', 'with_breakdown','charge_type','charge_type1',
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
-							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'balance', 'tho_web_assigned','expiration','condition','total_amount'];
+							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'balance', 'tho_web_assigned','expiration','condition','total_amount','factor'];
 
 	
 	public function getOfficeIdAttribute(){
@@ -568,6 +568,19 @@ class Cxc extends Model {
 		$totalAmount = 0;
 		$totalAmount += $this->Impuestos + $this->Importe;
 		return $totalAmount;
+	}
+
+	public function getFactorAttribute(){
+
+		$factor = 1;
+
+		$movType = MovType::where('Modulo','CXC')->where('Mov',$this->Mov)->first();
+
+		if($movType){
+			$factor = $movType->Factor;
+		}
+
+		return $factor;
 	}
 	
 
