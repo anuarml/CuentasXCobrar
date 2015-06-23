@@ -26,6 +26,7 @@
 			}
 			
 			$('#clientOfficeID').val(selections[0].ID);
+			$('#loading').show();
 			$('#clientOfficeForm').submit();
 		});
 	</script>

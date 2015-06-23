@@ -28,6 +28,7 @@
 			}
 			
 			$('#movReferenceID').val(selections[0].Mov + ' ' + selections[0].MovID);
+			$('#loading').show();
 			$('#movReferenceForm').submit();
 		});
 	</script>
