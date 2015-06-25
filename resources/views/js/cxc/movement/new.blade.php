@@ -144,6 +144,10 @@ function addDocumentRow(cxcD, cxcDocument){
 		}
 	});
 
+	if(cxcDocument.pp_suggest){
+		$('#documentsTable').bootstrapTable('showColumn','pp_suggest');
+	}
+
 	// Actualizar importe total
 	updateTotalAmount(0, cxcD.amount + cxcD.p_p_discount);
 
