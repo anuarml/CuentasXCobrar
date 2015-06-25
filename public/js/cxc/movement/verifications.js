@@ -1,12 +1,1 @@
-function verifyMov(){
-	var selectedMov = $('#Mov').val();
-
-	switch(selectedMov){
-		case 'Anticipo':
-			$('#tabDocs').remove();
-			$('#dvProBalance').attr('hidden', true);
-			$('#dvTotalAmount').attr('hidden', true);
-			$('#dvDifference').attr('hidden', true);
-			break;
-	}
-}
+function verifyMov(){switch($("#Mov").val()){case "Anticipo":$("#tabDocs").remove(),$("#dvProBalance").attr("hidden",!0),$("#dvTotalAmount").attr("hidden",!0),$("#dvDifference").attr("hidden",!0)}};
