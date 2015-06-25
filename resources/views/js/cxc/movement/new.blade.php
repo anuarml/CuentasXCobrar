@@ -547,7 +547,7 @@ function addChargeRow(charge){
 				"<label for='reference"+chargeNumber+"'>Referencia</label>"+
 				"<input type='text' class='form-control input-sm' id='reference"+chargeNumber+"' name='reference"+chargeNumber+"' value='"+ (charge.reference || '') +"'>"+
 			"</div>" + 
-			"<div class='col-sm-1' id='deleteCharge"+chargeNumber+"'><br>" +
+			"<div class='col-xs-2 col-xs-offset-4 col-sm-offset-0 col-sm-1 ' id='deleteCharge"+chargeNumber+"'><br>" +
 				"<span class='glyphicon glyphicon-remove' style='font-size:30px; text-align:center; display: block;'></span>"+
 			"</div>" +
 			"<hr>" + 

@@ -28,6 +28,14 @@
     z-index:9999;
     background:url("http://www.get1free.com/assets/img/loading.gif") no-repeat center center rgba(0,0,0,0.25)
 }
+
+body{
+	font-size: 13px;
+}
+
+.nav > li > a {
+	padding: 10px 10px;
+}
 /* Basic reset */
 /* {
 	margin: 0;
