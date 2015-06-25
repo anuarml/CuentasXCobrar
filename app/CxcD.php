@@ -146,7 +146,7 @@ class CxcD extends Model {
 		$stmt->bindParam(4, $mov);
 		$stmt->bindParam(5, $apply);
 		$stmt->bindParam(6, $consecutive);
-		$stmt->bindParam(7, $suggestPP, \PDO::PARAM_STR | \PDO::PARAM_INPUT_OUTPUT, 5);
+		$stmt->bindParam(7, $suggestPP, \PDO::PARAM_STR | \PDO::PARAM_INPUT_OUTPUT, 20);
 
 		$stmt->execute();
 

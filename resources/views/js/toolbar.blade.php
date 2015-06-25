@@ -205,7 +205,7 @@ $('#affectMov').click(function(){
 $('#cancelMov').click(toolbar.confirmCancelMov);
 $('#printMov').click(toolbar.printMov);
 
-$('#confirmModal').on('hide.bs.modal', function (event) {
+$('#confirmModal').on('hidden.bs.modal', function (event) {
 	var modal = $(this);
 	var btnPrimary = modal.find('.btn-primary');
 	var btnDefault = modal.find('.btn-default');
@@ -216,7 +216,7 @@ $('#confirmModal').on('hide.bs.modal', function (event) {
 	btnDefault.html('No');
 	btnDefault.off('click');
 
-	console.log('hide');
+	console.log('hidden');
 });
 
 function generateText(){
