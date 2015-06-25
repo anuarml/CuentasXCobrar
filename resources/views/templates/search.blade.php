@@ -148,7 +148,12 @@
             searchTable.bootstrapTable('resetView',{'height':tableHeight});
             //searchTable.bootstrapTable('resetWidth');
         });
-		
+
+        var searchTable = $('#searchTable');
+
+		searchTable.attr('data-height',$(window).height());
+
+
 	</script>
 	@yield('scripts')
 </body>
