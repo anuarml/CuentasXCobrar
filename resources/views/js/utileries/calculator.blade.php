@@ -12,12 +12,7 @@ var documentAmount;
 
 var input = document.querySelector('.screen');
 var docRow;
-/*input.innerHTML = 
-	@if(\Session::has('calculatorAmount'))
-		{{\Session::get('calculatorAmount')}};
-	@else 
-		0;
-	@endif*/
+
 //console.log("weon");
 // Add onclick event to all the keys and perform operations
 for(var i = 0; i < keys.length; i++) {
@@ -76,12 +71,14 @@ for(var i = 0; i < keys.length; i++) {
 				documentAmount.value = input.innerHTML;*/
 				//var row = $()
 				//CxcD.amount = input.innerHTML;
-				aCxcD[docRow].amount = input.innerHTML;
+				//aCxcD[docRow].amount = ;
+				$('#documentAmount').val(parseFloat(input.innerHTML) || 0);
+				$('#documentAmount').change();
 				//console.log(aCxcD[docRow].amount);
-				$('#document-'+docRow + ' .amount').html(input.innerHTML);// = input.innerHTML;
+				//$('#document-'+docRow + ' .amount').html(input.innerHTML);// = input.innerHTML;
 				//console.log($('#document-'+docRow + ' .amount').html());
 				$('#calculatorModal').modal('toggle');
-				toolbar.saveMov('resultCalculator');
+				//toolbar.saveMov('resultCalculator');
 				//window.location	= "{{ url('cxc/movimiento/mov/238#documentos') }}";
 			}
 				
@@ -166,11 +163,8 @@ for(var i = 0; i < keys.length; i++) {
 		}
 
 		// prevent page jumps
-		e.preventDefault();
-		
-		
-	} 
-	
+		e.preventDefault();	
+	}
 }
 
 function calculateResult(equation, isPercentage){

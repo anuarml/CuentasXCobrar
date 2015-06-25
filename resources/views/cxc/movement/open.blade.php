@@ -31,6 +31,7 @@
 			}
 			
 			$('#movID').val(selections[0].ID);
+			$('#loading').show();
 			$('#searchMovForm').submit();
 
 		});

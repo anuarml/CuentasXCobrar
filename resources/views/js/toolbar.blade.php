@@ -40,6 +40,7 @@ var toolbar = {
 	},
 
 	newMov : function(){
+		$('#loading').show();
 		toolbar.redirect("{{ url('cxc/movimiento/nuevo') }}", 'POST');
 	},
 
@@ -50,6 +51,9 @@ var toolbar = {
 		}
 
 		console.log('save');
+
+		$('#loading').show();
+
 		$('#action').val(actionType);
 		$('#documentsJson').val( JSON.stringify(aCxcD) );
 		$('#cxcMovForm').submit();
@@ -61,6 +65,7 @@ var toolbar = {
 
 	openMov : function(){
 		//toolbar.redirect("{{ url('cxc/movimiento/abrir') }}", 'GET');
+		$('#loading').show();
 		window.location = "{{ url('cxc/movimiento/abrir')}}";
 	},
 
@@ -68,7 +73,7 @@ var toolbar = {
 		if(!toolbar.verifyDelete()){
 			return;
 		}
-
+		$('#loading').show();
 		toolbar.redirect("{{ url('cxc/movimiento/delete') }}", 'POST');
 	},
 
@@ -78,6 +83,7 @@ var toolbar = {
 			return;
 		}
 
+		$('#loading').show();
 		if(toolbar.movStatus == 'PENDIENTE'){
 			window.location = "{{ url('cxc/movimiento/affect') }}";
 		}
@@ -90,7 +96,7 @@ var toolbar = {
 		if(!toolbar.verifyCancel()){
 			return;
 		}
-
+		$('#loading').show();
 		toolbar.redirect("{{ url('cxc/movimiento/cancel') }}", 'POST');
 	},
 
@@ -201,8 +207,15 @@ $('#printMov').click(toolbar.printMov);
 
 $('#confirmModal').on('hide.bs.modal', function (event) {
 	var modal = $(this);
-	modal.find('.btn-primary').off('click');
-	modal.find('.btn-default').off('click')
+	var btnPrimary = modal.find('.btn-primary');
+	var btnDefault = modal.find('.btn-default');
+
+	btnPrimary.html('Si');
+	btnPrimary.off('click');
+
+	btnDefault.html('No');
+	btnDefault.off('click');
+
 	console.log('hide');
 });
 

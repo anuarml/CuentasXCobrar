@@ -8,6 +8,7 @@
     <th data-field="emission_date" data-align="center" data-sortable="true">Emisión</th>
     <th data-field="expiration" data-align="center" data-sortable="true">Vencimiento</th>
     <th data-field="concept" data-align="center" data-sortable="true">Concepto</th>
+    <th data-field="factor" data-visible="false" data-switchable="false" data-searchable="false">Factor</th>
 @endsection
 
 @section('action')
@@ -37,13 +38,14 @@
 			for(var i=0; i < selections.length; i++){
 				documents.push({
 					'movID':selections[i].MovID,
-					'balance':selections[i].balance
+					'balance':selections[i].balance * selections[i].factor
 				});
 			}
 			console.log(documents);
 			var jsonDocuments = JSON.stringify(documents);
 
 			$('#json-documents').val(jsonDocuments);
+			$('#loading').show();
 			$('#documentForm').submit();
 		});
 	</script>
