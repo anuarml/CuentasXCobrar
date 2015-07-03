@@ -39,6 +39,7 @@ class MovController extends Controller {
 
 		$clientName = '';
 		$clientBalance = '';
+		$clientDiscount = false;
 
 		// Se obtiene el usuario autenticado.
 		$user = \Auth::user();
@@ -55,7 +56,7 @@ class MovController extends Controller {
 			if($client = $mov->client){
 				// Se obtiene el saldo del cliente.
 				$clientBalance = $client->balance()->where('Empresa', $user->getSelectedCompany())->where('Moneda','Pesos')->first();
-
+				$clientDiscount = $client->discount_surcharges;
 			} 
 			else {
 				$mov->client_id = null;
@@ -76,7 +77,7 @@ class MovController extends Controller {
 		$movCharges = json_encode(null);
 		
 		//return view('cxc.movement.new', compact('clientName'));
-		return view('cxc.movement.mov', compact('mov', 'user', 'clientBalance','officeName','movTypeList','currencyList','paymentTypeList','movCharges', 'paymentTypeListChangeAllowed','totalChangeAllowedAmount'));
+		return view('cxc.movement.mov', compact('mov', 'user', 'clientBalance','officeName','movTypeList','currencyList','paymentTypeList','movCharges', 'paymentTypeListChangeAllowed','totalChangeAllowedAmount','clientDiscount'));
 	}
 
 	public function postNuevo(){
@@ -358,9 +359,11 @@ class MovController extends Controller {
 		$officeName = Office::find($user->getSelectedOffice())->name;
 
 		$clientBalance = '';
+		$clientDiscount = false;
 		if($mov->client){
 			// Se obtiene el saldo del cliente.
 			$clientBalance = $mov->client->balance()->where('Empresa', $user->getSelectedCompany())->where('Moneda','Pesos')->get()->first();
+			$clientDiscount = $mov->client->discount_surcharges;
 		}
 		$clientBalance = json_encode($clientBalance);
 		// Se obtienen las opciones de las listas desplegables.
@@ -376,7 +379,19 @@ class MovController extends Controller {
 		// Se guarda en la sesión del usuario el ID del movimiento.
 		Cxc::setSessionMovID($movID);
 
-		return view('cxc.movement.mov',compact('mov','clientBalance','movTypeList','currencyList','paymentTypeList','user','officeName','movCharges','paymentTypeListChangeAllowed','totalChangeAllowedAmount'));
+		return view('cxc.movement.mov',compact(
+			'mov',
+			'clientBalance',
+			'movTypeList',
+			'currencyList',
+			'paymentTypeList',
+			'user',
+			'officeName',
+			'movCharges',
+			'paymentTypeListChangeAllowed',
+			'totalChangeAllowedAmount',
+			'clientDiscount'
+		));
 	}
 
 

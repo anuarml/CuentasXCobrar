@@ -102,7 +102,8 @@ $("#newDocumentRow").on("click", function() {
 	$('#confirmModal').modal('show');
 });
 
-var suggesPPVisibility = 'hidden';
+var clientDiscount = parseInt('{{ $clientDiscount }}') || 0;
+var movStatus = '{{$mov->status}}';
 
 function addDocumentRow(cxcD, cxcDocument){
 
@@ -144,7 +145,7 @@ function addDocumentRow(cxcD, cxcDocument){
 		}
 	});
 
-	if(cxcDocument.pp_suggest){
+	if( (movStatus == '' || movStatus == 'SINAFECTAR') && clientDiscount && cxcDocument.pp_suggest){
 		$('#documentsTable').bootstrapTable('showColumn','pp_suggest');
 	}
 
@@ -348,7 +349,8 @@ function showEditRowModal(row){
 	addAmountInput(confirmModalBody, row.amount);
 	addDifferenceInput(confirmModalBody, row.difference);
 	
-	if(row.pp_suggest){
+	if( (movStatus == '' || movStatus == 'SINAFECTAR') && clientDiscount){
+	//if(row.pp_suggest){
 		addDiscountInput(confirmModalBody, row.pp_discount);
 		addInformationInput(confirmModalBody, 'Sugerencia', 'suggestPPP', row.pp_suggest);
 	}
@@ -434,19 +436,6 @@ function updateRowInfo(){
 
 	// Actualizar importe total
 	updateTotalAmount(previousAmount + previousDiscount, cxcD.amount + cxcD.p_p_discount);
-}
-
-
-function showPPSuggest(){
-
-	if( $('.suggestPPP').attr('hidden') == 'hidden'){
-
-		suggesPPVisibility = '';
-		$('.discountPPP').attr('hidden',false);
-		$('.suggestPPP').attr('hidden',false);
-		$('.discountPPPHeader').attr('hidden',false);
-		$('.suggestPPPHeader').attr('hidden',false);
-	}
 }
 
 function getDocNumber(element){
