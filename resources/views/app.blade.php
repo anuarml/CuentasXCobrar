@@ -54,7 +54,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<img id="logoAssis" src="{{ asset('/img/logo_Assi.png') }}" hidden>
+				
 				<canvas id="pruebaImagen" hidden></canvas>
 				<a class="navbar-brand" href="http://www.assis.mx/">Assis</a>
 				<a class="navbar-brand" href="{{ url('/') }}">Cobranza</a>
