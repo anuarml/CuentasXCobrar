@@ -629,8 +629,11 @@ class MovController extends Controller {
 	public function getApplyList($client){
 
 		$applyList = [];
+		$user = \Auth::user();
 
-		if($client){
+		if($client && $user){
+
+			$username = $user->username;
 
 			$applys = \DB::table('CxcPendiente')
 	        	->join('ThoUsuarioAcceso', 'CxcPendiente.Mov', '=', 'ThoUsuarioAcceso.Mov')
@@ -639,6 +642,7 @@ class MovController extends Controller {
 		        ->where('Modulo','CXC')
 		        ->where('Empresa',\Auth::user()->getSelectedCompany())
 		        ->where('Cliente',$client)
+		        ->where('Usuario',$username)
 		        ->get();
 
 		    foreach ($applys as $apply) {

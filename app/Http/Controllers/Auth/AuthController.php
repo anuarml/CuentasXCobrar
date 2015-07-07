@@ -93,6 +93,11 @@ class AuthController extends Controller {
 		$user = User::where('Usuario', $request->get('username') )->first();
 		\Auth::login($user);
 
+		// Documentos que puede cobrar el usuario.
+		if(!$user->fillUserWebAccess()){
+			Log::warning('No se pudieron llenar los permisos del usuario.');
+		}
+
 		//\Session::put('company', $request->get('company'));
 		//\Session::put('office', $request->get('office'));
 		$user->setSelectedCompany($request->get('company'));
