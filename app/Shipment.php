@@ -56,6 +56,10 @@ class Shipment extends Model {
 		$company = $user->getSelectedCompany();
 		$agent = $user->agent;
 
+		if (!$agent) {
+			return $chargeOrdersID;
+		}
+
 		$chargeOrders = self::where('Mov','Orden Cobro')->where('Estatus','PENDIENTE')->where('Empresa',$company)->where('Agente',$agent)->get(['ID']);
 
 		foreach($chargeOrders as $chargeOrder){
