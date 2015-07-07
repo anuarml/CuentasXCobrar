@@ -51,6 +51,9 @@
 									</ul>
 								</div>
 							@endif
+							<div class="col-xs-6 col-xs-offset-0 col-sm-4 col-sm-offset-2">
+								<a href="{{ url('/cxc/movimiento/nuevo') }}" class="btn btn-primary btn-block" role="button">Regresar</a>
+							</div>
 							<div class="row">
 								<table id="showTable"
 								data-toggle="table"
@@ -85,6 +88,7 @@
 	<script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-table-es-MX.min.js') }}"></script>
 	<script type="text/javascript">
 		function moneyFormatter(value){
 			var valueFormatted = parseFloat(value) || 0;
