@@ -11,7 +11,7 @@
 
 @section('action')
 	<form id="movReferenceForm" class="form-horizontal" role="form" method="POST" action="{{ url('/cxc/movimiento/save-movement-reference/'.$movID) }}">
-		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+		<input type="hidden" name="_token" value="{{csrf_token()}}">
 		<input type="hidden" name="movReferenceID" id="movReferenceID" value="">
 	</form>
 @endsection
