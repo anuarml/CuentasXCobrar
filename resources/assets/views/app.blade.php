@@ -142,6 +142,7 @@
 	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
 	<script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+	<script src="{{ asset('js/app.js') }}"></script>
 	@if(isset($mov))
 		@include('js.toolbar')
 	@endif
@@ -149,7 +150,6 @@
 	<script src="{{ asset('/js/bootstrap-table.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-table-es-MX.min.js') }}"></script>
 	<script src="{{ asset('/js/cxc/movement/verifications.js') }}"></script>
-
 	@yield('scripts')
 
 </body>

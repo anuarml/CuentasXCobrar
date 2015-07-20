@@ -85,6 +85,7 @@
 	<script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
+	<script src="{{ asset('js/app.js') }}"></script>
 	<script type="text/javascript">
 		function moneyFormatter(value){
 			var valueFormatted = parseFloat(value) || 0;
