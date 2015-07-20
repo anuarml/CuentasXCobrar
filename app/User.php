@@ -103,6 +103,28 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $invalidCredentials;
 	}
 
+	public function fillUserWebAccess(){
+
+		$success = false;
+		$username = $this->username;
+		$module = 'CXC';
+
+		if(!$username){
+			return $success;
+		}
+
+		$stmt = \DB::getPdo()->prepare('EXEC spThoLlenaUsuarioAccesoWeb ?, ?');
+
+		$stmt->bindParam(1, $username);
+		$stmt->bindParam(2, $module);
+
+		if($stmt->execute()){
+			$success = true;
+		}
+
+		return $success;
+	}
+
 	public function getRememberToken()
 	{
 		return null; // not supported

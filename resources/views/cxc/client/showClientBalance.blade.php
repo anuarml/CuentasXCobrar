@@ -19,6 +19,13 @@
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<script type="text/javascript">
+        function preloader(){
+            document.getElementById("loading").style.display = "none";
+            //document.getElementById("content").style.display = "block";
+        }
+        window.onload = preloader;
+	</script>
 	<style type="text/css">
 		.pagination-detail{
 			display: none;
@@ -26,6 +33,7 @@
 	</style>
 </head>
 <body>
+	<div id="loading"></div>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-10 col-sm-offset-1">
@@ -43,6 +51,9 @@
 									</ul>
 								</div>
 							@endif
+							<div class="col-xs-6 col-xs-offset-0 col-sm-4 col-sm-offset-2">
+								<a href="{{ url('/cxc/movimiento/nuevo') }}" class="btn btn-primary btn-block" role="button">Regresar</a>
+							</div>
 							<div class="row">
 								<table id="showTable"
 								data-toggle="table"
@@ -77,6 +88,7 @@
 	<script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-table-es-MX.min.js') }}"></script>
 	<script type="text/javascript">
 		function moneyFormatter(value){
 			var valueFormatted = parseFloat(value) || 0;
@@ -84,14 +96,26 @@
 			return '$'+valueFormatted.toFixed(2);
 		}
 		$.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-MX']);
-		$(window).resize(function () {
+		/*$(window).resize(function () {
             var searchTable = $('#showTable');
 
             
             searchTable.bootstrapTable('resetView',{'height':$(this).height()-30});
         });
 
-        $('#showTable').attr('data-height',$( window ).height() - 30);
+        $('#showTable').attr('data-height',$( window ).height() - 30);*/
+        $(window).resize(function () {
+            var searchTable = $('#showTable');
+
+            var tableHeight = 400;
+	        if( $( window ).height()-80 > tableHeight){
+	        	tableHeight = $( window ).height();
+	        }
+
+	        //searchTable.attr('data-height',tableHeight);
+            searchTable.bootstrapTable('resetView',{'height':tableHeight});
+            //searchTable.bootstrapTable('resetWidth');
+        });
 	</script>
 
 </body>

@@ -33,16 +33,16 @@ class CxcPending extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['Mov','MovID', 'balance', 'total_amount', 'expiration', 'emission_date', 'concept', 'reference'];
+	protected $visible = ['Mov','MovID', 'balance', 'total_amount', 'expiration', 'emission_date', 'concept', 'reference','factor'];
 
-	protected $appends = ['balance', 'total_amount', 'expiration', 'emission_date', 'concept', 'reference'];
+	protected $appends = ['balance', 'total_amount', 'expiration', 'emission_date', 'concept', 'reference','factor'];
 
 	/*public function getMovIdAttribute(){
 		return $this->MovID;
 	}*/
 
 	public function getBalanceAttribute(){
-		return $this->Saldo * $this->getFactor();
+		return $this->Saldo/* * $this->getFactor()*/;
 	}
 
 	public function getTotalAmountAttribute(){
@@ -69,7 +69,7 @@ class CxcPending extends Model {
 		return $this->table;
 	}
 
-	private function getFactor(){
+	public function getFactorAttribute(){
 
 		$factor = 1;
 

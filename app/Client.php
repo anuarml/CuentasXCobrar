@@ -33,9 +33,9 @@ class Client extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['balance','id','name', 'RFC', 'agent', 'collector', 'def_currency'];
+	protected $visible = ['balance','id','name', 'RFC', 'agent', 'collector', 'def_currency','discount_surcharges'];
 
-	protected $appends = ['id','name', 'agent', 'collector', 'def_currency'];
+	protected $appends = ['id','name', 'agent', 'collector', 'def_currency','discount_surcharges'];
 
 
 	public function getIdAttribute(){
@@ -56,6 +56,10 @@ class Client extends Model {
 
 	public function getDefCurrencyAttribute(){
 		return $this->DefMoneda;
+	}
+
+	public function getDiscountSurchargesAttribute(){
+		return $this->DescuentoRecargos;
 	}
 
 	/*

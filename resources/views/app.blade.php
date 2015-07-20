@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -54,7 +54,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<img id="logoAssis" src="{{ asset('/img/logo_Assi.png') }}" hidden>
+				
 				<canvas id="pruebaImagen" hidden></canvas>
 				<a class="navbar-brand" href="http://www.assis.mx/">Assis</a>
 				<a class="navbar-brand" href="{{ url('/') }}">Cobranza</a>
@@ -108,8 +108,14 @@
 	      <div class="modal-body" id="confirmModalBody">
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-	        <button type="button" class="btn btn-primary">Si</button>
+	      	<div class="row">
+	      		<div class="col-xs-offset-1 col-xs-5">
+		        	<button type="button" class="btn btn-default btn-block" data-dismiss="modal">No</button>
+		        </div>
+		        <div class="col-xs-5">
+		        	<button type="button" class="btn btn-primary btn-block">Si</button>
+		        </div>
+		    </div>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
@@ -141,6 +147,7 @@
 	@endif
 	<script src="{{ asset('/js/cxc/movement/documents.js') }}"></script>
 	<script src="{{ asset('/js/bootstrap-table.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-table-es-MX.min.js') }}"></script>
 	<script src="{{ asset('/js/cxc/movement/verifications.js') }}"></script>
 
 	@yield('scripts')
