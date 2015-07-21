@@ -46,7 +46,10 @@
 									</ul>
 								</div>
 							@endif
-							<div class="row">
+							<div class="col-xs-6 col-xs-offset-3">
+								<a href="{{ url('/') }}" class="btn btn-primary btn-block" role="button">Regresar</a>
+							</div>
+							<div class="row" style="margin-top: 20px">
 								<div class="col-xs-6 col-sm-4">
 									<label for="totalCharged">Total cobrado:</label>
 									<div class='input-group'>
