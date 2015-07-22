@@ -52,6 +52,14 @@ class Cxc extends Model {
 							'charge_type2', 'charge_type3', 'charge_type4', 'charge_type5', 'amount1', 'amount2', 'amount3', 'amount4', 
 							'amount5', 'reference1', 'reference2', 'reference3', 'reference4', 'reference5', 'change', 'pro_balance', 'balance', 'tho_web_assigned','expiration','condition','total_amount','factor'];
 
+
+	public static function getChargeName(){
+		return env('CXC_COBRO', 'Cobro');
+	}
+
+	public static function getAdvanceName(){
+		return env('CXC_ANTICIPO', 'Anticipo');
+	}
 	
 	public function getOfficeIdAttribute(){
 		return $this->Sucursal;
@@ -706,7 +714,13 @@ class Cxc extends Model {
 
 		$chargedDocuments = collect([]);
 
-		$chargeMovs = self::where('Mov','Cobro')->whereIn('ThoAsignadoWeb',$chargeOrder)->get();
+		$chargeMovs = self::where(function ($query) {
+						$query->where('Mov', self::getChargeName())
+							->orWhere('Mov', self::getAdvanceName());
+					})
+					->where('Estatus','CONCLUIDO')
+					->whereIn('ThoAsignadoWeb',$chargeOrder)
+					->get();
 
 		//dd($chargeMovs);
 
