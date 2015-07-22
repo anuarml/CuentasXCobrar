@@ -52,7 +52,7 @@
 								</div>
 							@endif
 							<div class="col-xs-6 col-xs-offset-0 col-sm-4 col-sm-offset-2">
-								<a href="{{ url('/cxc/movimiento/nuevo') }}" class="btn btn-danger btn-block" role="button">Cancelar</a>
+								<a href="{{ url('/cxc/movimiento/nuevo') }}" id="cancelButton" class="btn btn-danger btn-block" role="button">Cancelar</a>
 							</div>
 							<div class="col-xs-6 col-sm-4">
 								<button id="selectButton" type="button" class="btn btn-success btn-block">Seleccionar</button>

@@ -122,6 +122,14 @@ class CxcD extends Model {
 	}
 
 
+	public function deleteRow(){
+		\DB::table($this->getTable())
+			->where('ID', $this->ID)
+			->where('Renglon', $this->row)
+			->delete();
+	}
+
+
 	public function suggestPP(){
 
 		$company = \Auth::user()->getSelectedCompany();
