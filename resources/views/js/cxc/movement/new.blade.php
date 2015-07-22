@@ -173,6 +173,10 @@ function addDocumentRow(cxcD, cxcDocument){
 
 	if( (movStatus == '' || movStatus == 'SINAFECTAR') && clientDiscount && cxcDocument.pp_suggest){
 		$('#documentsTable').bootstrapTable('showColumn','pp_suggest');
+
+		if(cxcD.p_p_discount != 0){
+			$('#documentsTable').bootstrapTable('showColumn','pp_discount');
+		}
 	}
 
 	// Actualizar importe total
@@ -427,6 +431,14 @@ function updateRowInfo(){
 	var previousAmount = cxcD.amount;
 	var previousDiscount = cxcD.p_p_discount;
 
+	if(pp_discount > 0){
+		pp_discount = -pp_discount;
+	}
+
+	if(pp_discount != 0){
+		$('#documentsTable').bootstrapTable('showColumn','pp_discount');
+	}
+
 	cxcD.amount = amount;
 	cxcD.p_p_discount = pp_discount;
 	cxcD.apply = apply;
@@ -437,7 +449,7 @@ function updateRowInfo(){
 	cxcDoc.reference = reference;
 	cxcDoc.pp_suggest = pp_suggest;
 
-	console.log(cxcD);
+	//console.log(cxcD);
 	$('#confirmModal').modal('hide');
 
 	//addDocumentRow(new CxcD({apply:apply}));
@@ -452,7 +464,7 @@ function updateRowInfo(){
 	row.reference = reference;
 	row.concept = concept;
 
-	console.log(row,aCxcD,aCxcDocs);
+	//console.log(row,aCxcD,aCxcDocs);
 	//console.log(row);
 
 	$('#documentsTable').bootstrapTable('updateRow',{
