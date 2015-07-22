@@ -33,9 +33,9 @@ class CxcPending extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['Mov','MovID', 'balance', 'total_amount', 'expiration', 'emission_date', 'concept', 'reference','factor'];
+	protected $visible = ['Mov','MovID', 'balance', 'total_amount', 'expiration', 'emission_date', 'concept', 'reference','factor','delinquent_days'];
 
-	protected $appends = ['balance', 'total_amount', 'expiration', 'emission_date', 'concept', 'reference','factor'];
+	protected $appends = ['balance', 'total_amount', 'expiration', 'emission_date', 'concept', 'reference','factor','delinquent_days'];
 
 	/*public function getMovIdAttribute(){
 		return $this->MovID;
@@ -63,6 +63,10 @@ class CxcPending extends Model {
 
 	public function getReferenceAttribute(){
 		return $this->Referencia;
+	}
+
+	public function getDelinquentDaysAttribute(){
+		return $this->DiasMoratorios;
 	}
 
 	public function getTableName(){

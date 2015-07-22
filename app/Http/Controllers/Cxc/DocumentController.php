@@ -57,7 +57,8 @@ class DocumentController extends Controller {
 					->orWhere('Vencimiento', $comparator, $search)
 					->orWhere('ImporteTotal', $comparator, $search)
 					->orWhere('Saldo', $comparator, $search)
-					->orWhere('Concepto', $comparator, $search);
+					->orWhere('Concepto', $comparator, $search)
+					->orWhere('DiasMoratorios', $comparator, $search);
 			});
 		}
 
@@ -66,7 +67,7 @@ class DocumentController extends Controller {
 			$documentsQuery->orderBy($sort, $order);
 		}
 
-		$documentList = $documentsQuery->get(['Mov','MovID','FechaEmision','Vencimiento','ImporteTotal','Saldo','Concepto']);
+		$documentList = $documentsQuery->get(['Mov','MovID','FechaEmision','Vencimiento','ImporteTotal','Saldo','Concepto','DiasMoratorios']);
 		$numberOfDocuments = $documentList->count();
 
 		$documentList = $documentList->slice($offset, $limit);
