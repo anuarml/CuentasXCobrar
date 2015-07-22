@@ -279,7 +279,7 @@
 					    				<label for="totalAmount">Total</label>
 					    				<div class='input-group'>
 					    					<div class='input-group-addon'>$</div>
-					    					<input type='text' class='form-control input-sm' id='totalAmount' readonly>
+					    					<input type='text' class='form-control input-sm' id='totalAmount' value="0.00" readonly>
 					    					<input type="hidden" name="amount" id="amount">
 					    					<input type="hidden" name="taxes" id="taxes">
 					    				</div>
