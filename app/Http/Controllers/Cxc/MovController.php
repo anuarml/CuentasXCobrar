@@ -276,11 +276,11 @@ class MovController extends Controller {
 		//$cxc = Cxc::findOrFail($movID);
 
 		$validator = \Validator::make(\Input::only('clientID'), [
-			'clientID' => 'required',
+			'clientID' => 'required|exists:Cte,Cliente',
 		]);
 
 		if($validator->fails()){
-			return redirect()->back()->withInput()->withErrors(['clientID','Se requiere seleccionar un cliente.']);
+			return redirect()->back()->withInput()->withErrors($validator->errors()/*['clientID','Se requiere seleccionar un cliente.']*/);
 		}
 
 		//$cxc->client_id = \Input::get('clientID');

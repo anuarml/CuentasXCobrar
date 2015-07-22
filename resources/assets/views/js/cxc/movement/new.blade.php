@@ -44,6 +44,31 @@ $("#Mov").on("change", function(e){
 @if($mov->status == 'SINAFECTAR' || $mov->status == '')
 $(document).ready(function(){
 
+	$('#client_id').onchange(function(e){
+		/*$.get({
+			url: '{{url("cxc/movimiento/concept-list")}}/' + $(this).val()
+		}).done(function(client){
+			alert(client);
+		});*/
+	    var form = document.createElement('form');
+    
+	    var csrfInput = document.createElement('input');
+		csrfInput.type= 'hidden';
+		csrfInput.name = '_token';
+		csrfInput.value = '{{csrf_token()}}';
+		form.appendChild(csrfInput);
+
+		var clientInput = document.createElement('input');
+		clientInput.type= 'text';
+		clientInput.name = 'clientID';
+		clientInput.value = this.value;
+		form.appendChild(clientInput);
+
+	    form.method = 'POST';
+	    form.action = '{{url("cxc/movimiento/save-client")}}';
+	    form.submit();
+	});
+
 	$('#documentsTable tbody').on('contextmenu', function(e) {
 
 		var dataIndex = $(e.target).closest('tr').attr('data-index');

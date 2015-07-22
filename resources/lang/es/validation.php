@@ -115,9 +115,10 @@ return array(
 	*/
 
 	'attributes' => array(
-		'username' => 'usuario',
-		'password' => 'contraseña',
-		'company' => 'empresa',
-		'office' => 'sucursal'
+		'username'	=> 'usuario',
+		'password'	=> 'contraseña',
+		'company'	=> 'empresa',
+		'office'	=> 'sucursal',
+		'clientID'	=> 'cliente'
 	),
 );
