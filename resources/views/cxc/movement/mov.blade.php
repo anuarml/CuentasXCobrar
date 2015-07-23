@@ -189,9 +189,9 @@
 														  <option hidden></option>
 														</select>-->
 														@if($mov->status == 'SINAFECTAR' || $mov->status == '')
-															{!! Form::select('currency',$currencyList, 'Pesos', array('class'=>'form-control')) !!}
+															{!! Form::select('currency',$currencyList, $user->currency, array('class'=>'form-control','disabled'=>'true')) !!}
 														@else
-															{!! Form::select('currency',$currencyList, 'Pesos', array('class'=>'form-control', 'disabled'=>'true')) !!}
+															{!! Form::select('currency',$currencyList, $user->currency, array('class'=>'form-control', 'disabled'=>'true')) !!}
 														@endif
 
 													</div>

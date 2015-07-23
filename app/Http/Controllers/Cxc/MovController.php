@@ -139,7 +139,7 @@ class MovController extends Controller {
 		$cxc->CtaDinero = $user->account;
 		$cxc->charge_type = $user->payment_type;
 		$cxc->cashier = $user->cashier;
-		//$cxc->currency = $user->defCurrency->currency;
+		$cxc->currency = $user->currency;
 		$cxc->manual_apply = true;
 		$cxc->with_breakdown = true;
 		$cxc->status = 'SINAFECTAR';
