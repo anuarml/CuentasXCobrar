@@ -276,11 +276,11 @@ class MovController extends Controller {
 		//$cxc = Cxc::findOrFail($movID);
 
 		$validator = \Validator::make(\Input::only('clientID'), [
-			'clientID' => 'required',
+			'clientID' => 'required|exists:Cte,Cliente',
 		]);
 
 		if($validator->fails()){
-			return redirect()->back()->withInput()->withErrors(['clientID','Se requiere seleccionar un cliente.']);
+			return redirect()->back()->withInput()->withErrors($validator->errors()/*['clientID','Se requiere seleccionar un cliente.']*/);
 		}
 
 		//$cxc->client_id = \Input::get('clientID');
@@ -468,8 +468,8 @@ class MovController extends Controller {
 		$search = \Input::get('search');
 
 		$movListquery = Cxc::where(function ($query) {
-			$query->where('Mov', 'Cobro')
-				->orWhere('Mov', 'Anticipo');
+			$query->where('Mov', Cxc::getChargeName())
+				->orWhere('Mov', Cxc::getAdvanceName());
 		})->where('Empresa',$company)
 		  ->where('Usuario',$username);
 
@@ -595,6 +595,25 @@ class MovController extends Controller {
 				$firstDocument = false;
 			}
 		}
+
+		return redirect('cxc/movimiento/mov/'.$movID.'#documentos');
+	}
+
+	public function postCancelDocument($movID, $row){
+		
+		$cxc = Cxc::find($movID);
+
+		if(!$cxc){
+			return Response::back()->withErrors(['cxc','No se encontró el movimiento.']);
+		}
+
+		$cxcD = $cxc->details()->where('Renglon', '=', $row)->first();
+
+		if(!$cxcD){
+			return Response::back()->withErrors(['cxcD','No se encontró el renglón.']);
+		}
+
+		$cxcD->deleteRow();
 
 		return redirect('cxc/movimiento/mov/'.$movID.'#documentos');
 	}

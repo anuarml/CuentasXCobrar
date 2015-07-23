@@ -44,6 +44,33 @@ $("#Mov").on("change", function(e){
 @if($mov->status == 'SINAFECTAR' || $mov->status == '')
 $(document).ready(function(){
 
+
+	$('#client_id').change(function(e){
+		/*$.get({
+			url: '{{url("cxc/movimiento/concept-list")}}/' + $(this).val()
+		}).done(function(client){
+			alert(client);
+		});*/
+		$('#loading').show();
+	    var form = document.createElement('form');
+    
+	    var csrfInput = document.createElement('input');
+		csrfInput.type= 'hidden';
+		csrfInput.name = '_token';
+		csrfInput.value = '{{csrf_token()}}';
+		form.appendChild(csrfInput);
+
+		var clientInput = document.createElement('input');
+		clientInput.type= 'text';
+		clientInput.name = 'clientID';
+		clientInput.value = this.value;
+		form.appendChild(clientInput);
+
+	    form.method = 'POST';
+	    form.action = '{{url("cxc/movimiento/save-client")}}';
+	    form.submit();
+	});
+
 	$('#documentsTable tbody').on('contextmenu', function(e) {
 
 		var dataIndex = $(e.target).closest('tr').attr('data-index');
@@ -147,6 +174,11 @@ function addDocumentRow(cxcD, cxcDocument){
 
 	if( (movStatus == '' || movStatus == 'SINAFECTAR') && clientDiscount && cxcDocument.pp_suggest){
 		$('#documentsTable').bootstrapTable('showColumn','pp_suggest');
+
+		if(cxcD.p_p_discount != 0){
+			$('#documentsTable').bootstrapTable('showColumn','pp_discount');
+		}
+
 	}
 
 	// Actualizar importe total
@@ -401,6 +433,14 @@ function updateRowInfo(){
 	var previousAmount = cxcD.amount;
 	var previousDiscount = cxcD.p_p_discount;
 
+	if(pp_discount > 0){
+		pp_discount = -pp_discount;
+	}
+
+	if(pp_discount != 0){
+		$('#documentsTable').bootstrapTable('showColumn','pp_discount');
+	}
+
 	cxcD.amount = amount;
 	cxcD.p_p_discount = pp_discount;
 	cxcD.apply = apply;
@@ -411,7 +451,6 @@ function updateRowInfo(){
 	cxcDoc.reference = reference;
 	cxcDoc.pp_suggest = pp_suggest;
 
-	console.log(cxcD);
 	$('#confirmModal').modal('hide');
 
 	//addDocumentRow(new CxcD({apply:apply}));
@@ -425,9 +464,6 @@ function updateRowInfo(){
 	row.pp_suggest = pp_suggest;
 	row.reference = reference;
 	row.concept = concept;
-
-	console.log(row,aCxcD,aCxcDocs);
-	//console.log(row);
 
 	$('#documentsTable').bootstrapTable('updateRow',{
 		index:rowid,
@@ -476,6 +512,7 @@ function updateTotalAmount(previousAmount, actualAmount){
 	totalCharge = totalCharge.plus(actualAmount.minus(parseFloat(previousAmount) || 0));
 
 	totalChargeInput.val(moneyFormatForNumbers(totalCharge.toNumber()));
+
 	totalChargeInput.change();
 }
 
@@ -581,7 +618,6 @@ function addChargeRow(charge){
 		
 		var amountInput = $(this);
 		var totalChargeInput = $('#totalCharge');
-
 		var nTotalCharge = parseFloat(moneyFormatToNumber(totalChargeInput.val()));
 		var nAmount = parseFloat(moneyFormatToNumber(amountInput.val()));
 		var previousAmount = 0;
@@ -609,7 +645,9 @@ function addChargeRow(charge){
 		nTotalCharge = calculateTotal(nTotalCharge,nAmount,previousAmount);
 
 		// Se actualiza el cobro total en la vista.
+
 		totalChargeInput.val(moneyFormatForNumbers(nTotalCharge));
+
 		totalChargeInput.change();
 
 		
@@ -643,6 +681,7 @@ function addChargeRow(charge){
 			var previousAmount = charge.amount;
 
 			amountInput.val(moneyFormatForNumbers(previousAmount));
+
 		}
 	});
 
@@ -717,6 +756,7 @@ function addChargeRow(charge){
 		totalCharge = calculateTotal(totalCharge, charge.amount, 0);
 
 		totalChargeInput.val(moneyFormatForNumbers(totalCharge));
+
 		//totalChargeInput.change();
 	}
 
@@ -774,12 +814,14 @@ function calcTaxes(amountWithTaxes){
 	$('#amount').val(moneyFormatForNumbers(amount.toNumber()));
 	$('#taxes').val(moneyFormatForNumbers(taxes));
 
+
 }
 
 function moneyFormatter(value){
 	var valueFormatted = parseFloat(value) || 0;
 	return '$' + moneyFormatForNumbers(valueFormatted);
 	//return '$'+valueFormatted.toFixed(2);
+
 }
 
 </script>

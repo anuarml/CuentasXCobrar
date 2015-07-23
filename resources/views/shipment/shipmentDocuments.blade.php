@@ -119,9 +119,13 @@
 			var icon = '';
 			var style = '';
 			
-			if(value == true){
+			if(value == 1){
 				style = 'color:green';
 				icon = 'glyphicon glyphicon-ok';
+			}
+			else if(value == 2) {
+				style = 'color:black';
+				icon = 'glyphicon glyphicon-stop';
 			}
 			else {
 				style = 'color:red';

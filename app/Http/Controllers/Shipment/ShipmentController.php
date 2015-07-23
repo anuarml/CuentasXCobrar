@@ -56,7 +56,7 @@ class ShipmentController extends Controller {
 				$document->balance = 0;
 			}
 			$document->client = $assignedDocument->client;
-			$document->assigned = true;
+			$document->assigned = 1;
 			$document->charged = false;
 			$document->cashed = 0;
 			$document->mov = $mov;
@@ -70,7 +70,7 @@ class ShipmentController extends Controller {
 				if( $mov == $apply && $movID == $applyID ){
 					$document->charged = true;
 					$document->cashed += $chargedDocument->amount;
-					$chargedDocument->assigned = true;
+					$chargedDocument->assigned = 1;
 				}
 			}
 
@@ -96,11 +96,16 @@ class ShipmentController extends Controller {
 				if($documentOrigin){
 					$document->balance = $documentOrigin->balance;
 					$document->client = $documentOrigin->client_id;
+
+					if($apply == Cxc::getAdvanceName()){
+						$document->assigned = 2;
+					}
 				} else{
 					$document->balance = 0;
 					$document->client = null;
+					$document->assigned = 0;
 				}
-				$document->assigned = false;
+				
 				$document->charged = true;
 				$document->cashed = $unassignedChargedDocument->amount;
 				//$document->balance = $documentOrigin->balance;

@@ -1,4 +1,4 @@
-	@extends('app')
+@extends('app')
 
 @section('content')
 	<div class="container">
@@ -60,7 +60,7 @@
 																	<span class='glyphicon glyphicon-search'></span>
 																</button>
 															</span>
-															{!! Form::text('client_id', null, array('class'=>'form-control', 'readonly'=>'true')) !!}
+															{!! Form::text('client_id', null, array('class'=>'form-control')) !!}
 														</div>
 													</div>
 												</div>

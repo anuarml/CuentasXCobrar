@@ -7,6 +7,7 @@
     <th data-field="total_amount" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Importe Total</th>
     <th data-field="emission_date" data-align="center" data-sortable="true">Emisión</th>
     <th data-field="expiration" data-align="center" data-sortable="true">Vencimiento</th>
+    <th data-field="delinquent_days" data-align="center" data-sortable="true">Días</th>
     <th data-field="concept" data-align="center" data-sortable="true">Concepto</th>
     <th data-field="factor" data-visible="false" data-switchable="false" data-searchable="false">Factor</th>
 @endsection
@@ -48,5 +49,24 @@
 			$('#loading').show();
 			$('#documentForm').submit();
 		});
+
+		$('#cancelButton').click(function(e) {
+			e.preventDefault();
+
+			$('#loading').show();
+
+		    var form = document.createElement('form');
+    
+		    var csrfInput = document.createElement('input');
+		    csrfInput.type= 'hidden';
+		    csrfInput.name = '_token';
+		    csrfInput.value = '{{csrf_token()}}';
+		    form.appendChild(csrfInput);
+
+		    form.method = 'POST';
+		    form.action = "{{ url('cxc/movimiento/cancel-document/'.$movID.'/'.$row) }}";
+		    form.submit();
+		});
+		
 	</script>
 @endsection
