@@ -275,11 +275,11 @@ function addConsecutiveInput(element,value){
 		toolbar.saveMov('searchConsecutive');
 	});
 }
-
+var previousDocumentAmount = 0;
 function addAmountInput(element,value){
 	if(typeof value == 'undefined')
 		value = '';
-
+	previousDocumentAmount = value;
 	element.append(
 		'<label for="documentAmount">Importe</label>'+
 		'<div class="input-group">'+
@@ -321,18 +321,43 @@ function addAmountInput(element,value){
 		//console.log(amount,balance,doc);
 		var difference = new Decimal(balance).minus(amount).toNumber();
 		//console.log(difference);
+		previousDocumentAmount = amount;
 		$('#doc-difference').val(moneyFormatForNumbers(difference));
 	});
-}
 
+	$("#documentAmount").focus(function(){
+		$(this).val('');
+	});
+
+	$("#documentAmount").blur(function(){
+		if($(this).val()==''){
+			$(this).val(moneyFormatForNumbers(previousDocumentAmount));
+		}
+	});
+}
+var previousDocumentDiscount = 0;
 function addDiscountInput(element,value){
 	if(typeof value == 'undefined')
 		value = '';
-
+	previousDocumentDiscount = value;
 	element.append(
 		'<label for="discountPPP">Descuento</label>'+
 		'<input type="number" class="form-control input-sm" id="discountPPP" value="'+value+'">'
 	);
+
+	$("#discountPPP").change(function(){
+		previousDocumentDiscount = parseFloat(moneyFormatToNumber($(this).val()));
+	});
+
+	$("#discountPPP").focus(function(){
+		$(this).val('');
+	});
+
+	$("#discountPPP").blur(function(){
+		if($(this).val()==''){
+			$(this).val(moneyFormatForNumbers(previousDocumentDiscount));
+		}
+	});
 }
 
 function addDifferenceInput(element, value){
@@ -664,6 +689,7 @@ function addChargeRow(charge){
 			totalChangeAllowedInput.val(totalChangeAllowed.toFixed(2));
 			totalChangeAllowedInput.change();
 		}
+		calculateChange();
 	});
 
 	amountInput.focus( function(){
@@ -717,6 +743,7 @@ function addChargeRow(charge){
 			totalChangeAllowedInput.val(totalChangeAllowed.toFixed(2));
 			totalChangeAllowedInput.change();
 		}
+		calculateChange();
 	});
 
 	$('#deleteCharge'+chargeNumber).click( function(){

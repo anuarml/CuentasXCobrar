@@ -6,7 +6,7 @@ function numberWithCommas(x) {
 function moneyFormatForNumbers(x){
 	x = x.toFixed(2)
 	x = numberWithCommas(x);
-	console.log(x);
+	//console.log(x);
 	return x;
 }
 

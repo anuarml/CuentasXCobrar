@@ -54,14 +54,21 @@
 												<div class="col-sm-6 ">
 													<div class="form-group">
 														{!! Form::label('client_id', 'Cliente:') !!}
-														<div class='input-group'>
-															<span class='input-group-btn'>
-																<button type='button' class='btn btn-default' id='searchClient'>
-																	<span class='glyphicon glyphicon-search'></span>
-																</button>
-															</span>
-															{!! Form::text('client_id', null, array('class'=>'form-control', 'readonly'=>'true')) !!}
-														</div>
+														@if($mov->ID)
+															<div class='form-group'>
+																{!! Form::text('client_id', null, array('class'=>'form-control','readonly'=>'true')) !!}
+															</div>
+														@else
+															<div class='input-group'>
+																<span class='input-group-btn'>
+																	<button type='button' class='btn btn-default' id='searchClient'>
+																		<span class='glyphicon glyphicon-search'></span>
+																	</button>
+																</span>
+																{!! Form::text('client_id', null, array('class'=>'form-control')) !!}
+															</div>
+														@endif
+
 													</div>
 												</div>
 												<div class="col-sm-6 ">
@@ -139,12 +146,13 @@
 													<div class="form-group">
 														<!--<label for="reference">Referencia:</label>-->
 														{!! Form::label('reference', 'Referencia:') !!}
-														<div class='input-group'>
+														<div class="form-group">
+														<!--div class='input-group'>
 															<span class='input-group-btn'>
 																<button type='button' class='btn btn-default' id='searchMovReference'>
 																	<span class='glyphicon glyphicon-search'></span>
 																</button>
-															</span>
+															</span-->
 								                        	<!--<input type="text" name="reference" id="reference" class="form-control " tabindex="2">-->
 								                        	@if($mov->status == 'SINAFECTAR' || $mov->status == '')
 																{!! Form::text('reference', null, array('class'=>'form-control')) !!}

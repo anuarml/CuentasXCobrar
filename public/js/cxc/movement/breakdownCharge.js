@@ -40,10 +40,11 @@ var paymentTypeListChangeAllowed = [];
 
 change.change(function(){
 
-	var nChange = change.val();
+	var nChange = moneyFormatToNumber(change.val());
 	if(nChange < 0 || isNaN(nChange)){
 
 		change.val(moneyFormatForNumbers(previousChangeAmount));
+		console.log(nChange);
 		return;
 	}
 
@@ -88,6 +89,8 @@ $('#totalCharge').change(function(){
 
 	calcTaxes(totalCharge.val());
 	calculateChargeDifference();
+	//calculateChange();
+
 });	
 
 function calculateChargeDifference(){
@@ -102,15 +105,41 @@ function calculateChargeDifference(){
 		nDifference = 0;
 	}*/
 	$('#difference').val(moneyFormatForNumbers(nDifference));
+	//$('#difference').change();
+}
+
+function calculateChange(){
+	var difference = $('#difference');
+	var change = $('#change');
+	var differenceVal = parseFloat(moneyFormatToNumber(difference.val())) || 0;
+	var changeVal = parseFloat(moneyFormatToNumber(change.val())) || 0;
+	//var totalChangeVal = calculateTotal(changeVal, changeVal, previousChangeAmount);
+	//console.log("TotalChangeVal "+ totalChangeVal);
+	var changeAmount = (-1)*(differenceVal)+changeVal;
+
+	var totalChangeAllowed = $('#totalChangeAllowed');
+	var ntotalChangeAllowed = parseFloat(moneyFormatToNumber(totalChangeAllowed.val())) || 0;
+	console.log("change "+ changeAmount);
+	console.log("allow " + ntotalChangeAllowed)
+	if(changeAmount>ntotalChangeAllowed){
+		$('#change').val(moneyFormatForNumbers(ntotalChangeAllowed));
+	}else{
+		$('#change').val(moneyFormatForNumbers(changeAmount));
+	}
+	$('#change').change();
+
 }
 
 $('#totalAmount').change(function(){
 	calculateChargeDifference();
+	//calculateChange();
 });
 
 $('#totalChangeAllowed').change(function(){
-	change.change();
+	//change.change();
 });
+
+
 
 $(window).load(function(){
 	if(nChangeAmount){
