@@ -5,8 +5,8 @@ proBalance.change(function(){
 
 	var nProBalance = parseFloat(proBalance.val());
 	if(nProBalance < 0 || isNaN(nProBalance)){
-
-		proBalance.val(previousProBalanceAmount.toFixed(2));
+		proBalance.val(moneyFormatForNumbers(previousProBalanceAmount));
+		//proBalance.val(previousProBalanceAmount.toFixed(2));
 		return;
 	}
 
@@ -19,7 +19,8 @@ proBalance.change(function(){
 	totalCharge.change();
 
 	previousProBalanceAmount = nProBalance;
-	proBalance.val(nProBalance.toFixed(2));
+	proBalance.val(moneyFormatForNumbers(nProBalance));
+	//proBalance.val(nProBalance.toFixed(2));
 });
 
 proBalance.focus(function(){
@@ -28,7 +29,8 @@ proBalance.focus(function(){
 
 proBalance.blur(function(){
 	if(proBalance.val()==''){
-		proBalance.val(previousProBalanceAmount.toFixed(2));
+		proBalance.val(moneyFormatForNumbers(previousProBalanceAmount));
+		//proBalance.val(previousProBalanceAmount.toFixed(2));
 	}
 });
 

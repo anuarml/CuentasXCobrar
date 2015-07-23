@@ -778,8 +778,8 @@ function calcTaxes(amountWithTaxes){
 
 function moneyFormatter(value){
 	var valueFormatted = parseFloat(value) || 0;
-
-	return '$'+valueFormatted.toFixed(2);
+	return '$' + moneyFormatForNumbers;
+	//return '$'+valueFormatted.toFixed(2);
 }
 
 </script>
