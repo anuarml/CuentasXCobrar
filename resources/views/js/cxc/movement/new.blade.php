@@ -44,6 +44,7 @@ $("#Mov").on("change", function(e){
 @if($mov->status == 'SINAFECTAR' || $mov->status == '')
 $(document).ready(function(){
 
+
 	$('#client_id').change(function(e){
 		/*$.get({
 			url: '{{url("cxc/movimiento/concept-list")}}/' + $(this).val()
@@ -177,6 +178,7 @@ function addDocumentRow(cxcD, cxcDocument){
 		if(cxcD.p_p_discount != 0){
 			$('#documentsTable').bootstrapTable('showColumn','pp_discount');
 		}
+
 	}
 
 	// Actualizar importe total
@@ -309,7 +311,7 @@ function addAmountInput(element,value){
 		//updateTotalAmount(previousAmount, actualAmount);
 
 		var rowid = $('#rowid').val();
-		var amount = parseFloat($(this).val()) || 0;
+		var amount = parseFloat(moneyFormatToNumber($(this).val())) || 0;
 		var balance = 0;
 		var doc = aCxcDocs[rowid];
 
@@ -319,7 +321,7 @@ function addAmountInput(element,value){
 		//console.log(amount,balance,doc);
 		var difference = new Decimal(balance).minus(amount).toNumber();
 		//console.log(difference);
-		$('#doc-difference').val(difference.toFixed(2));
+		$('#doc-difference').val(moneyFormatForNumbers(difference));
 	});
 }
 
@@ -406,9 +408,9 @@ function updateRowInfo(){
 	var rowid = $('#rowid').val();
 	var apply = $('#documentApply').val();
 	var apply_id = $('#consecutive').val();
-	var amount = parseFloat($('#documentAmount').val()) || 0;
-	var pp_discount = parseFloat($('#discountPPP').val()) || 0;
-	var pp_suggest = parseFloat($('#suggestPPP').val()) || 0;
+	var amount = parseFloat(moneyFormatToNumber($('#documentAmount').val())) || 0;
+	var pp_discount = parseFloat(moneyFormatToNumber($('#discountPPP').val())) || 0;
+	var pp_suggest = parseFloat(moneyFormatToNumber($('#suggestPPP').val())) || 0;
 	var reference = $('#doc-reference').val() || '';
 	var concept = $('#doc-concept').val() || '';
 	var balance = $('#doc-balance').val() || 0;
@@ -449,7 +451,6 @@ function updateRowInfo(){
 	cxcDoc.reference = reference;
 	cxcDoc.pp_suggest = pp_suggest;
 
-	//console.log(cxcD);
 	$('#confirmModal').modal('hide');
 
 	//addDocumentRow(new CxcD({apply:apply}));
@@ -463,9 +464,6 @@ function updateRowInfo(){
 	row.pp_suggest = pp_suggest;
 	row.reference = reference;
 	row.concept = concept;
-
-	//console.log(row,aCxcD,aCxcDocs);
-	//console.log(row);
 
 	$('#documentsTable').bootstrapTable('updateRow',{
 		index:rowid,
@@ -507,13 +505,14 @@ function clearRowInfo(rowid){
 
 function updateTotalAmount(previousAmount, actualAmount){
 	var totalChargeInput = $('#totalAmount');
-	var totalCharge = new Decimal(parseFloat(totalChargeInput.val()) || 0);
+	var totalCharge = new Decimal(parseFloat(moneyFormatToNumber(totalChargeInput.val())) || 0);
 
 	actualAmount = new Decimal(parseFloat(actualAmount) || 0);
 
 	totalCharge = totalCharge.plus(actualAmount.minus(parseFloat(previousAmount) || 0));
 
-	totalChargeInput.val(totalCharge.toNumber().toFixed(2));
+	totalChargeInput.val(moneyFormatForNumbers(totalCharge.toNumber()));
+
 	totalChargeInput.change();
 }
 
@@ -564,7 +563,7 @@ function addChargeRow(charge){
 				"<label for='amount"+chargeNumber+"'>Importe</label>" +
 				"<div class='input-group'>"+
 					"<div class='input-group-addon'>$</div>"+
-					"<input type='number' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' value='"+ (charge.amount.toFixed(2) || '0.00') +"' min='0' step='any'>"+
+					"<input type='text' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' value='"+ (moneyFormatForNumbers(charge.amount) || '0.00') +"' min='0' step='any'>"+
 				"</div>"+
 			"</div>" +
 			"<div class='col-sm-4'>" +
@@ -590,7 +589,7 @@ function addChargeRow(charge){
 				"<label for='amount"+chargeNumber+"'>Importe</label>" +
 				"<div class='input-group'>"+
 					"<div class='input-group-addon'>$</div>"+
-					"<input type='number' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' value='"+ (charge.amount.toFixed(2) || '0.00') +"' min='0' step='any' readonly>"+
+					"<input type='text' class='form-control input-sm' id='amount"+chargeNumber+"' name='amount"+chargeNumber+"' value='"+ (moneyFormatForNumbers(charge.amount) || '0.00') +"' min='0' step='any' readonly>"+
 				"</div>"+
 			"</div>" +
 			"<div class='col-sm-4'>" +
@@ -619,9 +618,8 @@ function addChargeRow(charge){
 		
 		var amountInput = $(this);
 		var totalChargeInput = $('#totalCharge');
-
-		var nTotalCharge = parseFloat(totalChargeInput.val());
-		var nAmount = parseFloat(amountInput.val());
+		var nTotalCharge = parseFloat(moneyFormatToNumber(totalChargeInput.val()));
+		var nAmount = parseFloat(moneyFormatToNumber(amountInput.val()));
 		var previousAmount = 0;
 		//Se obtiene el cobro correspondiente al input del arreglo de cobros.
 		var charge = getCharge(amountInput);
@@ -634,20 +632,22 @@ function addChargeRow(charge){
 		// Si se introduce un valor negativo o no númerico se regresa al valor anterior.
 		if(nAmount < 0 || isNaN(nAmount)){
 
-			amountInput.val(previousAmount.toFixed(2));
+			amountInput.val(moneyFormatForNumbers(previousAmount));
 			return;
 		}
 
 		// Se actualiza el importe del cobro.
 		charge.amount = nAmount;
 		//Se formatea el nuevo valor y se muestra.
-		amountInput.val(nAmount.toFixed(2));
+		amountInput.val(moneyFormatForNumbers(nAmount));
 
 		// Se calcula el cobro total.
 		nTotalCharge = calculateTotal(nTotalCharge,nAmount,previousAmount);
 
 		// Se actualiza el cobro total en la vista.
-		totalChargeInput.val(nTotalCharge.toFixed(2));
+
+		totalChargeInput.val(moneyFormatForNumbers(nTotalCharge));
+
 		totalChargeInput.change();
 
 		
@@ -680,7 +680,8 @@ function addChargeRow(charge){
 
 			var previousAmount = charge.amount;
 
-			amountInput.val(previousAmount.toFixed(2));
+			amountInput.val(moneyFormatForNumbers(previousAmount));
+
 		}
 	});
 
@@ -754,7 +755,8 @@ function addChargeRow(charge){
 
 		totalCharge = calculateTotal(totalCharge, charge.amount, 0);
 
-		totalChargeInput.val(totalCharge.toFixed(2));
+		totalChargeInput.val(moneyFormatForNumbers(totalCharge));
+
 		//totalChargeInput.change();
 	}
 
@@ -809,15 +811,17 @@ function calcTaxes(amountWithTaxes){
 	amount = amountWithTaxes.div(IVA);
 	taxes = amountWithTaxes.minus(amount).toNumber();
 
-	$('#amount').val(amount.toNumber().toFixed(2));
-	$('#taxes').val(taxes.toFixed(2));
+	$('#amount').val(moneyFormatForNumbers(amount.toNumber()));
+	$('#taxes').val(moneyFormatForNumbers(taxes));
+
 
 }
 
 function moneyFormatter(value){
 	var valueFormatted = parseFloat(value) || 0;
+	return '$' + moneyFormatForNumbers(valueFormatted);
+	//return '$'+valueFormatted.toFixed(2);
 
-	return '$'+valueFormatted.toFixed(2);
 }
 
 </script>

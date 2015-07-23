@@ -245,9 +245,9 @@
 					    					<div class='input-group-addon'>$</div>
 					    					<!--<input type='number' class='form-control input-sm' name='pro_balance' id='pro_balance' min='0' step='any'>-->
 					    					@if($mov->status == 'SINAFECTAR' || $mov->status == '')
-												{!! Form::number('pro_balance', null, array('min'=>'0', 'class'=>'form-control input-sm', 'value'=>'0.00' )) !!}
+												{!! Form::text('pro_balance', null, array('class'=>'form-control input-sm', 'value'=>'0.00' )) !!}
 											@else
-												{!! Form::number('pro_balance', null, array('min'=>'0', 'class'=>'form-control input-sm', 'readOnly'=>'true', 'value'=>'0.00')) !!}
+												{!! Form::text('pro_balance', null, array('class'=>'form-control input-sm', 'readOnly'=>'true', 'value'=>'0.00')) !!}
 											@endif
 					    					
 					    				</div>

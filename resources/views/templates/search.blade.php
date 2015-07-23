@@ -127,13 +127,14 @@
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-table-es-MX.min.js') }}"></script>
+	<script src="{{ asset('js/app.js') }}"></script>
 	<script type="text/javascript">
 		
 
 		function moneyFormatter(value){
 			var valueFormatted = parseFloat(value) || 0;
-
-			return '$'+valueFormatted.toFixed(2);
+			return '$'+moneyFormatForNumbers(valueFormatted);
+			//return '$'+valueFormatted.toFixed(2);
 		}
 		$.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-MX']);
 		$(window).resize(function () {
