@@ -111,12 +111,12 @@ class MovController extends Controller {
 		//selectedOffice - SucursalOrigen
 		$validator = \Validator::make($cxcArray, [
 			'Mov' => 'required',
-			'currency' => 'required',
+			//'currency' => 'required',
 			'client_id' => 'required',
 		],
 		[
 			'Mov.required'=>'Es necesario seleccionar un Movimiento.',
-			'currency.required'=>'Es necesario seleccionar una Moneda.',
+			//'currency.required'=>'Es necesario seleccionar una Moneda.',
 			'client_id.required'=>'Es necesario seleccionar un Cliente.',
 		]);
 

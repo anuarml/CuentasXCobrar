@@ -10,6 +10,7 @@
     <th data-field="delinquent_days" data-align="center" data-sortable="true">Días</th>
     <th data-field="concept" data-align="center" data-sortable="true">Concepto</th>
     <th data-field="factor" data-visible="false" data-switchable="false" data-searchable="false">Factor</th>
+    <th data-field="shipment_state" data-visible="false" data-switchable="false" data-searchable="false">EmbarqueEstado</th>
 @endsection
 
 @section('action')
@@ -67,6 +68,17 @@
 		    form.action = "{{ url('cxc/movimiento/cancel-document/'.$movID.'/'.$row) }}";
 		    form.submit();
 		});
+
+		function rowFormatter(row, index){
+			
+			var formatter = {};
+
+			if(row && row.shipment_state && row.shipment_state.toUpperCase() == 'TRANSITO'){
+				formatter.classes = 'success';
+			}
+
+			return formatter;
+		}
 		
 	</script>
 @endsection

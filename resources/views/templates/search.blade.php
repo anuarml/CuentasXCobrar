@@ -70,7 +70,9 @@
 								data-side-pagination="server"
 								data-page-list="[]"
 								data-page-size="100"
-								data-height="400">
+								data-height="400"
+								data-row-style="rowFormatter"
+								>
 									<thead>
 										<tr>
 											@yield('table-header')

@@ -33,9 +33,9 @@ class CxcPending extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['Mov','MovID', 'balance', 'total_amount', 'expiration', 'emission_date', 'concept', 'reference','factor','delinquent_days'];
+	protected $visible = ['Mov','MovID', 'balance', 'total_amount', 'expiration', 'emission_date', 'concept', 'reference','factor','delinquent_days','shipment_state'];
 
-	protected $appends = ['balance', 'total_amount', 'expiration', 'emission_date', 'concept', 'reference','factor','delinquent_days'];
+	protected $appends = ['balance', 'total_amount', 'expiration', 'emission_date', 'concept', 'reference','factor','delinquent_days','shipment_state'];
 
 	/*public function getMovIdAttribute(){
 		return $this->MovID;
@@ -84,5 +84,9 @@ class CxcPending extends Model {
 		}
 
 		return $factor;
+	}
+
+	public function getShipmentStateAttribute(){
+		return $this->EmbarqueEstado;
 	}
 }

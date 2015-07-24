@@ -45,7 +45,16 @@ class DocumentController extends Controller {
 		$company = $cxc->company;
 		$client = $cxc->client_id;
 
-		$documentsQuery = CxcPending::where('Mov', $apply) -> where('Empresa', $company) -> where('Cliente', $client);
+		$documentsQuery = CxcPending::leftJoin('Cxc','CxcPendiente.ID','=','Cxc.ID')
+			->where('CxcPendiente.Mov', $apply)
+			->where('CxcPendiente.Empresa', $company)
+			->where('CxcPendiente.Cliente', $client);
+
+		/*Cxc::where('Mov', $apply)
+			->where('Empresa', $company)
+			->where('Cliente', $client)
+			->where('EmbarqueEstado','Transito')
+			->where('');*/
 
 		if($search){
 			$documentsQuery->where(function ($query) use ($search) {
@@ -67,7 +76,19 @@ class DocumentController extends Controller {
 			$documentsQuery->orderBy($sort, $order);
 		}
 
-		$documentList = $documentsQuery->get(['Mov','MovID','FechaEmision','Vencimiento','ImporteTotal','Saldo','Concepto','DiasMoratorios']);
+		$documentList = $documentsQuery->get([
+			'CxcPendiente.Mov',
+			'CxcPendiente.MovID',
+			'CxcPendiente.FechaEmision',
+			'CxcPendiente.Vencimiento',
+			'CxcPendiente.ImporteTotal',
+			'CxcPendiente.Saldo',
+			'CxcPendiente.Concepto',
+			'CxcPendiente.DiasMoratorios',
+			'Cxc.EmbarqueEstado'
+		]);
+
+		//dd($documentList);
 		$numberOfDocuments = $documentList->count();
 
 		$documentList = $documentList->slice($offset, $limit);
