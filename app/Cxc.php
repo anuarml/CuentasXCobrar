@@ -390,6 +390,8 @@ class Cxc extends Model {
 	public function setAmount1Attribute($amount1){
 		if($amount1 == ''){
 			$amount1 = null;
+		}else{
+			$amount1 = str_replace(',','',$amount1);
 		}
 		$this->Importe1 = $amount1;
 	}
@@ -401,6 +403,8 @@ class Cxc extends Model {
 	public function setAmount2Attribute($amount2){
 		if($amount2 == ''){
 			$amount2 = null;
+		}else{
+			$amount2 = str_replace(',','',$amount2);
 		}
 		$this->Importe2 = $amount2;
 	}
@@ -412,6 +416,8 @@ class Cxc extends Model {
 	public function setAmount3Attribute($amount3){
 		if($amount3 == ''){
 			$amount3 = null;
+		}else{
+			$amount3 = str_replace(',','',$amount3);
 		}
 		$this->Importe3 = $amount3;
 	}
@@ -423,6 +429,8 @@ class Cxc extends Model {
 	public function setAmount4Attribute($amount4){
 		if($amount4 == ''){
 			$amount4 = null;
+		}else{
+			$amount4 = str_replace(',','',$amount4);
 		}
 		$this->Importe4 = $amount4;
 	}
@@ -434,6 +442,8 @@ class Cxc extends Model {
 	public function setAmount5Attribute($amount5){
 		if($amount5 == ''){
 			$amount5 = null;
+		}else{
+			$amount5 = str_replace(',','',$amount5);
 		}
 		$this->Importe5 = $amount5;
 	}
@@ -500,6 +510,8 @@ class Cxc extends Model {
 	public function setChangeAttribute($change){
 		if($change == ''){
 			$change = null;
+		}else{
+			$change = str_replace(',','',$change);
 		}
 		$this->Cambio = $change;
 	}
@@ -511,6 +523,8 @@ class Cxc extends Model {
 	public function setProBalanceAttribute($proBalance){
 		if($proBalance == ''){
 			$proBalance = null;
+		}else{
+			$proBalance = str_replace(',','',$proBalance);
 		}
 		$this->DelEfectivo = $proBalance;
 	}

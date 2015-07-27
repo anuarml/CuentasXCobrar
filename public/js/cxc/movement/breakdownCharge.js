@@ -3,7 +3,7 @@ var previousProBalanceAmount = 0;
 
 proBalance.change(function(){
 
-	var nProBalance = parseFloat(moneyFormatToNumber(proBalance.val()));
+	var nProBalance = parseFloat(moneyFormatToNumber(proBalance.val())) || 0;
 	if(nProBalance < 0 || isNaN(nProBalance)){
 		proBalance.val(moneyFormatForNumbers(previousProBalanceAmount));
 		//proBalance.val(previousProBalanceAmount.toFixed(2));
@@ -11,15 +11,22 @@ proBalance.change(function(){
 	}
 
 	var totalCharge = $('#totalCharge');
+	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val())) || 0;
 	var totalChargeAmount;
-
-	totalChargeAmount = calculateTotal(moneyFormatToNumber(totalCharge.val()), nProBalance, previousProBalanceAmount)
-	
+	//console.log("proBalance: " + nProBalance);
+	//console.log("previousProBalance: " + previousProBalanceAmount);
+	//console.log("totalCharge pro antes: " + nTotalCharge);
+	totalChargeAmount = calculateTotal(nTotalCharge, nProBalance, previousProBalanceAmount);
+	//totalChargeAmount = calculateTotal(moneyFormatToNumber(totalCharge.val()), nProBalance, previousProBalanceAmount)
+	//console.log("totalCharge pro despues: " + totalChargeAmount);
 	totalCharge.val(moneyFormatForNumbers(totalChargeAmount));
 	totalCharge.change();
 
 	previousProBalanceAmount = nProBalance;
 	proBalance.val(moneyFormatForNumbers(nProBalance));
+	calculateChange();
+	//proBalance.focus();
+	//proBalance.blur();
 	//proBalance.val(nProBalance.toFixed(2));
 });
 
@@ -30,6 +37,7 @@ proBalance.focus(function(){
 proBalance.blur(function(){
 	if(proBalance.val()==''){
 		proBalance.val(moneyFormatForNumbers(previousProBalanceAmount));
+		proBalance.change();
 		//proBalance.val(previousProBalanceAmount.toFixed(2));
 	}
 });
@@ -62,7 +70,7 @@ change.change(function(){
 
 	var totalCharge = $('#totalCharge');
 	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val())) || 0;
-	console.log("Total Charge:" + nTotalCharge)
+	//console.log("Total Charge:" + nTotalCharge)
 	var totalChargeAmount;
 	totalChargeAmount = calculateTotal(nTotalCharge, -nChange, -previousChangeAmount);
 
@@ -81,13 +89,15 @@ change.focus(function(){
 change.blur(function(){
 	if(change.val()==''){
 		change.val(moneyFormatForNumbers(previousChangeAmount));
+		change.change();
 	}
 });
 
 $('#totalCharge').change(function(){
 	var totalCharge = $(this);
-
-	calcTaxes(totalCharge.val());
+	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val())) || 0;
+	//console.log("HOla" + nTotalCharge);
+	calcTaxes(nTotalCharge);
 	calculateChargeDifference();
 	//calculateChange();
 
@@ -105,7 +115,7 @@ function calculateChargeDifference(){
 		nDifference = 0;
 	}*/
 	$('#difference').val(moneyFormatForNumbers(nDifference));
-	//$('#difference').change();
+	$('#difference').change();
 }
 
 function calculateChange(){
@@ -119,13 +129,26 @@ function calculateChange(){
 
 	var totalChangeAllowed = $('#totalChangeAllowed');
 	var ntotalChangeAllowed = parseFloat(moneyFormatToNumber(totalChangeAllowed.val())) || 0;
-	console.log("change "+ changeAmount);
-	console.log("allow " + ntotalChangeAllowed)
+	var totalAmount = $('#totalAmount');
+	var totalCharge = $('#totalCharge');
+	var nTotalAmount = parseFloat(moneyFormatToNumber(totalAmount.val())) || 0;
+	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val()));
+	var nProBalance = parseFloat(moneyFormatToNumber(proBalance.val())) || 0;
+	//console.log("total charge " + nTotalCharge);
+	//console.log("change "+ changeAmount);
+	//console.log("allow " + ntotalChangeAllowed);
+	//console.log("pro " + nProBalance);
+	//console.log("total amount" + nTotalAmount);
 	if(changeAmount>ntotalChangeAllowed){
+		
 		$('#change').val(moneyFormatForNumbers(ntotalChangeAllowed));
+	}else if((nTotalCharge-nProBalance+changeVal)<nTotalAmount){
+		//console.log("entro");
+		$('#change').val(moneyFormatForNumbers(0.00));
 	}else{
 		$('#change').val(moneyFormatForNumbers(changeAmount));
 	}
+	
 	$('#change').change();
 
 }

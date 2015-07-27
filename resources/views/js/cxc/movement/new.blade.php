@@ -689,7 +689,13 @@ function addChargeRow(charge){
 			totalChangeAllowedInput.val(totalChangeAllowed.toFixed(2));
 			totalChangeAllowedInput.change();
 		}
-		calculateChange();
+		var selectedMov = $('#Mov').val();
+		switch(selectedMov){
+			case 'Cobro':
+				calculateChange();
+				break;
+		}
+		//calculateChange();
 	});
 
 	amountInput.focus( function(){
@@ -743,7 +749,13 @@ function addChargeRow(charge){
 			totalChangeAllowedInput.val(totalChangeAllowed.toFixed(2));
 			totalChangeAllowedInput.change();
 		}
-		calculateChange();
+		var selectedMov = $('#Mov').val();
+		switch(selectedMov){
+			case 'Cobro':
+				calculateChange();
+				break;
+		}
+		//calculateChange();
 	});
 
 	$('#deleteCharge'+chargeNumber).click( function(){
@@ -838,8 +850,8 @@ function calcTaxes(amountWithTaxes){
 	amount = amountWithTaxes.div(IVA);
 	taxes = amountWithTaxes.minus(amount).toNumber();
 
-	$('#amount').val(moneyFormatForNumbers(amount.toNumber()));
-	$('#taxes').val(moneyFormatForNumbers(taxes));
+	$('#amount').val(amount.toNumber());
+	$('#taxes').val(taxes);
 
 
 }
