@@ -4,6 +4,7 @@
 	<div class="container">
 		<div class="row">
 			{!! Form::model( $mov, array('url' => array('cxc/movimiento/guardar'), 'id'=>'cxcMovForm','autocomplete'=>'off' ) ) !!}
+				
 				{!! Form::hidden('action', null, array('id'=>'action' )) !!}
 				{!! Form::hidden('clickedRow', null, array('id'=>'clickedRow' )) !!}
 				<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1">
@@ -268,10 +269,10 @@
 					    					
 					    					@if($mov->status == 'SINAFECTAR' || $mov->status == '')
 												
-												<input type='text' class='form-control input-sm' name='change' id='change' >
+												<input type='text' class='form-control input-sm' name='change' id='change' value='0.00'>
 											@else
 												
-												<input type='text' class='form-control input-sm' name='change' id='change'  readonly>
+												<input type='text' class='form-control input-sm' name='change' id='change' value='0.00' readonly>
 											@endif
 					    					
 					    				</div>

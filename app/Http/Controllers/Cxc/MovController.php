@@ -349,7 +349,7 @@ class MovController extends Controller {
 			}
 		}
 
-		//dd($mov->details->toJson());
+		//dd($mov->details);
 
 		// Se obtiene el usuario autenticado.
 		$user = \Auth::user();

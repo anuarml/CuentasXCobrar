@@ -311,7 +311,7 @@ function addAmountInput(element,value){
 		//updateTotalAmount(previousAmount, actualAmount);
 
 		var rowid = $('#rowid').val();
-		var amount = parseFloat(moneyFormatToNumber($(this).val())) || 0;
+		var amount = parseFloat(moneyFormatToNumber($(this).val()) || 0);
 		var balance = 0;
 		var doc = aCxcDocs[rowid];
 
@@ -433,9 +433,9 @@ function updateRowInfo(){
 	var rowid = $('#rowid').val();
 	var apply = $('#documentApply').val();
 	var apply_id = $('#consecutive').val();
-	var amount = parseFloat(moneyFormatToNumber($('#documentAmount').val())) || 0;
-	var pp_discount = parseFloat(moneyFormatToNumber($('#discountPPP').val())) || 0;
-	var pp_suggest = parseFloat(moneyFormatToNumber($('#suggestPPP').val())) || 0;
+	var amount = parseFloat(moneyFormatToNumber($('#documentAmount').val()) || 0) ;
+	var pp_discount = parseFloat(moneyFormatToNumber($('#discountPPP').val()) || 0 ) ;
+	var pp_suggest = parseFloat(moneyFormatToNumber($('#suggestPPP').val()) || 0) ;
 	var reference = $('#doc-reference').val() || '';
 	var concept = $('#doc-concept').val() || '';
 	var balance = $('#doc-balance').val() || 0;
@@ -633,9 +633,12 @@ function addChargeRow(charge){
 	@endif
 
 	
+	
 
 	$('#charge_type'+chargeNumber).val(charge.payment_type || '');
-	
+	//$('#charge_type'+chargeNumber).change();
+	//amountInput.change();
+	//console.log(chargeNumber);
 
 	var amountInput = $('#amount'+chargeNumber);
 
@@ -646,6 +649,7 @@ function addChargeRow(charge){
 		var nTotalCharge = parseFloat(moneyFormatToNumber(totalChargeInput.val()));
 		var nAmount = parseFloat(moneyFormatToNumber(amountInput.val()));
 		var previousAmount = 0;
+		console.log(nTotalCharge);
 		//Se obtiene el cobro correspondiente al input del arreglo de cobros.
 		var charge = getCharge(amountInput);
 
@@ -785,15 +789,21 @@ function addChargeRow(charge){
 	});
 
 
-	//amountInput.change();
-	//$('#charge_type'+chargeNumber).change();
-	//$('#reference'+chargeNumber).change();
+	amountInput.change();
+	$('#charge_type'+chargeNumber).change();
+	$('#reference'+chargeNumber).change();
+
 	if(charge.amount) {
+		//$('#charge_type'+chargeNumber).change();
+		//amountInput.change();
 		var totalChargeInput = $('#totalCharge');
-		var totalCharge = parseFloat(totalChargeInput.val()) || 0;
-
+		var totalCharge = parseFloat(moneyFormatToNumber(totalChargeInput.val()) || 0 ) ;
+		//console.log('Antes ' + chargeNumber + ' : ' + charge.amount);
+		//console.log('Antes ' + chargeNumber + ' : ' + totalCharge);
 		totalCharge = calculateTotal(totalCharge, charge.amount, 0);
-
+		//console.log('Despues ' + chargeNumber + ' : ' + charge.amount);
+		//console.log('Despues ' + chargeNumber + ' : ' + totalCharge);
+		//console.log(moneyFormatForNumbers(totalCharge));
 		totalChargeInput.val(moneyFormatForNumbers(totalCharge));
 
 		//totalChargeInput.change();
@@ -830,8 +840,8 @@ function getCharge(element){
 function calculateTotal(amount, actualAmount, previousAmount){
 	
 	amount = new Decimal(parseFloat(amount) || 0);
-	actualAmount = parseFloat(actualAmount) || 0;
-	previousAmount = parseFloat(previousAmount) || 0;
+	actualAmount = parseFloat(actualAmount || 0) ;
+	previousAmount = parseFloat(previousAmount || 0) ;
 
 	amount = amount.plus(actualAmount);
 	amount = amount.minus(previousAmount);
@@ -844,7 +854,7 @@ function calcTaxes(amountWithTaxes){
 	var taxes;
 	var IVA = 1.16;
 
-	amountWithTaxes = parseFloat(amountWithTaxes) || 0;
+	amountWithTaxes = parseFloat(amountWithTaxes || 0) ;
 	amountWithTaxes = new Decimal(amountWithTaxes);
 
 	amount = amountWithTaxes.div(IVA);
@@ -857,7 +867,7 @@ function calcTaxes(amountWithTaxes){
 }
 
 function moneyFormatter(value){
-	var valueFormatted = parseFloat(value) || 0;
+	var valueFormatted = parseFloat(value || 0) ;
 	return '$' + moneyFormatForNumbers(valueFormatted);
 	//return '$'+valueFormatted.toFixed(2);
 

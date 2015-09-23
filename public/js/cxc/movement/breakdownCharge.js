@@ -3,7 +3,7 @@ var previousProBalanceAmount = 0;
 
 proBalance.change(function(){
 
-	var nProBalance = parseFloat(moneyFormatToNumber(proBalance.val())) || 0;
+	var nProBalance = parseFloat(moneyFormatToNumber(proBalance.val()) || 0);
 	if(nProBalance < 0 || isNaN(nProBalance)){
 		proBalance.val(moneyFormatForNumbers(previousProBalanceAmount));
 		//proBalance.val(previousProBalanceAmount.toFixed(2));
@@ -11,7 +11,7 @@ proBalance.change(function(){
 	}
 
 	var totalCharge = $('#totalCharge');
-	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val())) || 0;
+	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val()) || 0);
 	var totalChargeAmount;
 	//console.log("proBalance: " + nProBalance);
 	//console.log("previousProBalance: " + previousProBalanceAmount);
@@ -24,7 +24,10 @@ proBalance.change(function(){
 
 	previousProBalanceAmount = nProBalance;
 	proBalance.val(moneyFormatForNumbers(nProBalance));
-	calculateChange();
+	if(!nChangeAmount){
+		calculateChange();
+	}
+	
 	//proBalance.focus();
 	//proBalance.blur();
 	//proBalance.val(nProBalance.toFixed(2));
@@ -59,7 +62,7 @@ change.change(function(){
 	nChange = parseFloat(nChange);
 
 	var totalChangeAllowed = $('#totalChangeAllowed');
-	var ntotalChangeAllowed = parseFloat(totalChangeAllowed.val()) || 0;
+	var ntotalChangeAllowed = parseFloat(totalChangeAllowed.val() || 0 );
 
 	if(nChange > ntotalChangeAllowed){
 		change.val('0.00')
@@ -69,7 +72,7 @@ change.change(function(){
 	}
 
 	var totalCharge = $('#totalCharge');
-	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val())) || 0;
+	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val()) || 0);
 	//console.log("Total Charge:" + nTotalCharge)
 	var totalChargeAmount;
 	totalChargeAmount = calculateTotal(nTotalCharge, -nChange, -previousChangeAmount);
@@ -95,7 +98,7 @@ change.blur(function(){
 
 $('#totalCharge').change(function(){
 	var totalCharge = $(this);
-	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val())) || 0;
+	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val()) || 0);
 	//console.log("HOla" + nTotalCharge);
 	calcTaxes(nTotalCharge);
 	calculateChargeDifference();
@@ -107,8 +110,8 @@ function calculateChargeDifference(){
 	var totalAmount = $('#totalAmount');
 	var totalCharge = $('#totalCharge');
 
-	var nTotalAmount = parseFloat(moneyFormatToNumber(totalAmount.val())) || 0;
-	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val())) || 0;
+	var nTotalAmount = parseFloat(moneyFormatToNumber(totalAmount.val()) || 0);
+	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val()) || 0);
 	var nDifference = new Decimal(nTotalAmount).minus(nTotalCharge).toNumber();
 
 	/*if(nDifference<0){
@@ -121,19 +124,19 @@ function calculateChargeDifference(){
 function calculateChange(){
 	var difference = $('#difference');
 	var change = $('#change');
-	var differenceVal = parseFloat(moneyFormatToNumber(difference.val())) || 0;
-	var changeVal = parseFloat(moneyFormatToNumber(change.val())) || 0;
+	var differenceVal = parseFloat(moneyFormatToNumber(difference.val()) || 0);
+	var changeVal = parseFloat(moneyFormatToNumber(change.val()) || 0);
 	//var totalChangeVal = calculateTotal(changeVal, changeVal, previousChangeAmount);
 	//console.log("TotalChangeVal "+ totalChangeVal);
 	var changeAmount = (-1)*(differenceVal)+changeVal;
 
 	var totalChangeAllowed = $('#totalChangeAllowed');
-	var ntotalChangeAllowed = parseFloat(moneyFormatToNumber(totalChangeAllowed.val())) || 0;
+	var ntotalChangeAllowed = parseFloat(moneyFormatToNumber(totalChangeAllowed.val()) || 0);
 	var totalAmount = $('#totalAmount');
 	var totalCharge = $('#totalCharge');
-	var nTotalAmount = parseFloat(moneyFormatToNumber(totalAmount.val())) || 0;
+	var nTotalAmount = parseFloat(moneyFormatToNumber(totalAmount.val()) || 0);
 	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val()));
-	var nProBalance = parseFloat(moneyFormatToNumber(proBalance.val())) || 0;
+	var nProBalance = parseFloat(moneyFormatToNumber(proBalance.val()) || 0);
 	//console.log("total charge " + nTotalCharge);
 	//console.log("change "+ changeAmount);
 	//console.log("allow " + ntotalChangeAllowed);
@@ -165,6 +168,7 @@ $('#totalChangeAllowed').change(function(){
 
 
 $(window).load(function(){
+	//console.log(nChangeAmount);
 	if(nChangeAmount){
 		change.val(nChangeAmount);
 	}else{
@@ -172,4 +176,6 @@ $(window).load(function(){
 	}
 	change.change();
 	proBalance.change();
+	//$('#totalCharge').change();
+	//$('#totalAmount').change();
 });
