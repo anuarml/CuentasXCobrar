@@ -330,7 +330,7 @@
 <script type="text/javascript" src="{{ asset('js/cxc/movement/breakdownCharge.js') }}"></script>
 <script type="text/javascript">
 	var mov = $('#Mov');
-	var concept = '{{$mov->concept}}';
+	var concept = '{!!$mov->concept!!}';
 
 	$(mov.prop('firstElementChild')).attr('hidden','true');
 	$($('#concept').prop('firstElementChild')).attr('hidden','true');
@@ -347,7 +347,7 @@
 				
 				conceptSelect.append('<option value="'+ conceptList[i].Concepto +'">'+ conceptList[i].Concepto +'</option>');
 			}
-
+			//console.log(concept);
 			conceptSelect.val(concept);
 		});
 	});
