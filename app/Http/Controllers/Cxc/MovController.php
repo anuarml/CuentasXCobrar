@@ -662,6 +662,12 @@ class MovController extends Controller {
 		        ->where('Empresa',\Auth::user()->getSelectedCompany())
 		        ->where('Cliente',$client)
 		        ->where('Usuario',$username)
+		        ->whereIn('CxcPendiente.Mov',function($query){
+			        	$query->select('Mov')
+			        			->from('MovTipo')
+			        			->where('ThoCxCPermiteCobroWeb','1')
+			        			->where('Modulo','CXC');
+			        })
 		        ->get();
 
 		    foreach ($applys as $apply) {
