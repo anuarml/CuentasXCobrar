@@ -134,11 +134,8 @@
 
 			return '<span class="'+icon+'" aria-hidden="true" style="'+style+'"></span>';
 		}
-		
-		$('#showTable').attr('data-height',$( window ).height() - 90 );
-
-		$('#showTable').bootstrapTable({}).on('load-success.bs.table', function (e, data) {
-            var charges = $('#showTable').bootstrapTable('getData');
+		function calculateCashed(){
+			var charges = $('#showTable').bootstrapTable('getData');
 			var nTotalCharged = 0;
 			var nAssignedCharged = 0;
 			var nUnassignedCharged = 0;
@@ -164,6 +161,41 @@
 				$('#assignedCharged').val(nAssignedCharged.toFixed(2));
 				$('#unassignedCharged').val(nUnassignedCharged.toFixed(2));
 			}
+		}
+		$('#showTable').attr('data-height',$( window ).height() - 90 );
+
+		$('#showTable').bootstrapTable({}).on('load-success.bs.table', function (e, data) {
+            calculateCashed();
+            /*var charges = $('#showTable').bootstrapTable('getData');
+			var nTotalCharged = 0;
+			var nAssignedCharged = 0;
+			var nUnassignedCharged = 0;
+
+			if(charges){
+
+				for(var i=0; i<charges.length; i++){
+
+					var charge = charges[i];
+					var chargeCashed = parseFloat(charge.cashed) || 0;
+
+					nTotalCharged += chargeCashed;
+
+					if(charge.assigned){
+						nAssignedCharged += chargeCashed;
+					}
+					else{
+						nUnassignedCharged += chargeCashed;
+					}
+				}
+
+				$('#totalCharged').val(nTotalCharged.toFixed(2));
+				$('#assignedCharged').val(nAssignedCharged.toFixed(2));
+				$('#unassignedCharged').val(nUnassignedCharged.toFixed(2));
+			}*/
+        });
+
+		$('#showTable').bootstrapTable({}).on('search.bs.table', function (e, data) {
+            calculateCashed();
         });
 
 		$(window).resize(function () {
