@@ -11,7 +11,8 @@
 
 	<!-- Fonts -->
 	<!--<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>-->
-	<link href="{{ asset('/css/bootstrap-table.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/bootstrap-table.css') }}" rel="stylesheet">
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -73,11 +74,11 @@
 								</div>
 							</div>
 							<div class="row">
-								<table id="showTable" data-toggle="table" data-url="{{ url($dataURL) }}" data-search="true" data-show-columns="true" data-show-refresh="true">
+								<table id="showTable" data-toggle="table" data-url="{{ url($dataURL) }}" data-search="true" data-show-columns="true" data-show-refresh="true" data-filter-control="true">
 									<thead>
 										<tr>
-											<th data-field="client" data-align="center" data-sortable="true">Cliente</th>
-										    <th data-field="mov" data-align="center" data-sortable="true">Mov</th>
+											<th data-field="client" data-align="center" data-sortable="true" data-filter-control="input">Cliente</th>
+										    <th data-field="mov" data-align="center" data-sortable="true" >Mov</th>
 										    <th data-field="movID" data-align="center" data-sortable="true">MovID</th>
 										    <th data-field="balance" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Saldo</th>
 										    <th data-field="cashed" data-align="center" data-sortable="true" data-formatter="moneyFormatterRed">Cobrado</th>
@@ -98,8 +99,9 @@
 	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
 	<script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-	<script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
-	<script src="{{ asset('js/bootstrap-table-es-MX.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-table.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-table-es-MX.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-table-filter-control.js') }}"></script>
 	<script src="{{ asset('js/app.js') }}"></script>
 	<script type="text/javascript">
 		function moneyFormatter(value){
