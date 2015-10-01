@@ -263,7 +263,7 @@ function generateText(){
 		}
 	}*/
 	var movMovID = '{{$mov->MovID}}';
-	console.log(movMovID);
+	//console.log(movMovID);
 	var TextOfTicket = putSpaces(1, fourteenSpaces + date + " " + hour);
 	TextOfTicket += putSpaces(1, fourteenSpaces + userCompany + " " + userOffice);
 	TextOfTicket += putSpaces(1, fourteenSpaces + "Cobro: " + movMovID);
@@ -280,7 +280,8 @@ function generateText(){
 	for(var i=0;i<nDocumentsLenght;i++){
 		var docName = aCxcD[i].apply;
 		var docConsecutive = aCxcD[i].apply_id;
-		var docAmount = aCxcD[i].amount;
+		var docAmount = moneyFormatForNumbers(aCxcD[i].amount);
+		console.log(docAmount);
 		TextOfTicket += putSpaces(1,docName);
 		TextOfTicket += putSpaces(2,docConsecutive);
 		TextOfTicket += putSpaces(2,"$" + docAmount + "  ","right");
