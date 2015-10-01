@@ -14,7 +14,7 @@ function moneyFormatToNumber(x){
 	
 	try{
 		if(!x) x='0';
-		return x.replace(',','');
+		return x.replace(/,/g,'');
 	}catch(ex){
 		console.log(ex.stack);
 	}

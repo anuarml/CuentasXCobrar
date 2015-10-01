@@ -110,10 +110,14 @@ function calculateChargeDifference(){
 	var totalAmount = $('#totalAmount');
 	var totalCharge = $('#totalCharge');
 
+	//console.log("TotalVal: " + totalAmount.val());
+	//console.log("Importe TotalVal: " + totalCharge.val());
 	var nTotalAmount = parseFloat(moneyFormatToNumber(totalAmount.val()) || 0);
 	var nTotalCharge = parseFloat(moneyFormatToNumber(totalCharge.val()) || 0);
+	//console.log("Total: " + nTotalAmount);
+	//console.log("Importe Total: " + nTotalCharge);
 	var nDifference = new Decimal(nTotalAmount).minus(nTotalCharge).toNumber();
-
+	//console.log("Por Cobrar: " + nDifference);
 	/*if(nDifference<0){
 		nDifference = 0;
 	}*/
