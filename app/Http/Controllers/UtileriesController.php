@@ -18,5 +18,5 @@ class UtileriesController extends Controller {
 
 	public function showCalculator(){
 		return view('utileries.calculator');
-	} 
+	}
 }
