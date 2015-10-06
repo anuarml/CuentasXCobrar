@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<body style="background: url(404-error-page.jpg) no-repeat center center fixed; 
+<body style="background: url({{url('404-error-page.jpg')}}) no-repeat center center fixed; 
   -webkit-background-size: 50%;
   -moz-background-size: 50%;
   -o-background-size: 50%;

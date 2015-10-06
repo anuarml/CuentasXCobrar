@@ -162,7 +162,7 @@ var toolbar = {
 		var success = false;
 
 		if(toolbar.movStatus && toolbar.movStatus != 'PENDIENTE' && toolbar.movStatus != 'CONCLUIDO'){
-			toolbar.showAlertModal('Solo se pueden guardar movimientos con estatus \'PENDIENTE\' o \'CONCLUIDO\'.');
+			toolbar.showAlertModal('Solo se pueden cancelar movimientos con estatus \'PENDIENTE\' o \'CONCLUIDO\'.');
 			return success;
 		}
 
@@ -175,7 +175,7 @@ var toolbar = {
 		var success = false;
 
 		if(toolbar.movStatus && toolbar.movStatus != 'SINAFECTAR'){
-			toolbar.showAlertModal('Solo se pueden guardar movimientos con estatus \'SINAFECTAR\'.');
+			toolbar.showAlertModal('Solo se pueden eliminar movimientos con estatus \'SINAFECTAR\'.');
 			return success;
 		}
 
