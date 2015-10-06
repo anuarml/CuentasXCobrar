@@ -558,7 +558,10 @@ function addChargeRow(charge){
 	var emptyPlace = aCharges.indexOf(null);
 	var chargeNumber;
 	
-	if(numberOfCharges > 5 ) return;
+	if(numberOfCharges > 5 ){
+		alert("Se ha capturado el maximo de formas de pago");
+		return;
+	} 
 
 	// No hay un espacio en null.
 	if(emptyPlace == -1) {
