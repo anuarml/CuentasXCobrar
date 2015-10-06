@@ -61,13 +61,13 @@ class DocumentController extends Controller {
 				$comparator = 'LIKE';
 				$search = "%$search%";
 
-				$query->where('MovID', $comparator, $search)
-					->orWhere('FechaEmision', $comparator, $search)
-					->orWhere('Vencimiento', $comparator, $search)
-					->orWhere('ImporteTotal', $comparator, $search)
-					->orWhere('Saldo', $comparator, $search)
-					->orWhere('Concepto', $comparator, $search)
-					->orWhere('DiasMoratorios', $comparator, $search);
+				$query->where('CxcPendiente.MovID', $comparator, $search)
+					->orWhere('CxcPendiente.FechaEmision', $comparator, $search)
+					->orWhere('CxcPendiente.Vencimiento', $comparator, $search)
+					->orWhere('CxcPendiente.ImporteTotal', $comparator, $search)
+					->orWhere('CxcPendiente.Saldo', $comparator, $search)
+					->orWhere('CxcPendiente.Concepto', $comparator, $search)
+					->orWhere('CxcPendiente.DiasMoratorios', $comparator, $search);
 			});
 		}
 
