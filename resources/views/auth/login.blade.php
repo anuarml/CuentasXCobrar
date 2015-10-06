@@ -70,6 +70,8 @@
 @endsection
 
 @section('scripts')
+
+@if($companies)
 <script type="text/javascript">
 	var companies = JSON.parse('{!! $companies->toJson() !!}');
 
@@ -101,4 +103,5 @@
 	};
 
 </script>
+@endif
 @endsection
