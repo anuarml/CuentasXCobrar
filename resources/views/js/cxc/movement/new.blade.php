@@ -811,8 +811,10 @@ function addChargeRow(charge){
 
 		//totalChargeInput.change();
 	}
-
+	
+	$('#amount'+chargeNumber).focus().select();
 	numberOfCharges++;
+	
 }
 
 function getChargeNumber(element){
