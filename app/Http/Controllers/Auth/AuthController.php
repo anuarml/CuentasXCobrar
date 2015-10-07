@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Auth;
 
 use App\Company;
+use App\Cxc;
 use App\User;
 use App\Http\Controllers\Controller;
 use App\Services\Login;
@@ -92,6 +93,7 @@ class AuthController extends Controller {
 
 		$user = User::where('Usuario', $request->get('username') )->first();
 		\Auth::login($user);
+		Cxc::removeSessionMovID();
 
 		// Documentos que puede cobrar el usuario.
 		if(!$user->fillUserWebAccess()){
