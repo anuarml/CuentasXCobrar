@@ -30,7 +30,7 @@
 	            </ul>
 	        </div>
 	        <!-- /#sidebar-wrapper -->
-	        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+	        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Presiona aqui</a>
 	    </div>
 
 	</body>
