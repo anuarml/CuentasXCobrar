@@ -38,14 +38,16 @@ class Handler extends ExceptionHandler {
 	public function render($request, Exception $e)
 	{
 		//dd($request);
-		/*if($e instanceof ModelNotFoundException  && $e->getModel() == "App\Cxc"){
+		if($e instanceof ModelNotFoundException){
 			$idPos = strrpos($request->getPathInfo(),"/");
 
 			$id = substr($request->getPathInfo(), $idPos+1);
 
-			dd("No existe el movimiento ".$id);
+			$errors = ['ModelNotFound' => 'No se encontró el '.trans('model.'.$e->getModel()).': '.$id];
+			//dd("No existe el movimiento ".$id);
+			return response()->view('errors.sql',compact('errors'));
 		}
-		else*/ if($e instanceof \PDOException){
+		else if($e instanceof \PDOException){
 
 			\Log::error($e->getMessage());
 
@@ -57,10 +59,8 @@ class Handler extends ExceptionHandler {
 			else{
 				$errors = ['sql' => $e->getMessage()];
 			}
-			
 
 			return response()->view('errors.sql',compact('errors'));
-				//->withErrors(['sql' => trans('sql.'.$e->getCode())]);
 		}
 		else{
 			return parent::render($request, $e);
