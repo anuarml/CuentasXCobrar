@@ -35,10 +35,12 @@ class ShipmentController extends Controller {
 
 		// Se obtiene el ID de la orden de cobro asignada al usuario.
 		$chargeOrderID = Shipment::getChargeOrdersID();
-		// Se obtienen los documentos asignados al usuario en la orden de cobro.
+		// Se obtienen los DOCUMENTOS asignados al usuario en la orden de cobro.
 		$assignedDocuments = ShipmentMov::getAsignedDocuments($chargeOrderID);
-		// Se obtienen los documentos que ha cobrado el usuario durante la ruta de cobro asignada.
+		// Se obtienen los DOCUMENTOS que ha cobrado el usuario durante la ruta de cobro asignada.
 		$chargedDocuments = Cxc::getChargedDocuments($chargeOrderID);
+		// Se obtienen los ANTICIPOS que ha cobrado el usuario durante la ruta de cobro asignada.
+		$chargedAdvances = Cxc::getChargedAdvances($chargeOrderID);
 
 
 		foreach ($assignedDocuments as &$assignedDocument) {
@@ -118,6 +120,20 @@ class ShipmentController extends Controller {
 			else{
 				$coincidence->first()->cashed += $unassignedChargedDocument->amount;
 			}
+		}
+
+		foreach ($chargedAdvances as $advance) {
+			$document = new \stdClass;
+
+			$document->balance = $advance->balance;
+			$document->client = $advance->client_id;
+			$document->assigned = 2;
+			$document->charged = true;
+			$document->cashed = $advance->total_amount;
+			$document->mov = $advance->Mov;
+			$document->movID = $advance->MovID;
+
+			$chargeOrderCompare->push($document);
 		}
 
 		//$chargeOrderCompare->sum('cashed');

@@ -732,10 +732,7 @@ class Cxc extends Model {
 
 		$chargedDocuments = collect([]);
 
-		$chargeMovs = self::where(function ($query) {
-						$query->where('Mov', self::getChargeName())
-							->orWhere('Mov', self::getAdvanceName());
-					})
+		$chargeMovs = self::where('Mov', self::getChargeName())
 					->where('Estatus','CONCLUIDO')
 					->whereIn('ThoAsignadoWeb',$chargeOrder)
 					->get();
@@ -750,6 +747,16 @@ class Cxc extends Model {
 		}
 
 		return $chargedDocuments;
+	}
+
+	public static function getChargedAdvances($chargeOrder){
+
+		$chargedAdvances = self::where('Mov', self::getAdvanceName())
+					->where('Estatus','PENDIENTE')
+					->whereIn('ThoAsignadoWeb',$chargeOrder)
+					->get();
+
+		return $chargedAdvances;
 	}
 
 	public function clearCharges(){
