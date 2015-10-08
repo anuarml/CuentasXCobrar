@@ -336,15 +336,22 @@ class MovController extends Controller {
 		// Se obtiene el movimiento solicitado
 		$mov = Cxc::with('details')->with('client')->findOrFail($movID);
 
+		$movCompany = $mov->company;
+		$movStatus = $mov->status;
+		$client = $mov->client;
+		
+
 		foreach($mov->details as &$movDetail) {
-			$movCompany = $mov->company;
+			
 			$apply = $movDetail->apply;
 			$apply_id = $movDetail->apply_id;
 
 			if($movCompany && $apply && $apply_id){
 
 				$movDetailOrigin = Cxc::where('Empresa', $movCompany)->where('Mov', $apply)->where('MovID',$apply_id)->first(['Mov','Concepto','Referencia','Saldo']);
-				$movDetailOrigin->pp_suggest = $movDetail->suggestPP();
+				if($movStatus == 'SINAFECTAR' && $client && $client->discount_surcharges){
+					$movDetailOrigin->pp_suggest = $movDetail->suggestPP();
+				}
 				$movDetail->origin = $movDetailOrigin;
 			}
 		}
@@ -360,10 +367,10 @@ class MovController extends Controller {
 
 		$clientBalance = '';
 		$clientDiscount = false;
-		if($mov->client){
+		if($client){
 			// Se obtiene el saldo del cliente.
-			$clientBalance = $mov->client->balance()->where('Empresa', $user->getSelectedCompany())->where('Moneda','Pesos')->get()->first();
-			$clientDiscount = $mov->client->discount_surcharges;
+			$clientBalance = $client->balance()->where('Empresa', $user->getSelectedCompany())->where('Moneda','Pesos')->get()->first();
+			$clientDiscount = $client->discount_surcharges;
 		}
 		$clientBalance = json_encode($clientBalance);
 		// Se obtienen las opciones de las listas desplegables.
@@ -371,7 +378,6 @@ class MovController extends Controller {
 		$currencyList = Mon::getCurrencyList();
 		$paymentTypeList = PaymentType::getPaymentTypeList();
 		$paymentTypeListChangeAllowed = PaymentType::getPaymentTypeChangeAllowed();
-		//if($mov->status =)
 		$totalChangeAllowedAmount = $mov->getChangeAllowed();
 		//dd($totalChangeAllowedAmount);
 		$movCharges = json_encode($mov->getCharges());
