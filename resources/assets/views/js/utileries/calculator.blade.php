@@ -8,7 +8,7 @@ var isPercentage = false;
 var equation;
 var firstbtnVal;
 var pressedBtn = false;
-var documentAmount; 
+var resultInput; 
 
 var input = document.querySelector('.screen');
 var docRow;
@@ -72,14 +72,18 @@ for(var i = 0; i < keys.length; i++) {
 				//var row = $()
 				//CxcD.amount = input.innerHTML;
 				//aCxcD[docRow].amount = ;
-				$('#documentAmount').val(parseFloat(input.innerHTML) || 0);
-				$('#documentAmount').change();
+				//$('#documentAmount').val(parseFloat(input.innerHTML) || 0);
+				//$('#documentAmount').change();
 				//console.log(aCxcD[docRow].amount);
 				//$('#document-'+docRow + ' .amount').html(input.innerHTML);// = input.innerHTML;
 				//console.log($('#document-'+docRow + ' .amount').html());
-				$('#calculatorModal').modal('toggle');
+				//$('#calculatorModal').modal('toggle');
 				//toolbar.saveMov('resultCalculator');
 				//window.location	= "{{ url('cxc/movimiento/mov/238#documentos') }}";
+
+				resultInput.val(parseFloat(input.innerHTML) || 0);
+				resultInput.change();
+				$('#calculatorModal').modal('toggle');
 			}
 				
 			decimalAdded = false;
@@ -179,8 +183,8 @@ function calculateResult(equation, isPercentage){
 	//console.log(operator);
 	//resultOfSplit = equation.split(/[\+\-\*\/]/);
 	resultOfSplit = equation.split(operator);
-	console.log(resultOfSplit[0]);
-	console.log(resultOfSplit[1]);
+	console.log('1stn: '+resultOfSplit[0]);
+	console.log('2ndn: '+resultOfSplit[1]);
 	firstNum = new Decimal(resultOfSplit[0]);
 	secondNum = new Decimal(resultOfSplit[1]);
 	console.log(firstNum);
