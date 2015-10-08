@@ -4,19 +4,33 @@ function numberWithCommas(x) {
 }
 
 function moneyFormatForNumbers(x){
-	x = x.toFixed(2)
+	if(typeof x != 'number'){
+		console.error('[app.js] moneyFormatForNumbers(): '+x+' is a '+typeof(x)+' not a number.');
+		return null;
+	}
+
+	x = x.toFixed(2);
 	x = numberWithCommas(x);
-	//console.log(x);
+
 	return x;
 }
 
 function moneyFormatToNumber(x){
 	
 	try{
-		if(!x) x='0';
-		return x.replace(/,/g,'');
+		if(typeof x == 'number'){
+			console.log('[app.js] moneyFormatToNumber(): Nothing to convert '+x+' is already a number.');
+			return x;
+		}
+
+		if(typeof x != 'string'){
+			console.error('[app.js] moneyFormatToNumber(): '+x+' is a '+typeof(x)+' not a string.');
+			return 0;
+		}
+
+		return parseFloat(x.replace(/,/g,'')) || 0;
 	}catch(ex){
-		console.log(ex.stack);
+		console.log(ex);
 	}
 	
 }
