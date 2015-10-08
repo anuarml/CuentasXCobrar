@@ -172,8 +172,11 @@ function addDocumentRow(cxcD, cxcDocument){
 		}
 	});
 
-	if( (movStatus == '' || movStatus == 'SINAFECTAR') && clientDiscount && cxcDocument.pp_suggest){
-		$('#documentsTable').bootstrapTable('showColumn','pp_suggest');
+	if( (movStatus == '' || movStatus == 'SINAFECTAR') && clientDiscount ){
+
+		if(cxcDocument.pp_suggest != 0){
+			$('#documentsTable').bootstrapTable('showColumn','pp_suggest');
+		}
 
 		if(cxcD.p_p_discount != 0){
 			$('#documentsTable').bootstrapTable('showColumn','pp_discount');
@@ -182,7 +185,7 @@ function addDocumentRow(cxcD, cxcDocument){
 	}
 
 	// Actualizar importe total
-	updateTotalAmount(0, cxcD.amount + cxcD.p_p_discount);
+	updateTotalAmount(0, 0, cxcD.amount, cxcD.p_p_discount);
 
 	return insertedDocumentPlace;
 }
@@ -193,7 +196,7 @@ var actionEvents = {
         var documentNum = row.id;
         // Actualizar importe total
 		if(aCxcD[documentNum])
-			updateTotalAmount(aCxcD[documentNum].amount + aCxcD[documentNum].p_p_discount , 0);
+			updateTotalAmount(aCxcD[documentNum].amount, aCxcD[documentNum].p_p_discount , 0, 0);
 
 		aCxcD[documentNum] = null;
 		aCxcDocs[documentNum] = null;
@@ -277,8 +280,10 @@ function addConsecutiveInput(element,value){
 }
 var previousDocumentAmount = 0;
 function addAmountInput(element,value){
-	if(typeof value == 'undefined')
-		value = '';
+	//console.log(value);
+	//if(typeof value == 'undefined')
+	//	value = '';
+	value = value || 0;
 	previousDocumentAmount = value;
 	element.append(
 		'<label for="documentAmount">Importe</label>'+
@@ -288,15 +293,17 @@ function addAmountInput(element,value){
 					'<span class="fa fa-calculator"></span>'+
 				'</button>'+
 			'</span>'+
-			'<input type="number" class="form-control input-sm" id="documentAmount" value="'+value+'">' +
+			'<input type="text" class="form-control input-sm" id="documentAmount" value="'+moneyFormatForNumbers(value)+'">' +
 		'</div>'
 	);
 
 	$("#btnCalculator").on("click", function(e){
-		documentAmount = document.getElementById("documentAmount");
-		input.innerHTML = documentAmount.value;
-
-		docRow = $('#rowid').val();
+		var amountInput = $("#documentAmount");
+		//Input field for calculator result.
+		resultInput = amountInput;
+		//Calculator param.
+		input.innerHTML = moneyFormatToNumber( amountInput.val() || 0 );
+		//docRow = $('#rowid').val();
 	});
 
 	$("#documentAmount").on("change", function(){
@@ -311,7 +318,7 @@ function addAmountInput(element,value){
 		//updateTotalAmount(previousAmount, actualAmount);
 
 		var rowid = $('#rowid').val();
-		var amount = parseFloat(moneyFormatToNumber($(this).val()) || 0);
+		var amount = moneyFormatToNumber($(this).val()) || 0;
 		var balance = 0;
 		var doc = aCxcDocs[rowid];
 
@@ -323,6 +330,7 @@ function addAmountInput(element,value){
 		//console.log(difference);
 		previousDocumentAmount = amount;
 		$('#doc-difference').val(moneyFormatForNumbers(difference));
+		$(this).val(moneyFormatForNumbers(amount));
 	});
 
 	$("#documentAmount").focus(function(){
@@ -337,16 +345,35 @@ function addAmountInput(element,value){
 }
 var previousDocumentDiscount = 0;
 function addDiscountInput(element,value){
-	if(typeof value == 'undefined')
-		value = '';
+	//if(typeof value == 'undefined')
+	//	value = '';
+	value = value || 0;
 	previousDocumentDiscount = value;
 	element.append(
 		'<label for="discountPPP">Descuento</label>'+
-		'<input type="number" class="form-control input-sm" id="discountPPP" value="'+value+'">'
+		'<div class="input-group">'+
+			'<span class="input-group-btn">'+
+				'<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#calculatorModal" id="btnCalcDiscount">'+
+					'<span class="fa fa-calculator"></span>'+
+				'</button>'+
+			'</span>'+
+			'<input type="text" class="form-control input-sm" id="discountPPP" value="'+moneyFormatForNumbers(value)+'">'+
+		'</div>'
 	);
 
+	$("#btnCalcDiscount").on("click", function(e){
+		var discountInput = $("#discountPPP");
+		//Input field for calculator result.
+		resultInput = discountInput;
+		//Calculator param.
+		input.innerHTML = moneyFormatToNumber( discountInput.val() || 0 );
+		//docRow = $('#rowid').val();
+	});
+
 	$("#discountPPP").change(function(){
-		previousDocumentDiscount = parseFloat(moneyFormatToNumber($(this).val()));
+		var discount = moneyFormatToNumber($(this).val());
+		previousDocumentDiscount = discount;
+		$(this).val(moneyFormatForNumbers(discount));
 	});
 
 	$("#discountPPP").focus(function(){
@@ -361,11 +388,24 @@ function addDiscountInput(element,value){
 }
 
 function addDifferenceInput(element, value){
+	value = value || 0;
 	informationInput =
 		'<label for="doc-difference" class="control-label">Diferencia</label>'+
 		'<div class="input-group">'+
 			'<div class="input-group-addon">$</div>'+
-			'<input type="text" id="doc-difference" class="form-control input-sm" readonly value="'+value+'">'+
+			'<input type="text" id="doc-difference" class="form-control input-sm" readonly value="'+moneyFormatForNumbers(value)+'">'+
+		'</div>';
+
+	element.append(informationInput);
+}
+
+function addSuggestInput(element, value){
+	value = value || 0;
+	informationInput =
+		'<label for="doc-difference" class="control-label">Sugerencia</label>'+
+		'<div class="input-group">'+
+			'<div class="input-group-addon">$</div>'+
+			'<input type="text" id="suggestPPP" class="form-control input-sm" readonly value="'+moneyFormatForNumbers(value)+'">'+
 		'</div>';
 
 	element.append(informationInput);
@@ -409,7 +449,8 @@ function showEditRowModal(row){
 	if( (movStatus == '' || movStatus == 'SINAFECTAR') && clientDiscount){
 	//if(row.pp_suggest){
 		addDiscountInput(confirmModalBody, row.pp_discount);
-		addInformationInput(confirmModalBody, 'Sugerencia', 'suggestPPP', row.pp_suggest);
+		addSuggestInput(confirmModalBody, row.pp_suggest);
+		//addInformationInput(confirmModalBody, 'Sugerencia', 'suggestPPP', row.pp_suggest);
 	}
 
 	addInformationInput(confirmModalBody, 'Concepto', 'doc-concept', row.concept);
@@ -433,9 +474,9 @@ function updateRowInfo(){
 	var rowid = $('#rowid').val();
 	var apply = $('#documentApply').val();
 	var apply_id = $('#consecutive').val();
-	var amount = parseFloat(moneyFormatToNumber($('#documentAmount').val()) || 0) ;
-	var pp_discount = parseFloat(moneyFormatToNumber($('#discountPPP').val()) || 0 ) ;
-	var pp_suggest = parseFloat(moneyFormatToNumber($('#suggestPPP').val()) || 0) ;
+	var amount = moneyFormatToNumber($('#documentAmount').val());
+	var pp_discount;
+	var pp_suggest;
 	var reference = $('#doc-reference').val() || '';
 	var concept = $('#doc-concept').val() || '';
 	var balance = $('#doc-balance').val() || 0;
@@ -445,6 +486,15 @@ function updateRowInfo(){
 
 	var tableData = $('#documentsTable').bootstrapTable('getData');
 	var row = null;
+
+	if( typeof($('#discountPPP').val()) == 'string' ){
+		pp_discount = moneyFormatToNumber($('#discountPPP').val());
+		pp_suggest = moneyFormatToNumber($('#suggestPPP').val());
+	}
+	else{
+		pp_discount = 0;
+		pp_suggest = 0;
+	}
 
 	if(!tableData || !(row = tableData[rowid]))
 		return;
@@ -496,7 +546,7 @@ function updateRowInfo(){
 	});
 
 	// Actualizar importe total
-	updateTotalAmount(previousAmount + previousDiscount, cxcD.amount + cxcD.p_p_discount);
+	updateTotalAmount(previousAmount, previousDiscount, cxcD.amount, cxcD.p_p_discount);
 }
 
 function getDocNumber(element){
@@ -528,19 +578,29 @@ function clearRowInfo(rowid){
 	$('#suggestPPP').val(0);
 }
 
-function updateTotalAmount(previousAmount, actualAmount){
+function updateTotalAmount(previousAmount, previousDiscount, actualAmount, actualDiscount){
+	console.log(previousAmount, previousDiscount, actualAmount, actualDiscount);
+
 	var totalChargeInput = $('#totalAmount');
-	var totalCharge = new Decimal(parseFloat(moneyFormatToNumber(totalChargeInput.val())) || 0);
+	var totalCharge = new Decimal( moneyFormatToNumber(totalChargeInput.val() || 0) );
+	
+	var previousTotalAmount;
+	var actualTotalAmount;
 
-	actualAmount = new Decimal(parseFloat(actualAmount) || 0);
+	previousAmount 	 = new Decimal(parseFloat(previousAmount)	|| 0);
+	previousDiscount = new Decimal(parseFloat(previousDiscount)	|| 0);
+	actualAmount 	 = new Decimal(parseFloat(actualAmount)		|| 0);
+	actualDiscount 	 = new Decimal(parseFloat(actualDiscount)	|| 0);
 
-	totalCharge = totalCharge.plus(actualAmount.minus(parseFloat(previousAmount) || 0));
+	previousTotalAmount = previousAmount.plus(previousDiscount);
+	actualTotalAmount = actualAmount.plus(actualDiscount);
+
+	totalCharge = totalCharge.plus(actualTotalAmount.minus(previousTotalAmount));
 
 	totalChargeInput.val(moneyFormatForNumbers(totalCharge.toNumber()));
 
 	totalChargeInput.change();
 }
-
 
 
 /*

@@ -107,7 +107,8 @@
 		function moneyFormatter(value){
 			var valueFormatted = parseFloat(value) || 0;
 
-			return '$'+valueFormatted.toFixed(2);
+			return '$' + moneyFormatForNumbers(valueFormatted);
+			//return '$'+valueFormatted.toFixed(2);
 		}
 		function moneyFormatterRed(value){
 			var valueFormatted = parseFloat(value) || 0;
@@ -115,7 +116,7 @@
 			if(value==0){
 				style = 'color:red';
 			}
-			return '<span style="'+style+'">$'+valueFormatted.toFixed(2)+'</span>';
+			return '<span style="'+style+'">$'+ moneyFormatForNumbers(valueFormatted) +'</span>';
 		}
 		function booleanFormatter(value){
 			var icon = '';
@@ -151,7 +152,7 @@
 
 					nTotalCharged += chargeCashed;
 
-					if(charge.assigned){
+					if(charge.assigned == 1){
 						nAssignedCharged += chargeCashed;
 					}
 					else{
@@ -159,9 +160,9 @@
 					}
 				}
 
-				$('#totalCharged').val(nTotalCharged.toFixed(2));
-				$('#assignedCharged').val(nAssignedCharged.toFixed(2));
-				$('#unassignedCharged').val(nUnassignedCharged.toFixed(2));
+				$('#totalCharged').val(moneyFormatForNumbers(nTotalCharged));
+				$('#assignedCharged').val(moneyFormatForNumbers(nAssignedCharged));
+				$('#unassignedCharged').val(moneyFormatForNumbers(nUnassignedCharged));
 			}
 		}
 		$('#showTable').attr('data-height',$( window ).height() - 90 );

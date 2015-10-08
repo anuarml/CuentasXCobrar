@@ -20,7 +20,7 @@ function CxcDocument(doc){
 
 	this.difference = function(amount){
 
-		if(!this.balance || !amount){
+		if(typeof(this.balance) == 'undefined'  || typeof(amount) == 'undefined'){
 			return '';
 		}
 
@@ -29,7 +29,7 @@ function CxcDocument(doc){
 		return difference;
 	};
 	this.diferencePercent = function(amount){
-		if(!this.balance || !amount){
+		if(typeof(this.balance) == 'undefined'  || typeof(amount) == 'undefined'){
 			return '';
 		}
 
