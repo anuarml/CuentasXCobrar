@@ -74,8 +74,8 @@
 							<a id="saveMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/save.png')}}">
 							</a>
-							<a id="cancelMov" style="display:inline-block" href="#">
-								<img height="30px" src="{{asset('img/cancel.png')}}">
+							<a id="deleteMov" style="display:inline-block" href="#">
+								<img height="30px" src="{{asset('img/delete.png')}}">
 							</a>
 							<a id="printMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/print.png')}}">
@@ -83,8 +83,8 @@
 							<a id="affectMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/affect.ico')}}">
 							</a>
-							<a id="deleteMov" style="display:inline-block" href="#">
-								<img height="30px" src="{{asset('img/delete.png')}}">
+							<a id="cancelMov" style="display:inline-block" href="#">
+								<img height="30px" src="{{asset('img/cancel.png')}}">
 							</a>
 							<a style="display:inline-block" href="{{ url('/auth/logout') }}">
 								<img height="30px" src="{{asset('img/logout.png')}}">
