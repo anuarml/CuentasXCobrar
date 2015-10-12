@@ -23,6 +23,8 @@ Route::get('/cxc/movimiento/abrir','Cxc\MovController@showMovementSearch');
 
 Route::get('/embarques','Shipment\ShipmentController@showShipmentDocuments');
 
+Route::get('/corteCaja','CorteCaja\CorteCajaController@showCorteCaja');
+
 Route::get('/cxc/movimiento/mov/{movID}/calculadora/{row}','UtileriesController@showCalculator');
 
 Route::controllers([

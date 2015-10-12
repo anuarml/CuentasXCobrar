@@ -27,6 +27,9 @@
 	                <li>
 	                    <a href="{{ url('embarques') }}">Embarques</a>
 	                </li>
+	                <li>
+	                    <a href="{{ url('corteCaja') }}">Cortes de Caja</a>
+	                </li>
 	            </ul>
 	        </div>
 	        <!-- /#sidebar-wrapper -->

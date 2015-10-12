@@ -1,4 +1,4 @@
-@extends('app')
+ @extends('app')
 
 @section('content')
 <div class="container-fluid">
@@ -48,11 +48,12 @@
 						</div>
 
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="office">Sucursal</label>
+							<label class="col-sm-4 control-label" for="officeName">Sucursal</label>
 							<div class="col-sm-6">
-	        					<select class="form-control" id="office" name="office" required>
+	        					<select class="form-control" id="officeName" name="officeName" disabled required>
 	        						<option hidden></option>
 	        					</select>
+	        					<input type="hidden" id="office" name="office" >
 	        				</div>
 						</div>
 
@@ -78,8 +79,8 @@
 	$('#company').change(updateOfficesList);
 
 	function updateOfficesList(){
-		$('#office option').remove();
-		$('#office').append('<option hidden></option>');
+		$('#officeName option').remove();
+		$('#officeName').append('<option hidden></option>');
 
 		for(var i=0;i<companies.length;i++){
 			if(companies[i].id == this.value){
@@ -88,17 +89,22 @@
 
 				for(var j=0;j<offices.length;j++){
 
-					$('#office').append('<option value='+ offices[j].id +'>'+ offices[j].name +'</option>');
+					$('#officeName').append('<option value='+ offices[j].id +'>'+ offices[j].name +'</option>');
 				}
 				
 			}
 		}
+		var defaultOffice = '{{config("cxc.cxc_default_office")}}';
+		console.log(defaultOffice);
+		$('#officeName').val(defaultOffice);
+		$('#office').val(defaultOffice);
 	}
 
 	var companyVal = $('#company').val('{{ old("company") }}');
 
 	if (companyVal) {
 		$('#company').change();
+		$('#officeName').val('{{ old("officeName") }}');
 		$('#office').val('{{ old("office") }}');
 	};
 
