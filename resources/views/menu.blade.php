@@ -5,7 +5,7 @@
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>Aplicacion Intelisis</title>
+		<title>Menú - Cobranza</title>
 
 		<link rel="icon" type="image/jpg" href="{{ asset('/img/intelisis.jpg') }}" />
 		<link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -18,7 +18,7 @@
 	            <ul class="sidebar-nav">
 	                <li class="sidebar-brand">
 	                    <a href="#">
-	                        Menu
+	                        Menú
 	                    </a>
 	                </li>
 	                <li>
@@ -28,12 +28,15 @@
 	                    <a href="{{ url('embarques') }}">Embarques</a>
 	                </li>
 	                <li>
-	                    <a href="{{ url('corteCaja') }}">Cortes de Caja</a>
+	                    <a href="{{ url('corteCaja') }}">Corte de Caja</a>
+	                </li>
+	                <li>
+	                    <a href="{{ url('/auth/logout') }}">Salir</a>
 	                </li>
 	            </ul>
 	        </div>
 	        <!-- /#sidebar-wrapper -->
-	        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Presiona aqui</a>
+	        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Presiona aquí</a>
 	    </div>
 
 	</body>
