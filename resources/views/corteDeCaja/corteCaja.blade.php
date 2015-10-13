@@ -92,7 +92,6 @@
 						<div class="panel-body">
 							@if (count($errors) > 0)
 								<div class="alert alert-danger">
-									Resuelve los siguientes problemas.<br><br>
 									<ul>
 										@foreach ($errors->all() as $error)
 											<li>{{ $error }}</li>
@@ -104,47 +103,62 @@
 								<a href="{{ url('/') }}" class="btn btn-primary btn-block" role="button">Regresar</a>
 							</div>
 							<br><br-->
-							<form role="form"> 
-							  <div class="form-group" style="text-align:center;">
-							    <label class="col-sm-4 control-label" for="saldoInicial">Saldo Inicial:</label>
-							    <div class="form-group col-sm-6">
-							    	<input type="text" class="form-control" id="saldoInicial" value="$164,558.98" readonly>
+							{!! Form::open() !!}
+							  
+							  <div class="form-group">
+							    <label class="col-sm-offset-1 col-sm-3 control-label" for="saldo">Saldo Inicial:</label>
+							    <div class="form-group col-sm-7">
+								    <div class='input-group'>
+										<span class='input-group-addon'>$</span>
+										<input type="text" class="form-control" id="saldo" name="saldo" value="" readonly>
+									</div>
+								</div>
+							  </div>
+
+							  <div class="form-group">
+							    <label class="col-sm-offset-1 col-sm-3 control-label" for="deposito">Depósito:</label>
+							    <div class="form-group col-sm-7">
+							    	<div class='input-group'>
+										<span class='input-group-addon'>$</span>
+										<input type="text" class="form-control" id="deposito" value="" tabindex="1" autofocus>
+									</div>
 							    </div>
 							  </div>
-							  <div class="form-group" style="text-align:center;">
-							    <label class="col-sm-4 control-label" for="deposito">Depósito:</label>
-							    <div class="form-group col-sm-6">
-							    	<input type="text" class="form-control" id="deposito" value="$100,000.00">
-							    </div>
-							  </div>
-							  <div class="form-group" style="text-align:center;">
-								<label class="col-sm-4 control-label" for="cuentaDestino">Cuenta destino</label>
-								<div class="form-group col-sm-6">
-		        					<select class="form-control" id="cuentaDestino" name="cuentaDestino">
+							  
+							  <div class="form-group">
+								<label class="col-sm-offset-1 col-sm-3 control-label" for="cuentaDestino">Cuenta destino</label>
+								<div class="form-group col-sm-7">
+		        					<select class="form-control" id="cuentaDestino" name="cuentaDestino" tabindex="2">
 		        						<option selected="true">BMEX5119</option>
 		        					</select>
 		        				</div>
 							  </div>
-							  <div class="form-group" style="text-align:center;">
-								<label class="col-sm-4 control-label" for="formaPago">Forma de Pago</label>
-								<div class="form-group col-sm-6">
-		        					<select class="form-control" id="formaPago" name="formaPago">
+							  
+							  <div class="form-group">
+								<label class="col-sm-offset-1 col-sm-3 control-label" for="formaPago">Forma de Pago</label>
+								<div class="form-group col-sm-7">
+		        					<!--select class="form-control" id="formaPago" name="formaPago" tabindex="3">
 		        						<option selected="true">Efectivo</option>
-		        					</select>
+		        					</select-->
+		        					{!! Form::select('paymentType', [], null, array('class'=>'form-control')) !!}
 		        				</div>
 							  </div>
-							  <div class="form-group" style="text-align:center;">
-							    <label class="col-sm-4 control-label" for="saldoInicial">Saldo Final:</label>
-							    <div class="form-group col-sm-6">
-							    	<input type="text" class="form-control" id="saldoInicial" value="$64,000.00" readonly>
+							  
+							  <div class="form-group">
+							    <label class="col-sm-offset-1 col-sm-3 control-label" for="saldoFinal">Saldo Final:</label>
+							    <div class="form-group col-sm-7">
+							    	<div class='input-group'>
+										<span class='input-group-addon'>$</span>
+										<input type="text" class="form-control" id="saldoFinal" name="saldoFinal" value="$64,000.00" readonly>
+									</div>
 							    </div>
 							  </div>
-							  <div class="form-group" style="text-align:center;">
-							  <!--div class="form-group col-sm-12">
+							  <!--<div class="form-group">
+							  <div class="form-group col-sm-12">
 							  	<button type="submit" class="btn btn-default" style="a:center;">Afectar?</button>
 							  	</div>
 							  </div-->
-							</form>
+							{!! Form::close() !!}
 						</div>
 					</div>
 				</div>
@@ -157,120 +171,13 @@
 	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
 	<script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-	<script src="{{ asset('js/bootstrap-table.js') }}"></script>
-	<script src="{{ asset('js/bootstrap-table-es-MX.js') }}"></script>
-	<script src="{{ asset('js/bootstrap-table-filter-control.js') }}"></script>
 	<script src="{{ asset('js/app.js') }}"></script>
 	<script type="text/javascript">
-		function moneyFormatter(value){
-			var valueFormatted = parseFloat(value) || 0;
+		var saldo = parseFloat('{{ $saldo }}') || 0;
 
-			return '$' + moneyFormatForNumbers(valueFormatted);
-			//return '$'+valueFormatted.toFixed(2);
-		}
-		function moneyFormatterRed(value){
-			var valueFormatted = parseFloat(value) || 0;
-			var style = '';
-			if(value==0){
-				style = 'color:red';
-			}
-			return '<span style="'+style+'">$'+ moneyFormatForNumbers(valueFormatted) +'</span>';
-		}
-		function booleanFormatter(value){
-			var icon = '';
-			var style = '';
-			
-			if(value == 1){
-				style = 'color:green';
-				icon = 'glyphicon glyphicon-ok';
-			}
-			else if(value == 2) {
-				style = 'color:black';
-				icon = 'glyphicon glyphicon-stop';
-			}
-			else {
-				style = 'color:red';
-				icon = 'glyphicon glyphicon-remove';
-			}
+		$('#saldo').val(moneyFormatForNumbers(saldo));
 
-			return '<span class="'+icon+'" aria-hidden="true" style="'+style+'"></span>';
-		}
-		function calculateCashed(){
-			var charges = $('#showTable').bootstrapTable('getData');
-			var nTotalCharged = 0;
-			var nAssignedCharged = 0;
-			var nUnassignedCharged = 0;
 
-			if(charges){
-
-				for(var i=0; i<charges.length; i++){
-
-					var charge = charges[i];
-					var chargeCashed = parseFloat(charge.cashed) || 0;
-
-					nTotalCharged += chargeCashed;
-
-					if(charge.assigned == 1){
-						nAssignedCharged += chargeCashed;
-					}
-					else{
-						nUnassignedCharged += chargeCashed;
-					}
-				}
-
-				$('#totalCharged').val(moneyFormatForNumbers(nTotalCharged));
-				$('#assignedCharged').val(moneyFormatForNumbers(nAssignedCharged));
-				$('#unassignedCharged').val(moneyFormatForNumbers(nUnassignedCharged));
-			}
-		}
-		$('#showTable').attr('data-height',$( window ).height() - 90 );
-
-		$('#showTable').bootstrapTable({}).on('load-success.bs.table', function (e, data) {
-            calculateCashed();
-            /*var charges = $('#showTable').bootstrapTable('getData');
-			var nTotalCharged = 0;
-			var nAssignedCharged = 0;
-			var nUnassignedCharged = 0;
-
-			if(charges){
-
-				for(var i=0; i<charges.length; i++){
-
-					var charge = charges[i];
-					var chargeCashed = parseFloat(charge.cashed) || 0;
-
-					nTotalCharged += chargeCashed;
-
-					if(charge.assigned){
-						nAssignedCharged += chargeCashed;
-					}
-					else{
-						nUnassignedCharged += chargeCashed;
-					}
-				}
-
-				$('#totalCharged').val(nTotalCharged.toFixed(2));
-				$('#assignedCharged').val(nAssignedCharged.toFixed(2));
-				$('#unassignedCharged').val(nUnassignedCharged.toFixed(2));
-			}*/
-        });
-
-		$('#showTable').bootstrapTable({}).on('search.bs.table', function (e, data) {
-            calculateCashed();
-        });
-
-		$(window).resize(function () {
-            var searchTable = $('#showTable');
-
-            var tableHeight = 400;
-	        if( $( window ).height()-80 > tableHeight){
-	        	tableHeight = $( window ).height();
-	        }
-
-	        //searchTable.attr('data-height',tableHeight);
-            searchTable.bootstrapTable('resetView',{'height':tableHeight});
-            //searchTable.bootstrapTable('resetWidth');
-        });
 	</script>
 
 </body>
