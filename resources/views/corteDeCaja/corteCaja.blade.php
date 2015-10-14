@@ -129,7 +129,7 @@
 								<label class="col-sm-offset-1 col-sm-3 control-label" for="cuentaDestino">Cuenta destino</label>
 								<div class="form-group col-sm-7">
 		        					<select class="form-control" id="cuentaDestino" name="cuentaDestino" tabindex="2">
-		        						<option selected="true">BMEX5119</option>
+		        						<option selected="true"></option>
 		        					</select>
 		        				</div>
 							  </div>
@@ -149,7 +149,7 @@
 							    <div class="form-group col-sm-7">
 							    	<div class='input-group'>
 										<span class='input-group-addon'>$</span>
-										<input type="text" class="form-control" id="saldoFinal" name="saldoFinal" value="$64,000.00" readonly>
+										<input type="text" class="form-control" id="saldoFinal" name="saldoFinal" value="" readonly>
 									</div>
 							    </div>
 							  </div>
@@ -177,7 +177,9 @@
 
 		$('#saldo').val(moneyFormatForNumbers(saldo));
 
+		paymentTypeList = JSON.parse('{!! $paymentTypeList !!}');
 
+		
 	</script>
 
 </body>
