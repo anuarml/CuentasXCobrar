@@ -110,37 +110,40 @@
 							    <div class="form-group col-sm-7">
 								    <div class='input-group'>
 										<span class='input-group-addon'>$</span>
-										<input type="text" class="form-control" id="saldo" name="saldo" value="" readonly>
+										<input type="text" class="form-control" id="saldo" name="saldo" value="" disabled>
 									</div>
 								</div>
 							  </div>
 
 							  <div class="form-group">
-							    <label class="col-sm-offset-1 col-sm-3 control-label" for="deposito">Depósito:</label>
+							    <label class="col-sm-offset-1 col-sm-3 control-label" for="Importe">Depósito:</label>
 							    <div class="form-group col-sm-7">
 							    	<div class='input-group'>
 										<span class='input-group-addon'>$</span>
-										<input type="text" class="form-control" id="deposito" value="" tabindex="1" autofocus>
+										<input type="text" class="form-control" id="Importe" value="" tabindex="1" autofocus>
 									</div>
 							    </div>
 							  </div>
 							  
 							  <div class="form-group">
-								<label class="col-sm-offset-1 col-sm-3 control-label" for="cuentaDestino">Cuenta destino</label>
+								<!--label class="col-sm-offset-1 col-sm-3 control-label" for="cuentaDestino">Cuenta destino</label-->
+								{!! Form::label('CtaDineroDestino', 'Cuenta Destino', array('class'=>'col-sm-offset-1 col-sm-3 control-label')) !!}
 								<div class="form-group col-sm-7">
-		        					<select class="form-control" id="cuentaDestino" name="cuentaDestino" tabindex="2">
+		        					<!--select class="form-control" id="cuentaDestino" name="cuentaDestino" tabindex="2">
 		        						<option selected="true"></option>
-		        					</select>
+		        					</select-->
+		        					{!! Form::select('CtaDineroDestino', [], null, array('class'=>'form-control','tabindex'=>'2')) !!}
 		        				</div>
 							  </div>
 							  
 							  <div class="form-group">
-								<label class="col-sm-offset-1 col-sm-3 control-label" for="formaPago">Forma de Pago</label>
+								<!--label class="col-sm-offset-1 col-sm-3 control-label" for="formaPago">Forma de Pago</label-->
+								{!! Form::label('FormaPago', 'Forma de Pago', array('class'=>'col-sm-offset-1 col-sm-3 control-label')) !!}
 								<div class="form-group col-sm-7">
 		        					<!--select class="form-control" id="formaPago" name="formaPago" tabindex="3">
 		        						<option selected="true">Efectivo</option>
 		        					</select-->
-		        					{!! Form::select('paymentType', [], null, array('class'=>'form-control')) !!}
+		        					{!! Form::select('FormaPago', [], null, array('class'=>'form-control','tabindex'=>'3')) !!}
 		        				</div>
 							  </div>
 							  
@@ -149,7 +152,7 @@
 							    <div class="form-group col-sm-7">
 							    	<div class='input-group'>
 										<span class='input-group-addon'>$</span>
-										<input type="text" class="form-control" id="saldoFinal" name="saldoFinal" value="" readonly>
+										<input type="text" class="form-control" id="saldoFinal" name="saldoFinal" value="" disabled>
 									</div>
 							    </div>
 							  </div>
@@ -177,8 +180,18 @@
 
 		$('#saldo').val(moneyFormatForNumbers(saldo));
 
-		paymentTypeList = JSON.parse('{!! $paymentTypeList !!}');
+		var paymentTypeList = JSON.parse('{!! $paymentTypeList !!}');
 
+		var options = '';
+
+		for(var i=1; i < paymentTypeList.length; i++){
+			var paymentType = paymentTypeList[i];
+			options += '<option value="'+paymentType.payment_type+'">'+paymentType.payment_type+'</option>';
+		}
+
+		$('#FormaPago').append(options);
+		//console.log(paymentTypeList);
+		//console.log(options);
 		
 	</script>
 

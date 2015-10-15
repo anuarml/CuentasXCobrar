@@ -42,4 +42,18 @@ class CtaDinero extends Model {
 		'Estatus',
 	];
 
+	public static function getDestinyAccountList(){
+
+		$destinyAccountList = [['destiny_Account'=> '']];
+
+		$destinyAccounts = self->get();
+
+		foreach ($destinyAccounts as $destinyAccount) {
+			$destinyAccountList[] = $destinyAccount;
+			
+		}
+
+		return json_encode($destinyAccountList);
+	}
+
 }

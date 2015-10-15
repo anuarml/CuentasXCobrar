@@ -3,6 +3,7 @@
 use App\CorteCaja\Dinero;
 use App\CorteCaja\DineroSaldo;
 use App\PaymentType;
+use App\CtaDinero;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -31,7 +32,8 @@ class CorteCajaController extends Controller {
 			$saldo = $dineroSaldo->Saldo;
 		}
 
-		$paymentTypeList = [];//PaymentType::Web()->select('FormaPago')->get()->toArray();
+		$paymentTypeList = PaymentType::getPaymentTypeList();//PaymentType::Web()->select('FormaPago')->get()->toArray();
+		$destinyAccountList = CtaDinero::getDestinyAccountList();
 
 		$din = new Dinero;
 
