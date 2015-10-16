@@ -135,12 +135,12 @@
 							  
 							  <div class="form-group">
 								<!--label class="col-sm-offset-1 col-sm-3 control-label" for="cuentaDestino">Cuenta destino</label-->
-								{!! Form::label('CtaDineroDestino', 'Cuenta Destino', array('class'=>'col-sm-offset-1 col-sm-3 control-label')) !!}
+								{!! Form::label('Cuenta', 'Cuenta Destino', array('class'=>'col-sm-offset-1 col-sm-3 control-label')) !!}
 								<div class="form-group col-sm-7">
 		        					<!--select class="form-control" id="cuentaDestino" name="cuentaDestino" tabindex="2">
 		        						<option selected="true"></option>
 		        					</select-->
-		        					{!! Form::select('CtaDineroDestino', [], null, array('class'=>'form-control','tabindex'=>'2')) !!}
+		        					{!! Form::select('Cuenta', [], null, array('class'=>'form-control','tabindex'=>'2')) !!}
 		        				</div>
 							  </div>
 							  
@@ -217,7 +217,7 @@
 		}
 
 		//console.log(destinyAccountOptions);
-		$('#CtaDineroDestino').append(destinyAccountOptions);
+		$('#Cuenta').append(destinyAccountOptions);
 		
 		//console.log(paymentTypeList);
 		//console.log(options);
