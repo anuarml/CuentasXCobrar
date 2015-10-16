@@ -122,11 +122,13 @@
 							  </div>
 
 							  <div class="form-group">
-							    <label class="col-sm-offset-1 col-sm-3 control-label" for="Importe">Depósito:</label>
+							    <!--label class="col-sm-offset-1 col-sm-3 control-label" for="Importe">Depósito</label-->
+							    {!! Form::label('Importe', 'Depósito', array('class'=>'col-sm-offset-1 col-sm-3 control-label')) !!}
 							    <div class="form-group col-sm-7">
 							    	<div class='input-group'>
 										<span class='input-group-addon'>$</span>
-										<input type="text" class="form-control" id="Importe" value="" tabindex="1" autofocus>
+										{!! Form::text('Importe', null, array('class'=>'form-control','tabindex'=>'1','autofocus'=>'true')) !!}
+										<!--input type="text" class="form-control" id="Importe" value="" tabindex="1" autofocus-->
 									</div>
 							    </div>
 							  </div>

@@ -78,6 +78,7 @@
 
 	$('#company').change(updateOfficesList);
 
+
 	function updateOfficesList(){
 		$('#officeName option').remove();
 		$('#officeName').append('<option hidden></option>');
@@ -104,7 +105,7 @@
 
 	if (companyVal) {
 		$('#company').change();
-		$('#officeName').val('{{ old("officeName") }}');
+		$('#officeName').val('{{ old("office") }}');
 		$('#office').val('{{ old("office") }}');
 	};
 
