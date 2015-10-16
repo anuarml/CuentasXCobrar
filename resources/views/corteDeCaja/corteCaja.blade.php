@@ -64,7 +64,7 @@
 							<a id="printMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/print.png')}}">
 							</a-->
-							<a id="affectMov" style="display:inline-block" href="#">
+							<a id="afectar" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/affect.ico')}}">
 							</a>
 							
@@ -103,7 +103,13 @@
 								<a href="{{ url('/') }}" class="btn btn-primary btn-block" role="button">Regresar</a>
 							</div>
 							<br><br-->
-							{!! Form::open() !!}
+							@if ( \Session::has('mensaje') )
+								<div class="alert alert-{{ \Session::get('mensaje')->tipo }} alert-dismissible">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									{!! \Session::get('mensaje')->mensaje !!}
+								</div>
+							@endif
+							{!! Form::model($din,['id'=>'CorteCajaForm']) !!}
 							  
 							  <div class="form-group">
 							    <label class="col-sm-offset-1 col-sm-3 control-label" for="saldo">Saldo Inicial:</label>
@@ -161,6 +167,7 @@
 							  	<button type="submit" class="btn btn-default" style="a:center;">Afectar?</button>
 							  	</div>
 							  </div-->
+							  {!! Form::hidden('ID',null,['id'=>'ID']) !!}
 							{!! Form::close() !!}
 						</div>
 					</div>
@@ -180,6 +187,12 @@
 
 		$('#saldo').val(moneyFormatForNumbers(saldo));
 
+<<<<<<< HEAD
+		$('#afectar').click(function(){
+
+			$('#CorteCajaForm').submit();
+		});
+=======
 		var paymentTypeList = JSON.parse('{!! $paymentTypeList !!}');
 
 		var paymentTypeOptions = '';
@@ -207,6 +220,7 @@
 		//console.log(paymentTypeList);
 		//console.log(options);
 		
+>>>>>>> develop
 	</script>
 
 </body>

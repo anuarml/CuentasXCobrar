@@ -42,6 +42,18 @@ class CtaDinero extends Model {
 		'Estatus',
 	];
 
+
+	const TIPO_CAJA = 'Caja';
+	const TIPO_BANCO = 'Banco';
+
+	/**
+     * Obtiene el modelo de la moneda asociada a la cuenta de dinero.
+     */
+    public function mon()
+    {
+        return $this->hasOne('App\Mon','Moneda','Moneda')->select(['TipoCambio']);
+    }
+
 	public static function getDestinyAccountList(){
 
 		$destinyAccountList = [];
@@ -58,5 +70,6 @@ class CtaDinero extends Model {
 		//dd($destinyAccounts);
 		return json_encode($destinyAccountList);
 	}
+
 
 }
