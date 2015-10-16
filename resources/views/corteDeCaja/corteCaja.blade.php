@@ -187,12 +187,12 @@
 
 		$('#saldo').val(moneyFormatForNumbers(saldo));
 
-<<<<<<< HEAD
+
 		$('#afectar').click(function(){
 
 			$('#CorteCajaForm').submit();
 		});
-=======
+
 		var paymentTypeList = JSON.parse('{!! $paymentTypeList !!}');
 
 		var paymentTypeOptions = '';
@@ -220,7 +220,7 @@
 		//console.log(paymentTypeList);
 		//console.log(options);
 		
->>>>>>> develop
+
 	</script>
 
 </body>
