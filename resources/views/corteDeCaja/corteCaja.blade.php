@@ -68,7 +68,7 @@
 								<img height="30px" src="{{asset('img/affect.ico')}}">
 							</a>
 							
-							<a id="affectMov" style="display:inline-block" href="#">
+							<a id="reporteCorteCaja" style="display:inline-block" href="{{ url('corteCaja/reporteCaja') }}">
 								<img height="30px" src="{{asset('img/reporteCorteCaja.ico')}}">
 							</a>
 							<!--a id="cancelMov" style="display:inline-block" href="#">
@@ -182,14 +182,28 @@
 
 		var paymentTypeList = JSON.parse('{!! $paymentTypeList !!}');
 
-		var options = '';
+		var paymentTypeOptions = '';
 
 		for(var i=1; i < paymentTypeList.length; i++){
 			var paymentType = paymentTypeList[i];
-			options += '<option value="'+paymentType.payment_type+'">'+paymentType.payment_type+'</option>';
+			paymentTypeOptions += '<option value="'+paymentType.payment_type+'">'+paymentType.payment_type+'</option>';
 		}
 
-		$('#FormaPago').append(options);
+		$('#FormaPago').append(paymentTypeOptions);
+
+		var destinyAccountList = JSON.parse('{!! $destinyAccountList !!}');
+		var destinyAccountOptions = '';
+
+		console.log(destinyAccountList);
+
+		for(var i=1; i < destinyAccountList.length; i++){
+			var destinyAccount = destinyAccountList[i];
+			destinyAccountOptions += '<option value="'+destinyAccount.CtaDinero+'">'+destinyAccount.CtaDinero+'</option>';
+		}
+
+		//console.log(destinyAccountOptions);
+		$('#CtaDineroDestino').append(destinyAccountOptions);
+		
 		//console.log(paymentTypeList);
 		//console.log(options);
 		
