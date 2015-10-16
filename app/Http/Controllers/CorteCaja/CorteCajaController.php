@@ -3,6 +3,7 @@
 use App\CorteCaja\Dinero;
 use App\CorteCaja\DineroSaldo;
 use App\PaymentType;
+use App\CorteCaja\CtaDinero;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -31,12 +32,22 @@ class CorteCajaController extends Controller {
 			$saldo = $dineroSaldo->Saldo;
 		}
 
-		$paymentTypeList = [];//PaymentType::Web()->select('FormaPago')->get()->toArray();
+		$paymentTypeList = PaymentType::getPaymentTypeList();//PaymentType::Web()->select('FormaPago')->get()->toArray();
+		$destinyAccountList = CtaDinero::getDestinyAccountList();
 
 		$din = new Dinero;
 
-		return view('corteDeCaja.corteCaja', compact('saldo','paymentTypeList'));
+		return view('corteDeCaja.corteCaja', compact('saldo','paymentTypeList','destinyAccountList'));
 	}
 
+	public function getMovimientosCaja(){
 
+	}
+
+	public static function showMovimientosCaja(){
+		
+		$dataURL = 'corteCaja/movimientosCaja';
+		
+		return view('corteDeCaja.buscarMovimientosCaja', compact('dataURL'));
+	}
 }
