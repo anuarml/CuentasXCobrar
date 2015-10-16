@@ -42,6 +42,7 @@ class CtaDinero extends Model {
 		'Estatus',
 	];
 
+
 	const TIPO_CAJA = 'Caja';
 	const TIPO_BANCO = 'Banco';
 
@@ -52,4 +53,23 @@ class CtaDinero extends Model {
     {
         return $this->hasOne('App\Mon','Moneda','Moneda')->select(['TipoCambio']);
     }
+
+	public static function getDestinyAccountList(){
+
+		$destinyAccountList = [];
+
+		$destinyAccounts = self::where(function($query){
+			$query->where('Tipo', 'Banco')
+					->orwhere('Tipo', 'Caja');
+			})->where('Estatus','ALTA')->get(['CtaDinero']);
+
+		foreach ($destinyAccounts as $destinyAccount) {
+			$destinyAccountList[] = $destinyAccount;
+			
+		}
+		//dd($destinyAccounts);
+		return json_encode($destinyAccountList);
+	}
+
+
 }

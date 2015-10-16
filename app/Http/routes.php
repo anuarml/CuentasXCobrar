@@ -24,7 +24,11 @@ Route::get('/cxc/movimiento/abrir','Cxc\MovController@showMovementSearch');
 Route::get('/embarques','Shipment\ShipmentController@showShipmentDocuments');
 
 Route::get('/corteCaja','CorteCaja\CorteCajaController@showCorteCaja');
+
 Route::post('/corteCaja','CorteCaja\CorteCajaController@postGuardar');
+
+Route::get('/corteCaja/reporteCaja','CorteCaja\CorteCajaController@showMovimientosCaja');
+
 
 Route::get('/cxc/movimiento/mov/{movID}/calculadora/{row}','UtileriesController@showCalculator');
 
@@ -35,6 +39,7 @@ Route::controllers([
 	'cxc/documento' => 'Cxc\DocumentController',
 	//'utileries' => 'UtileriesController',
 	'embarques' => 'Shipment\ShipmentController',
-	'corteCaja' => 'CorteCaja\CorteCajaController',
+	'corteCaja' => 'CorteCaja\CorteCajaController'
+
 ]);
 
