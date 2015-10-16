@@ -213,7 +213,7 @@
 
 		for(var i=1; i < destinyAccountList.length; i++){
 			var destinyAccount = destinyAccountList[i];
-			destinyAccountOptions += '<option value="'+destinyAccount.CtaDinero+'">'+destinyAccount.CtaDinero+'</option>';
+			destinyAccountOptions += '<option value="'+destinyAccount.Cuenta+'">'+destinyAccount.Cuenta+'</option>';
 		}
 
 		//console.log(destinyAccountOptions);
