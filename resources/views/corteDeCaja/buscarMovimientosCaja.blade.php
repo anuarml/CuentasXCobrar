@@ -41,22 +41,43 @@
 					<div class="panel panel-default" style="margin-bottom:0;">
 						<div class="panel-heading">Reporte Cuenta Dinero</div>
 						<div class="panel-body" style="padding-bottom:0">
-							@if (count($errors) > 0)
-								<div class="alert alert-danger">
-									Resuelve los siguientes problemas.<br><br>
-									<ul>
-										@foreach ($errors->all() as $error)
-											<li>{{ $error }}</li>
-										@endforeach
-									</ul>
-								</div>
-							@endif
-							<div class="col-xs-6 col-xs-offset-3">
-								<a href="{{ url('corteCaja') }}" class="btn btn-primary btn-block" role="button">Regresar</a>
-							</div>
-							<div class="clearfix"></div>
-
 							<div class="row">
+								@if (count($errors) > 0)
+									<div class="alert alert-danger">
+										Resuelve los siguientes problemas.<br><br>
+										<ul>
+											@foreach ($errors->all() as $error)
+												<li>{{ $error }}</li>
+											@endforeach
+										</ul>
+									</div>
+								@endif
+								<div class="col-xs-6 col-xs-offset-3">
+									<a href="{{ url('corteCaja') }}" class="btn btn-primary btn-block" role="button">Regresar</a>
+									<br>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-sm-12">
+									<div class="col-sm-5 col-md-4" style="margin-bottom:40px;">
+										<label class="col-xs-4 col-sm-3 col-md-2 control-label" for="saldo">Fecha Inicial: </label>
+										<div class="col-xs-8 col-sm-9 col-md-10">
+											<input type="date" class="form-control" name="FechaInicio" id="FechaInicio" style="border:1px solid #ccc; border-radius:6px;">
+										</div>
+									</div>
+									
+									<div class="col-sm-5 col-md-4" style="margin-bottom:40px;">
+										<label class="col-xs-4 col-sm-3 col-md-2 control-label" for="saldo">Fecha Final: </label>
+										<div class="col-xs-8 col-sm-9 col-md-10">
+											<input type="date" class="form-control" name="FechaFin" id="FechaFin" style="border:1px solid #ccc; border-radius:6px;">
+										</div>
+									</div>
+
+									<div class="col-xs-2 col-xs-offset-5 col-sm-2 col-sm-offset-0 col-md-4" style="margin-top:2px;">
+										<button class="btn btn-default" id="filtrarFechas">Filtrar</button>
+									</div>
+								</div>
+
+								<div class="clearfix"></div>
 								<table id="searchTable" data-toggle="table" 
 								data-url="{{ url($dataURL) }}" 
 								data-search="true" 
@@ -100,6 +121,10 @@
 	<script type="text/javascript">
 		
 
+		$('#filtrarFechas').click(function(){
+				$('#searchTable').bootstrapTable('refresh', {query: {foo: 'bar'}});
+		});
+		
 		function moneyFormatter(value){
 			var valueFormatted = parseFloat(value) || 0;
 
