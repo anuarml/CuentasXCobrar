@@ -6,6 +6,7 @@ use App\PaymentType;
 use App\CorteCaja\CtaDinero;
 use App\CorteCaja\ListaD;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CorteCajaController extends Controller {
@@ -23,7 +24,6 @@ class CorteCajaController extends Controller {
 
 		$currency = config('cxc.default_currency');
 
-
 		// Se obtiene el saldo de la caja del usuario.
 		$dineroSaldo = DineroSaldo::getDineroSaldo($company, $currency, $moneyAccount)
 							->get([DineroSaldo::COLUMN_NAME_SALDO])
@@ -33,23 +33,31 @@ class CorteCajaController extends Controller {
 			$saldo = $dineroSaldo->Saldo;
 		}
 
-		$paymentTypeList = PaymentType::getPaymentTypeList();//PaymentType::Web()->select('FormaPago')->get()->toArray();
+		//$paymentTypeList = PaymentType::getPaymentTypeList();
+		$paymentTypeList = PaymentType::getPaymentTypeSelect();
 		//$destinyAccountList = CtaDinero::getDestinyAccountList();
 		$destinyAccountList = ListaD::getDestinyAccountList();
-		$din = new Dinero;
-
-
 		
-		return view('corteDeCaja.corteCaja', compact('din','saldo','paymentTypeList','destinyAccountList'));
+		$dinID = \Session::get('DineroID');
+		$din = Dinero::findOrNew($dinID,Dinero::$COLUMN_NAMES);
+
+		$din->obtenerReporteCaja();
+
+		$saldoInicial = 0;
+		if($din->Importe){
+			$saldoInicial = $saldo + $din->Importe;
+		}
+		
+		return view('corteDeCaja.corteCaja', compact('din','saldo','paymentTypeList','destinyAccountList','saldoInicial'));
 	}
 
 	public function postGuardar(){
 
 		$dineroID = \Input::get('ID');
 		
-		$dinero = Dinero::findOrNew($dineroID);
+		$dinero = Dinero::findOrNew($dineroID, Dinero::$COLUMN_NAMES);
 
-		if($dinero->status && $dinero->status != 'SINAFECTAR'){
+		if($dinero->Estatus && $dinero->Estatus != 'SINAFECTAR'){
 			return redirect()->back()->withInput()->withErrors([
 				'Status'=>'Solo puedes guardar movimientos con estatus \'SINAFECTAR\'.',
 			]);
@@ -91,7 +99,7 @@ class CorteCajaController extends Controller {
 		$dinero->fill($dineroInput);
 
 		$user = \Auth::user();
-		$nowDate = Carbon::now()->format('d/m/Y');
+		$nowDate = Carbon::now()->format('Y-d-m H:i:s');
 
 		$dinero->Empresa 			= $user->getSelectedCompany();
 		$dinero->Mov 				= $dinero->tipo_movimiento;		// Depende de la cuenta destino(CtaDineroDestino)
@@ -113,44 +121,37 @@ class CorteCajaController extends Controller {
 		$dinero->Prioridad 			= 'Normal';
 		$dinero->TasaDias 			= 360;
 
+		if(!$dinero->ID) $dinero->FechaRegistro = $nowDate;
+
 		$dinero->save();
 
 
-		$action = \Input::get('action');
+		$action = \Input::get('Accion');
 
 		switch ($action) {
 			case 'afectar':
-				afectar($dinero->ID);
-				//return redirect('corteCaja/afectar');
+				$resultado = $dinero->afectar($user->username);
+				$dinero = Dinero::findOrFail($dinero->ID, Dinero::$COLUMN_NAMES);
+				$mensaje   = $dinero->crearMensaje($resultado);
+
+				return redirect('corteCaja')
+					->withMensaje($mensaje)
+					->with('DineroID', $dinero->ID);
 				break;	 
 			default:
 				$message = new \stdClass();
 				$message->type = 'INFO';
 				$message->description = 'Movimiento guardado.';
-				$message->code = $cxc->ID;
+				$message->code = $dinero->ID;
 				$message->reference = '';
+
+				$mensaje   = $dinero->crearMensaje($resultado);
+
 				return redirect('corteCaja')
-						->withMessage($message);
+						->withMensaje($mensaje)
+						->with('DineroID', $dinero->ID);
 				break;
 		}
-	}
-
-	public function getAfectar($ID){
-
-		//$ID = \Input::get('ID');
-
-		$user = \Auth::user();
-
-		//$din = Dinero::findOrFail($ID);
-		$din = Dinero::findOrNew($ID, Dinero::$COLUMN_NAMES);
-
-		$resultado = $din->afectar($user->username);
-		$mensaje = $din->crearMensaje($resultado);
-
-		return redirect('corteCaja')
-				->withMensaje($mensaje)
-				->with('DineroID',$ID);
-
 	}
 
 	public function getMovimientosCaja(){
@@ -159,7 +160,7 @@ class CorteCajaController extends Controller {
 
 	public static function showMovimientosCaja(){
 		
-		$dataURL = 'corteCaja/movimientosCaja';
+		$dataURL = 'corteCaja/movimientos-caja';
 		
 		return view('corteDeCaja.buscarMovimientosCaja', compact('dataURL'));
 	}

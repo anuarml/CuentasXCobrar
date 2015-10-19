@@ -40,7 +40,7 @@
 				</button>
 				
 				<canvas id="pruebaImagen" hidden></canvas>
-				<a class="navbar-brand" href="http://www.assis.mx/">Assis</a>
+				<a class="navbar-brand">Assis</a>
 				<a class="navbar-brand" href="{{ url('/') }}">Cobranza</a>
 			</div>
 
@@ -64,9 +64,11 @@
 							<a id="printMov" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/print.png')}}">
 							</a-->
+							@if (!$din->Estatus || $din->Estatus=='SINAFECTAR')
 							<a id="afectar" style="display:inline-block" href="#">
 								<img height="30px" src="{{asset('img/affect.ico')}}">
 							</a>
+							@endif
 							
 							<a id="reporteCorteCaja" style="display:inline-block" href="{{ url('corteCaja/reporteCaja') }}">
 								<img height="30px" src="{{asset('img/reporteCorteCaja.ico')}}">
@@ -90,6 +92,7 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">Corte de caja</div>
 						<div class="panel-body">
+							<div class="row">
 							@if (count($errors) > 0)
 								<div class="alert alert-danger">
 									<ul>
@@ -99,10 +102,7 @@
 									</ul>
 								</div>
 							@endif
-							<!--<div class="col-xs-6 col-xs-offset-3">
-								<a href="{{ url('/') }}" class="btn btn-primary btn-block" role="button">Regresar</a>
-							</div>
-							<br><br-->
+
 							@if ( \Session::has('mensaje') )
 								<div class="alert alert-{{ \Session::get('mensaje')->tipo }} alert-dismissible">
 									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -112,7 +112,7 @@
 							{!! Form::model($din,['id'=>'CorteCajaForm']) !!}
 							  
 							  <div class="form-group">
-							    <label class="col-sm-offset-1 col-sm-3 control-label" for="saldo">Saldo Inicial:</label>
+							    <label class="col-sm-offset-1 col-sm-3 control-label" for="saldo">Saldo Inicial</label>
 							    <div class="form-group col-sm-7">
 								    <div class='input-group'>
 										<span class='input-group-addon'>$</span>
@@ -122,41 +122,43 @@
 							  </div>
 
 							  <div class="form-group">
-							    <!--label class="col-sm-offset-1 col-sm-3 control-label" for="Importe">Depósito</label-->
 							    {!! Form::label('Importe', 'Depósito', array('class'=>'col-sm-offset-1 col-sm-3 control-label')) !!}
 							    <div class="form-group col-sm-7">
 							    	<div class='input-group'>
 										<span class='input-group-addon'>$</span>
-										{!! Form::text('Importe', null, array('class'=>'form-control','tabindex'=>'1','autofocus'=>'true')) !!}
-										<!--input type="text" class="form-control" id="Importe" value="" tabindex="1" autofocus-->
+										@if (!$din->Estatus || $din->Estatus=='SINAFECTAR')
+											{!! Form::text('Importe', null, array('class'=>'form-control','tabindex'=>'1','autofocus'=>'true')) !!}
+										@else
+											{!! Form::text('Importe', null, array('class'=>'form-control','tabindex'=>'1','autofocus'=>'true','disabled'=>'true')) !!}
+										@endif
 									</div>
 							    </div>
 							  </div>
 							  
 							  <div class="form-group">
-								<!--label class="col-sm-offset-1 col-sm-3 control-label" for="cuentaDestino">Cuenta destino</label-->
-								{!! Form::label('Cuenta', 'Cuenta Destino', array('class'=>'col-sm-offset-1 col-sm-3 control-label')) !!}
+								{!! Form::label('CtaDineroDestino', 'Cuenta Destino', array('class'=>'col-sm-offset-1 col-sm-3 control-label')) !!}
 								<div class="form-group col-sm-7">
-		        					<!--select class="form-control" id="cuentaDestino" name="cuentaDestino" tabindex="2">
-		        						<option selected="true"></option>
-		        					</select-->
-		        					{!! Form::select('Cuenta', [], null, array('class'=>'form-control','tabindex'=>'2')) !!}
+									@if (!$din->Estatus || $din->Estatus=='SINAFECTAR')
+		        						{!! Form::select('CtaDineroDestino', $destinyAccountList, null, array('class'=>'form-control','tabindex'=>'2')) !!}
+		        					@else
+		        						{!! Form::select('CtaDineroDestino', $destinyAccountList, null, array('class'=>'form-control','tabindex'=>'2','disabled'=>'true')) !!}
+									@endif
 		        				</div>
 							  </div>
 							  
 							  <div class="form-group">
-								<!--label class="col-sm-offset-1 col-sm-3 control-label" for="formaPago">Forma de Pago</label-->
 								{!! Form::label('FormaPago', 'Forma de Pago', array('class'=>'col-sm-offset-1 col-sm-3 control-label')) !!}
 								<div class="form-group col-sm-7">
-		        					<!--select class="form-control" id="formaPago" name="formaPago" tabindex="3">
-		        						<option selected="true">Efectivo</option>
-		        					</select-->
-		        					{!! Form::select('FormaPago', [], null, array('class'=>'form-control','tabindex'=>'3')) !!}
+									@if (!$din->Estatus || $din->Estatus=='SINAFECTAR')
+		        						{!! Form::select('FormaPago', $paymentTypeList, null, array('class'=>'form-control','tabindex'=>'3')) !!}
+		        					@else
+		        						{!! Form::select('FormaPago', $paymentTypeList, null, array('class'=>'form-control','tabindex'=>'3','disabled'=>'true')) !!}
+									@endif
 		        				</div>
 							  </div>
-							  
+							  @if($din->Estatus && $din->Estatus=='CONCLUIDO')
 							  <div class="form-group">
-							    <label class="col-sm-offset-1 col-sm-3 control-label" for="saldoFinal">Saldo Final:</label>
+							    <label class="col-sm-offset-1 col-sm-3 control-label" for="saldoFinal">Saldo Final</label>
 							    <div class="form-group col-sm-7">
 							    	<div class='input-group'>
 										<span class='input-group-addon'>$</span>
@@ -164,13 +166,11 @@
 									</div>
 							    </div>
 							  </div>
-							  <!--<div class="form-group">
-							  <div class="form-group col-sm-12">
-							  	<button type="submit" class="btn btn-default" style="a:center;">Afectar?</button>
-							  	</div>
-							  </div-->
+							  @endif
 							  {!! Form::hidden('ID',null,['id'=>'ID']) !!}
+							  {!! Form::hidden('Accion',null,['id'=>'Accion']) !!}
 							{!! Form::close() !!}
+							</div>
 						</div>
 					</div>
 				</div>
@@ -179,51 +179,54 @@
 	</div>
 
 	<!-- Scripts -->
-	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
-	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
 	<script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/app.js') }}"></script>
 	<script type="text/javascript">
 		var saldo = parseFloat('{{ $saldo }}') || 0;
 
-		$('#saldo').val(moneyFormatForNumbers(saldo));
-
+		@if($din->Estatus && $din->Estatus=='CONCLUIDO')
+			var saldoInicial = parseFloat('{{ $saldoInicial }}') || 0;
+			$('#saldo').val(moneyFormatForNumbers(saldoInicial));
+			$('#saldoFinal').val(moneyFormatForNumbers(saldo));
+		@else
+			$('#saldo').val(moneyFormatForNumbers(saldo));
+		@endif
 
 		$('#afectar').click(function(){
 
+			$('#Accion').val('afectar');
 			$('#CorteCajaForm').submit();
 		});
 
-		var paymentTypeList = JSON.parse('{!! $paymentTypeList !!}');
+		/*var paymentTypeList = JSON.parse('{--!! $paymentTypeList !!--}');
 
 		var paymentTypeOptions = '';
 
-		for(var i=1; i < paymentTypeList.length; i++){
+		for(var i=0; i < paymentTypeList.length; i++){
 			var paymentType = paymentTypeList[i];
 			paymentTypeOptions += '<option value="'+paymentType.payment_type+'">'+paymentType.payment_type+'</option>';
 		}
 
-		$('#FormaPago').append(paymentTypeOptions);
+		$('#FormaPago').append(paymentTypeOptions);*/
 
-		var destinyAccountList = JSON.parse('{!! $destinyAccountList !!}');
+		/*var destinyAccountList = JSON.parse('{--!! $destinyAccountList !!--}');
 		var destinyAccountOptions = '';
 
-		console.log(destinyAccountList);
+		//console.log(destinyAccountList);
 
-		for(var i=1; i < destinyAccountList.length; i++){
+		for(var i=0; i < destinyAccountList.length; i++){
 			var destinyAccount = destinyAccountList[i];
 			destinyAccountOptions += '<option value="'+destinyAccount.Cuenta+'">'+destinyAccount.Cuenta+'</option>';
 		}
 
 		//console.log(destinyAccountOptions);
-		$('#Cuenta').append(destinyAccountOptions);
-		
+		$('#CtaDineroDestino').append(destinyAccountOptions);
+		*/
 		//console.log(paymentTypeList);
 		//console.log(options);
 		
 
 	</script>
-
 </body>
 </html> 

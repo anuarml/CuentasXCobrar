@@ -56,7 +56,7 @@
 				</button>
 				
 				<canvas id="pruebaImagen" hidden></canvas>
-				<a class="navbar-brand" href="http://www.assis.mx/">Assis</a>
+				<a class="navbar-brand" >Assis</a>
 				<a class="navbar-brand" href="{{ url('/') }}">Cobranza</a>
 			</div>
 

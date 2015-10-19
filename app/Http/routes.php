@@ -24,8 +24,9 @@ Route::get('/cxc/movimiento/abrir','Cxc\MovController@showMovementSearch');
 Route::get('/embarques','Shipment\ShipmentController@showShipmentDocuments');
 
 Route::get('/corteCaja','CorteCaja\CorteCajaController@showCorteCaja');
-
 Route::post('/corteCaja','CorteCaja\CorteCajaController@postGuardar');
+
+//Route::post('/corteCaja/afectar/{ID}','CorteCaja\CorteCajaController@postAfectar');
 
 Route::get('/corteCaja/reporteCaja','CorteCaja\CorteCajaController@showMovimientosCaja');
 
