@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use App\EmpresaConcepto;
+use Carbon\Carbon;
 
 class Dinero extends Model {
 
@@ -342,26 +343,46 @@ class Dinero extends Model {
         return $mensaje;
     }
 
-    public static function obtenerReporteCaja(){
+    public static function obtenerReporteCaja($empresa, $moneda, $caja, $fechaInicio, $fechaFinal){
         $modulo = self::MODULO_TESORERIA;
-        $empresa = 'ASSIS';//$this->Empresa;
-        $moneda = config('cxc.default_currency');
-        $caja = 'CJAGE01';
-        $fechaInicio = '01/10/2015';
-        $fechaFinal = '31/10/2015';
         $nivel = 'Movimiento';
         $vista = 'Normal';
         $grupo = 0;
         $totalizar = 1;
         $gpo = '';
 
+        if(!$fechaInicio){
+            $fechaInicio = new Carbon('1970-01-01');
+        }
+        else{
+            try{
+                $fechaInicio = new Carbon($fechaInicio);
+            }
+            catch(Exception $e){
+                $fechaInicio = new Carbon('1970-01-01');
+                Log::error( $e->getMessage ."\n". $e->getTraceAsString() );
+            }
+        }
+
+        if(!$fechaFinal){
+            $fechaFinal = new Carbon();
+        }
+        else{
+            try{
+                $fechaFinal = new Carbon($fechaFinal);
+            }
+            catch(Exception $e){
+                $fechaFinal = new Carbon();
+                Log::error( $e->getMessage ."\n". $e->getTraceAsString() );
+            }
+        }
+
+        $fechaInicio = $fechaInicio->format('Y-d-m H:i:s');
+        $fechaFinal = $fechaFinal->format('Y-d-m H:i:s');
+
+
         $result = [];
 
-        /* 
-         * Cambia el modo de obtener el resultado, debido a que el sp devuelve columnas sin nomnbres. 
-         * Se obtiene un array con el número de columna como índices.
-         */
-        //\DB::connection()->setFetchMode(\PDO::FETCH_NUM);
 
         $consulta = "SET NOCOUNT ON; EXEC spVerAuxiliar ?, @@SPID, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
         $parametros = [
@@ -378,10 +399,8 @@ class Dinero extends Model {
             $totalizar
         ];
 
-        // Ejecuta el spAfectar y obtiene el resultado.
+        // Ejecuta el spVerAuxiliar y obtiene el resultado.
         $result = \DB::select( $consulta, $parametros);
-
-        //\DB::connection()->setFetchMode(\PDO::FETCH_CLASS);
 
         return $result;
     }

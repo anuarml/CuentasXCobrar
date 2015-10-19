@@ -39,7 +39,7 @@
 			<div class="col-sm-10 col-sm-offset-1">
 				<div class="row">
 					<div class="panel panel-default" style="margin-bottom:0;">
-						<div class="panel-heading">Reporte Cuenta Dinero</div>
+						<div class="panel-heading">Reporte Cuenta Dinero ({{ $cuenta }})</div>
 						<div class="panel-body" style="padding-bottom:0">
 							<div class="row">
 								@if (count($errors) > 0)
@@ -58,31 +58,43 @@
 								</div>
 								<div class="clearfix"></div>
 								<div class="col-sm-12">
-									<div class="col-sm-5 col-md-4" style="margin-bottom:40px;">
-										<label class="col-xs-4 col-sm-3 col-md-2 control-label" for="saldo">Fecha Inicial: </label>
-										<div class="col-xs-8 col-sm-9 col-md-10">
-											<input type="date" class="form-control" name="FechaInicio" id="FechaInicio" style="border:1px solid #ccc; border-radius:6px;">
-										</div>
-									</div>
-									
-									<div class="col-sm-5 col-md-4" style="margin-bottom:40px;">
-										<label class="col-xs-4 col-sm-3 col-md-2 control-label" for="saldo">Fecha Final: </label>
-										<div class="col-xs-8 col-sm-9 col-md-10">
-											<input type="date" class="form-control" name="FechaFin" id="FechaFin" style="border:1px solid #ccc; border-radius:6px;">
-										</div>
-									</div>
+									<form class="form-horizontal">
+										<div class="row">
 
-									<div class="col-xs-2 col-xs-offset-5 col-sm-2 col-sm-offset-0 col-md-4" style="margin-top:2px;">
-										<button class="btn btn-default" id="filtrarFechas">Filtrar</button>
-									</div>
+											<div class="col-xs-6 col-sm-6 col-md-6" >
+												<div class="form-group">
+													<label class="col-xs-4 col-sm-3 col-md-4 control-label" for="saldo">Fecha Inicial: </label>
+													<div class="col-xs-8 col-sm-9 col-md-8">
+														<div class="row">
+															<input type="text" class="form-control" name="FechaInicio" id="FechaInicio" onblur="this.type='text'" onfocus="this.type='date'" style="border:1px solid #ccc; border-radius:6px;">
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="col-xs-6 col-sm-6 col-md-6" >
+												<div class="form-group">
+													<label class="col-xs-4 col-sm-3 col-md-4 control-label" for="saldo">Fecha  Final: </label>
+													<div class="col-xs-8 col-sm-9 col-md-8">
+														<div class="row">
+															<input type="text" class="form-control" name="FechaFin" id="FechaFin" onblur="this.type='text'" onfocus="this.type='date'" style="border:1px solid #ccc; border-radius:6px;">
+														</div>
+													</div>
+												</div>
+											</div>
+
+										</div>
+									</form>
 								</div>
 
-								<div class="clearfix"></div>
+								<!--div class="clearfix"></div-->
+
+								<div class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 " >
+									<button class="btn btn-info btn-block" id="filtrarFechas">Filtrar</button>
+								</div>
 								<table id="searchTable" data-toggle="table" 
 								data-url="{{ url($dataURL) }}" 
-								data-search="true" 
 								data-show-columns="true" 
-								data-click-to-select="true" 
 								data-pagination="true"
 								data-side-pagination="server"
 								data-page-list="[]"
@@ -90,12 +102,12 @@
 								data-height="400">
 									<thead>
 										<tr>
-										    <th data-field="Fecha" data-align="center" data-sortable="true">Fecha</th>
-										    <th data-field="Mov" data-align="center" data-sortable="true">Movimiento</th>
-										    <th data-field="Referencia" data-align="center" data-sortable="true">Referencia</th>
-										    <th data-field="Cargo" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Cargos</th>
-										    <th data-field="Abono" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Abonos</th>
-										    <th data-field="Total" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Saldos</th>
+										    <th data-field="Fecha" data-align="center" data-sortable="false" data-formatter="dateFormatter">Fecha</th>
+										    <th data-field="Mov" data-align="center" data-sortable="false">Movimiento</th>
+										    <th data-field="Referencia" data-align="center" data-sortable="false">Referencia</th>
+										    <th data-field="Cargo" data-align="center" data-sortable="false" data-formatter="moneyFormatter">Cargos</th>
+										    <th data-field="Abono" data-align="center" data-sortable="false" data-formatter="moneyFormatter">Abonos</th>
+										    <th data-field="Total" data-align="center" data-sortable="false" data-formatter="moneyFormatter">Saldos</th>
 										</tr>
 									</thead>
 								</table>
@@ -122,16 +134,43 @@
 		
 
 		$('#filtrarFechas').click(function(){
-				$('#searchTable').bootstrapTable('refresh', {query: {foo: 'bar'}});
+			var fehcaInicio = $('#FechaInicio').val();
+			var fehcaFin = $('#FechaFin').val();
+			$('#searchTable').bootstrapTable('refresh', {query: {fechaFin: fehcaFin, fechaInicio: fehcaInicio}});
 		});
 		
-		function moneyFormatter(value){
-			var valueFormatted = parseFloat(value) || 0;
+		function moneyFormatter(value,row,index){
+			var valueFormatted = parseFloat(value) || null;
 
-			//return '$'+valueFormatted.toFixed(2);*/
+			if(valueFormatted == null){
+				return null;
+			}
 
-			return '$'+moneyFormatForNumbers(valueFormatted);
+			valueFormatted = '$'+moneyFormatForNumbers(valueFormatted);
+			var data = $('#searchTable').bootstrapTable('getData', true);
+			
+			if(data.length == index + 1){
+				valueFormatted = '<strong>'+valueFormatted+'</strong>';
+			}
+
+			return valueFormatted;
 		}
+		
+		function dateFormatter(value,row,index){
+			var data = $('#searchTable').bootstrapTable('getData', true);
+			var formatedValue;
+			
+			if(data.length != index + 1){
+				formatedValue = value;
+			}
+			else{
+				formatedValue = '<strong>Total</strong>';
+			}
+
+			return formatedValue;
+		}
+
+
 		$.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-MX']);
 		$(window).resize(function () {
             var searchTable = $('#searchTable');

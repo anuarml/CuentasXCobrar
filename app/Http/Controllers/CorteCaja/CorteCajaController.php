@@ -155,7 +155,28 @@ class CorteCajaController extends Controller {
 	}
 
 	public function getMovimientosCaja(){
-		$reporteCaja = Dinero::obtenerReporteCaja();
+/*
+		$limit = \Input::get('limit');
+		$order = \Input::get('order');
+		$sort = \Input::get('sort');
+		$offset = \Input::get('offset');
+		$search = \Input::get('search');
+*/
+		$fechaInicio = \Input::get('fechaInicio');
+		$fechaFin = \Input::get('fechaFin');
+
+		$user = \Auth::user();
+		$empresa = $user->getSelectedCompany();
+        $moneda = config('cxc.default_currency');
+        $caja = $user->account;
+
+		$reporteCaja = Dinero::obtenerReporteCaja($empresa, $moneda, $caja, $fechaInicio, $fechaFin);
+
+		foreach ($reporteCaja as &$line) {
+			$line->Fecha = (new Carbon($line->Fecha))->formatLocalized('%d/%b/%Y');
+		}
+
+		//dd($rep = collect($reporteCaja)/*->where('Periodo','9')*/);
 
 		$result = ['total'=>count($reporteCaja),'rows'=>$reporteCaja];
 		//dd($result);
@@ -165,8 +186,12 @@ class CorteCajaController extends Controller {
 
 	public static function showMovimientosCaja(){
 		
+		$user = \Auth::user();
+
+		$cuenta = $user->account;
+
 		$dataURL = 'corteCaja/movimientos-caja';
 		
-		return view('corteDeCaja.buscarMovimientosCaja', compact('dataURL'));
+		return view('corteDeCaja.buscarMovimientosCaja', compact('dataURL','cuenta'));
 	}
 }
