@@ -44,7 +44,7 @@ class ListaD extends Model {
 	];
 
 
-	public static function getDestinyAccountList(){
+	/*public static function getDestinyAccountList(){
 
 		$destinyAccountList = [];
 
@@ -56,7 +56,21 @@ class ListaD extends Model {
 		}
 		//dd($destinyAccounts);
 		return json_encode($destinyAccountList);
+	}*/
+
+	public static function getDestinyAccountList(){
+
+		$destinyAccountList = [];
+
+		$destinyAccounts = self::where('Rama', 'DIN')
+							   ->where('Lista','TM.0.Matriz')
+							   ->get(['Cuenta']);
+
+		foreach ($destinyAccounts as $destinyAccount) {
+			$destinyAccountList[$destinyAccount->Cuenta] = $destinyAccount->Cuenta;
+			
+		}
+
+		return $destinyAccountList;
 	}
-
-
 }

@@ -71,4 +71,17 @@ class PaymentType extends Model {
 		return json_encode($paymentTypeList);
 	}
 
+	public static function getPaymentTypeSelect(){
+
+		$paymentTypeList = [];
+
+		$paymentTypes = self::where('CXCWEB', true)->get(['FormaPago']);
+
+		foreach ($paymentTypes as $paymentType) {
+			$paymentTypeList[$paymentType->payment_type] = $paymentType->payment_type;
+		}
+
+		return $paymentTypeList;
+	}
+
 }
