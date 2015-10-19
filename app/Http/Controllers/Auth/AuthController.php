@@ -92,6 +92,15 @@ class AuthController extends Controller {
 		}
 
 		$user = User::where('Usuario', $request->get('username') )->first();
+
+		if(!$user->account){
+			return redirect($this->loginPath())
+					->withInput($request->except('password'))
+					->withErrors([
+						'account' => 'El usuario no tiene asignada una cuenta de dinero.'
+					]);
+		}
+
 		\Auth::login($user);
 		Cxc::removeSessionMovID();
 
@@ -100,8 +109,6 @@ class AuthController extends Controller {
 			Log::warning('No se pudieron llenar los permisos del usuario.');
 		}
 
-		//\Session::put('company', $request->get('company'));
-		//\Session::put('office', $request->get('office'));
 		$user->setSelectedCompany($request->get('company'));
 		$user->setSelectedOffice($request->get('office'));
 
