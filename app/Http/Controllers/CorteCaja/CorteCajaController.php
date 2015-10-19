@@ -41,7 +41,7 @@ class CorteCajaController extends Controller {
 		$dinID = \Session::get('DineroID');
 		$din = Dinero::findOrNew($dinID,Dinero::$COLUMN_NAMES);
 
-		$din->obtenerReporteCaja();
+		//$din->obtenerReporteCaja();
 
 		$saldoInicial = 0;
 		if($din->Importe){
@@ -155,7 +155,12 @@ class CorteCajaController extends Controller {
 	}
 
 	public function getMovimientosCaja(){
+		$reporteCaja = Dinero::obtenerReporteCaja();
 
+		$result = ['total'=>count($reporteCaja),'rows'=>$reporteCaja];
+		//dd($result);
+
+		return response()->json($result);
 	}
 
 	public static function showMovimientosCaja(){

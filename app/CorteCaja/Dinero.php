@@ -6,6 +6,8 @@ use App\EmpresaConcepto;
 class Dinero extends Model {
 
 	protected $primaryKey = 'ID';
+
+    public $timestamps = false;
 	
 	/**
 	 * The database table used by the model.
@@ -80,11 +82,17 @@ class Dinero extends Model {
         'Estatus',
         'Directo',
         'CtaDinero',
+        'ConDesglose',
         'CtaDineroDestino',
+        'TipoCambioDestino',
         'Importe',
         'FormaPago',
         'Sucursal',
-        'FechaRegistro'
+        'SucursalOrigen',
+        'Prioridad',
+        'FechaRegistro',
+        'FechaProgramada',
+        'TasaDias'
     ];
 
 	/**
@@ -272,11 +280,14 @@ class Dinero extends Model {
         // Ejecuta el spAfectar y obtiene el resultado.
         $result = \DB::select( $consulta, $parametros);
 
+        \DB::connection()->setFetchMode(\PDO::FETCH_CLASS);
 
         return $result[0];
     }
 
-
+    /*
+     * Crea un mensaje para mostrar en la vista con el resultado del spAfectar.
+     */
     public function crearMensaje(array $parametros){
 
         $codigo     = $parametros[0];
@@ -291,7 +302,7 @@ class Dinero extends Model {
         
         if($codigo == null){
             $mensaje->tipo = 'success';
-            $mensaje->mensaje = $mov.' afectado.';
+            $mensaje->mensaje = $mov.' '.$movID.' afectado.';
         }
         else{
             switch ($tipo) {
@@ -323,8 +334,55 @@ class Dinero extends Model {
             if($referencia){
                 $mensaje->mensaje .= '<BR>'.$referencia;
             }
+            if($movID){
+                $mensaje->mensaje .= '<BR>'.$mov.' '.$movID;
+            }
         }
 
         return $mensaje;
+    }
+
+    public static function obtenerReporteCaja(){
+        $modulo = self::MODULO_TESORERIA;
+        $empresa = 'ASSIS';//$this->Empresa;
+        $moneda = config('cxc.default_currency');
+        $caja = 'CJAGE01';
+        $fechaInicio = '01/10/2015';
+        $fechaFinal = '31/10/2015';
+        $nivel = 'Movimiento';
+        $vista = 'Normal';
+        $grupo = 0;
+        $totalizar = 1;
+        $gpo = '';
+
+        $result = [];
+
+        /* 
+         * Cambia el modo de obtener el resultado, debido a que el sp devuelve columnas sin nomnbres. 
+         * Se obtiene un array con el número de columna como índices.
+         */
+        //\DB::connection()->setFetchMode(\PDO::FETCH_NUM);
+
+        $consulta = "SET NOCOUNT ON; EXEC spVerAuxiliar ?, @@SPID, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+        $parametros = [
+            $empresa,
+            $modulo,
+            $moneda,
+            $gpo,
+            $caja,
+            $fechaInicio,
+            $fechaFinal,
+            $nivel,
+            $vista,
+            $grupo,
+            $totalizar
+        ];
+
+        // Ejecuta el spAfectar y obtiene el resultado.
+        $result = \DB::select( $consulta, $parametros);
+
+        //\DB::connection()->setFetchMode(\PDO::FETCH_CLASS);
+
+        return $result;
     }
 }

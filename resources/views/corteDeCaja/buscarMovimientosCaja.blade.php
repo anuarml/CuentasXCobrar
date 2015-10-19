@@ -70,12 +70,11 @@
 									<thead>
 										<tr>
 										    <th data-field="Fecha" data-align="center" data-sortable="true">Fecha</th>
-										    <th data-field="Mov" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Movimiento</th>
-										    <th data-field="Referencia" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Referencia</th>
-										    <th data-field="Cargo" data-align="center" data-sortable="true">Cargos</th>
-										    <th data-field="Abono" data-align="center" data-sortable="true">Abonos</th>
-										    <th data-field="Total" data-align="center" data-sortable="true">Saldos</th>
-										    <th data-field="concept" data-align="center" data-sortable="true">Concepto</th>
+										    <th data-field="Mov" data-align="center" data-sortable="true">Movimiento</th>
+										    <th data-field="Referencia" data-align="center" data-sortable="true">Referencia</th>
+										    <th data-field="Cargo" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Cargos</th>
+										    <th data-field="Abono" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Abonos</th>
+										    <th data-field="Total" data-align="center" data-sortable="true" data-formatter="moneyFormatter">Saldos</th>
 										</tr>
 									</thead>
 								</table>
@@ -104,7 +103,9 @@
 		function moneyFormatter(value){
 			var valueFormatted = parseFloat(value) || 0;
 
-			return '$'+valueFormatted.toFixed(2);
+			//return '$'+valueFormatted.toFixed(2);*/
+
+			return '$'+moneyFormatForNumbers(valueFormatted);
 		}
 		$.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['es-MX']);
 		$(window).resize(function () {
