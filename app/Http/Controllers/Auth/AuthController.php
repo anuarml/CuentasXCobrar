@@ -58,7 +58,7 @@ class AuthController extends Controller {
 	 */
 	public function getLogin()
 	{
-		$companies = Company::all();
+		$companies = Company::where('Estatus','ALTA')->get(['Empresa']);
 
 		return view('auth.login')->withCompanies($companies);
 	}
@@ -91,7 +91,8 @@ class AuthController extends Controller {
 					]);
 		}
 
-		$user = User::where('Usuario', $request->get('username') )->first();
+		$user = User::where('Usuario', $request->get('username') )->first(['Usuario','Nombre','DefCtaDinero','DefCajero','DefFormaPago','Cancelar','DefAgente','DefMoneda']);
+
 
 		if(!$user->account){
 			return redirect($this->loginPath())

@@ -81,7 +81,8 @@
 
 	function updateOfficesList(){
 		$('#officeName option').remove();
-		$('#officeName').append('<option hidden></option>');
+		var officeName = $('#officeName');
+		officeName.append('<option hidden></option>');
 
 		for(var i=0;i<companies.length;i++){
 			if(companies[i].id == this.value){
@@ -90,15 +91,15 @@
 
 				for(var j=0;j<offices.length;j++){
 
-					$('#officeName').append('<option value='+ offices[j].id +'>'+ offices[j].name +'</option>');
+					officeName.append('<option value='+ offices[j].id +'>'+ offices[j].name +'</option>');
 				}
 				
 			}
 		}
 		var defaultOffice = '{{config("cxc.cxc_default_office")}}';
-		console.log(defaultOffice);
-		$('#officeName').val(defaultOffice);
-		$('#office').val(defaultOffice);
+		//console.log(defaultOffice);
+		officeName.val(defaultOffice);
+		$('#office').val(officeName.val());
 	}
 
 	var companyVal = $('#company').val('{{ old("company") }}');

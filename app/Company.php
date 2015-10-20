@@ -42,7 +42,7 @@ class Company extends Model {
 	}
 
 	public function offices(){
-		return $this->hasMany('App\Office','Empresa','Empresa');
+		return $this->hasMany('App\Office','Empresa','Empresa')->select(['Sucursal','Nombre','Empresa']);
 	}
 
 }
