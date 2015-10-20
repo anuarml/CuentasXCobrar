@@ -183,6 +183,7 @@
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/app.js') }}"></script>
 	<script type="text/javascript">
+
 		var saldo = parseFloat('{{ $saldo }}') || 0;
 
 		@if($din->Estatus && $din->Estatus=='CONCLUIDO')
@@ -194,11 +195,39 @@
 		@endif
 
 		$('#afectar').click(function(){
-
+			document.getElementById("loading").style.display = "block";
 			$('#Accion').val('afectar');
 			$('#CorteCajaForm').submit();
 		});
 
+		$('#reporteCorteCaja').click(function(){
+			document.getElementById("loading").style.display = "block";
+		});
+		var importeCaja = $('#Importe');
+		//console.log(importeCa);
+		var previousImporteAmount = 0;
+		importeCaja.change(function(){
+			var nImporte = parseFloat(moneyFormatToNumber(importeCaja.val()) || 0);
+			if(nImporte < 0 || isNaN(nImporte)){
+				importeCaja.val(moneyFormatForNumbers(previousImporteAmount));
+				return;
+			}
+			previousImporteAmount = nImporte;
+			importeCaja.val(moneyFormatForNumbers(nImporte));
+		});
+
+		importeCaja.focus(function(){
+			importeCaja.val('');
+		});
+
+		importeCaja.blur(function(){
+			if(importeCaja.val()==''){
+				importeCaja.val(moneyFormatForNumbers(previousImporteAmount));
+				importeCaja.change();
+				//proBalance.val(previousProBalanceAmount.toFixed(2));
+			}
+
+		});
 		/*var paymentTypeList = JSON.parse('{--!! $paymentTypeList !!--}');
 
 		var paymentTypeOptions = '';

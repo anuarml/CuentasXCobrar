@@ -58,12 +58,13 @@ class ListaD extends Model {
 		return json_encode($destinyAccountList);
 	}*/
 
-	public static function getDestinyAccountList(){
+	public static function getDestinyAccountList($listaCuentasDestino){
 
 		$destinyAccountList = [];
-
+		
 		$destinyAccounts = self::where('Rama', 'DIN')
-							   ->where('Lista','TM.0.Matriz')
+							   //->where('Lista','TM.0.Matriz')
+							   ->where('Lista',$listaCuentasDestino)
 							   ->get(['Cuenta']);
 
 		foreach ($destinyAccounts as $destinyAccount) {

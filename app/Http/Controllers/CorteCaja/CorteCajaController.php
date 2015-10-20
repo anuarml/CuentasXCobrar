@@ -36,7 +36,8 @@ class CorteCajaController extends Controller {
 		//$paymentTypeList = PaymentType::getPaymentTypeList();
 		$paymentTypeList = PaymentType::getPaymentTypeSelect();
 		//$destinyAccountList = CtaDinero::getDestinyAccountList();
-		$destinyAccountList = ListaD::getDestinyAccountList();
+		$listaCuentasDestino = config('cortecaja.lista_cuentas_destino');
+		$destinyAccountList = ListaD::getDestinyAccountList($listaCuentasDestino);
 		
 		$dinID = \Session::get('DineroID');
 		$din = Dinero::findOrNew($dinID,Dinero::$COLUMN_NAMES);
