@@ -25,7 +25,7 @@ Nombre commit: Correciones Importe Total
 Version: 0.2
 
 ---------------------------------------------
-Fecha ultimo commit: 27/07/2015
-Commit: a1db2ccd4c334510382a10fb7a0725ad9f472126
-Nombre commit: Finalizados Cambios en Desglose Cobro
-Version: 0.1
+Fecha ultimo commit: 03/03/2016	
+Commit: 4123124
+Nombre commit: Cambios Cambios en Desglose Cobro
+Version: 0.8
