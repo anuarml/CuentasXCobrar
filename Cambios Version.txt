@@ -1,7 +1,7 @@
-Fecha ultimo commit: 20/10/2015
+Fecha ultimo commit: 00/00/0000
 Commit: 8e2f53ae0eaf29412f3fb5ae7bee219a04e0a0e9
 Nombre commit: Agregada la imagen del loading descargada
-(Se agrego la funcionalidad del corte de caja)
+(Se agrego la gg del corte de caja)
 Version: 0.5
 
 ---------------------------------------------
@@ -25,6 +25,7 @@ Nombre commit: Correciones Importe Total
 Version: 0.2
 
 ---------------------------------------------
+
 Fecha ultimo commit: 03/03/2016	
 Commit: 4123124
 Nombre commit: Cambios Cambios en Desglose Cobro
