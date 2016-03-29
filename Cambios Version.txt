@@ -1,10 +1,12 @@
-Fecha ultimo commit: 00/00/0000
+
+Fecha ultimo commit: 20/10/2015
 Commit: 8e2f53ae0eaf29412f3fb5ae7bee219a04e0a0e9
 Nombre commit: Agregada la imagen del loading descargada
 (Se agrego la gg del corte de caja)
 Version: 0.5
 
 ---------------------------------------------
+
 Fecha ultimo commit: 08/10/2015
 Commit: 5cd012d3f73c5327012851dd8401f715a9cda3eb
 Nombre commit: Merge branch 'develop' of https://github.com/anuarml/CuentasXCobrar into develop
@@ -13,12 +15,14 @@ se agregaron los formatos de dinero que faltaban)
 Version: 0.4
 
 ---------------------------------------------
+
 Fecha ultimo commit: 29/09/2015
 Commit: c143387a57542c6c2ca29c473b61e53575b62853
 Nombre commit: Agregada la busqueda unicamente por clientes
 Version: 0.3
 
 ---------------------------------------------
+
 Fecha ultimo commit: 23/09/2015
 Commit: c21fbedd8a9b3bf7b0a2f015cc8b1ffe8f8d9d79
 Nombre commit: Correciones Importe Total
@@ -26,7 +30,7 @@ Version: 0.2
 
 ---------------------------------------------
 
-Fecha ultimo commit: 03/03/2016	
-Commit: 4123124
-Nombre commit: Cambios Cambios en Desglose Cobro
-Version: 0.8
+Fecha ultimo commit: 27/07/2015
+Commit: a1db2ccd4c334510382a10fb7a0725ad9f472126
+Nombre commit: Finalizados Cambios en Desglose Cobro
+Version: 0.1
