@@ -244,12 +244,12 @@ function generateText(){
     var date = actualDate.getDate() + "/" + (actualDate.getMonth() + 1) + "/" + actualDate.getFullYear();
 	var hour = actualDate.getHours() + ":" + actualDate.getMinutes() + ":" + actualDate.getSeconds();
 	//var mov = $('#cxcMovForm').serializeArray();
-	/*var userName = '{{--$user->name--}}';
-	var userCompany = '{{--$user->getSelectedCompany()--}}';
-	var userOffice = '{{--$officeName--}}';*/
-	var userName = 'Administrador del sistema';
+	var userName = '{{$user->name}}';
+	var userCompany = '{{$user->getSelectedCompany()}}';
+	var userOffice = '{{$officeName}}';
+	/*var userName = 'Administrador del sistema';
 	var userCompany = 'ASSIS TU VESTIR';
-	var userOffice = 'Matriz';
+	var userOffice = 'Matriz';*/
 	var j=0;
 	var nSpaceCounter = 0;
 	var fourteenSpaces = "              ";
@@ -265,7 +265,8 @@ function generateText(){
 	var movMovID = '{{$mov->MovID}}';
 	//console.log(movMovID);
 	var TextOfTicket = putSpaces(1, fourteenSpaces + date + " " + hour);
-	TextOfTicket += putSpaces(1, fourteenSpaces + userCompany + " " + userOffice);
+	TextOfTicket += putSpaces(1, centerText(userCompany) + userCompany);
+	TextOfTicket += putSpaces(1, centerText(userOffice) + userOffice);
 	TextOfTicket += putSpaces(1, fourteenSpaces + "Cobro: " + movMovID);
     TextOfTicket += putSpaces(1,"-----------------------------------------------");
     /*for(var i=0;i<nDocumentsLenght;i++){
@@ -344,6 +345,17 @@ function putSpaces(columns, line, align){
 		}
 	}
 	return line;
+}
+
+function centerText(text){
+	var maxSpaces = 48;
+	var nTextLenght = text.length;
+	var nTextLenghtSpaces = (maxSpaces - nTextLenght)/2;
+	var nTextSpaces = "";
+	for (var i = 0; i < nTextLenghtSpaces; i++) {
+		nTextSpaces = nTextSpaces + " ";
+	}
+	return nTextSpaces;
 }
 
 toolbar.redirect = function(url, method) {
