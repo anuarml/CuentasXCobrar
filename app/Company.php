@@ -31,14 +31,18 @@ class Company extends Model {
 	 *
 	 * @var array
 	 */
-	protected $visible = ['id','offices'];
+	protected $visible = ['id','offices','name'];
 
 	protected $with = ['offices'];
 
-	protected $appends = ['id'];
+	protected $appends = ['id','name'];
 
 	public function getIdAttribute(){
 		return $this->Empresa;
+	}
+
+	public function getNameAttribute(){
+		return $this->Nombre;
 	}
 
 	public function offices(){

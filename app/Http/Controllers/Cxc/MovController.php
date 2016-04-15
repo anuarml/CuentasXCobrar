@@ -64,6 +64,12 @@ class MovController extends Controller {
 		}
 		$clientBalance = json_encode($clientBalance);
 
+		if ($user->getSelectedCompany()) {
+			$mov->company = $user->getSelectedCompany();
+
+			$mov->load('companyName');
+		}
+		//dd($mov);
 		// Se obtiene el nombre de la oficina seleccionada por el usuario en el login.
 		// Se utiliza en la impresión del ticket.
 		$officeName = Office::find($user->getSelectedOffice())->name;
@@ -334,7 +340,7 @@ class MovController extends Controller {
 	public function getMov($movID){
 
 		// Se obtiene el movimiento solicitado
-		$mov = Cxc::with('details')->with('client')->findOrFail($movID);
+		$mov = Cxc::with('details')->with('client')->with('companyName')->findOrFail($movID);
 
 		$movCompany = $mov->company;
 		$movStatus = $mov->status;
@@ -384,6 +390,7 @@ class MovController extends Controller {
 
 		// Se guarda en la sesión del usuario el ID del movimiento.
 		Cxc::setSessionMovID($movID);
+
 
 		return view('cxc.movement.mov',compact(
 			'mov',

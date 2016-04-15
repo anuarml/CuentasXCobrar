@@ -237,7 +237,8 @@ function generateText(){
 
 	var create = document.getElementById('print');
 	var link = document.createElement('a');
-	link.download = "info.txt";
+	var movMovID = '{{$mov->MovID}}';
+	link.download = movMovID+'.txt';
     link.id = "downloadlink";
     link.style.display = "none";
     var actualDate = new Date();
@@ -247,6 +248,8 @@ function generateText(){
 	var userName = '{{$user->name}}';
 	var userCompany = '{{$user->getSelectedCompany()}}';
 	var userOffice = '{{$officeName}}';
+	var clientId = $('#client_id').value();
+	var clientName = $('#client[name]').value();
 	/*var userName = 'Administrador del sistema';
 	var userCompany = 'ASSIS TU VESTIR';
 	var userOffice = 'Matriz';*/
@@ -262,12 +265,13 @@ function generateText(){
 			var reference1 = $('#reference1').val();
 		}
 	}*/
-	var movMovID = '{{$mov->MovID}}';
+	
 	//console.log(movMovID);
 	var TextOfTicket = putSpaces(1, fourteenSpaces + date + " " + hour);
 	TextOfTicket += putSpaces(1, centerText(userCompany) + userCompany);
 	TextOfTicket += putSpaces(1, centerText(userOffice) + userOffice);
 	TextOfTicket += putSpaces(1, fourteenSpaces + "Cobro: " + movMovID);
+	TextOfTicket += putSpaces(1, centerText(clientId + " " + clientName) + clientId + " " + clientName);
     TextOfTicket += putSpaces(1,"-----------------------------------------------");
     /*for(var i=0;i<nDocumentsLenght;i++){
 		var docName = documents[i].apply;
@@ -314,10 +318,12 @@ function generateText(){
 	var change = $('#change').val();
 	TextOfTicket += putSpaces(2,'Total:') + putSpaces(2,"$" + totalAmount + "  ","right");
 	TextOfTicket += putSpaces(2,'Cambio:') + putSpaces(2,"$" + change + "  " ,"right");
-	TextOfTicket += putSpaces(1,'Leyenda...');
+	TextOfTicket += putSpaces(1,'Recibi:' + "________________________________");
 	TextOfTicket += twentyfourSpaces + twentyfourSpaces + twentyfourSpaces+ twentyfourSpaces;
-	TextOfTicket += putSpaces(1,"_____________________");
+	TextOfTicket += putSpaces(1,"________________________");
 	TextOfTicket += putSpaces(1,userName);
+	var legend = "IMPORTANTE: Favor de conservar este comprobante para futuras aclaraciones.";
+	TextOfTicket += putSpaces(1,legend);
 	TextOfTicket += twentyfourSpaces + twentyfourSpaces + twentyfourSpaces+ twentyfourSpaces;
 	/*var canvas = document.getElementById("pruebaImagen");
 	var contextCanvas = canvas.getContext("2d");
