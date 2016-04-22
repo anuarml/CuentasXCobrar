@@ -109,7 +109,7 @@ class CorteCajaController extends Controller {
 		$dinero->Concepto 			= $dinero->concepto_omision;	// Depende de (Mov)
 		$dinero->Moneda 			= config('cxc.default_currency');
 		$dinero->TipoCambio 		= $dinero->tipo_cambio_mon;		// Depende de la (Moneda)
-		//$dinero->Referencia 		= ;
+		$dinero->Referencia 		= $user->name;
 		$dinero->Usuario 			= $user->username;
 		$dinero->Estatus 			= 'SINAFECTAR';
 		$dinero->Directo 			= true;
