@@ -324,7 +324,8 @@ function generateText(){
 	TextOfTicket += twentyfourSpaces + twentyfourSpaces + twentyfourSpaces+ twentyfourSpaces;
 	TextOfTicket += putSpaces(1,"________________________");
 	TextOfTicket += putSpaces(1,userName);
-	var legend = "IMPORTANTE: Favor de conservar este comprobante para futuras aclaraciones.";
+	//var legend = "IMPORTANTE: Favor de conservar este comprobante para futuras aclaraciones.";
+	var legend = '{{env('CXC_LEGEND', '')}}';
 	TextOfTicket += legend;
 	TextOfTicket += twentyfourSpaces + twentyfourSpaces + twentyfourSpaces+ twentyfourSpaces;
 	/*var canvas = document.getElementById("pruebaImagen");
