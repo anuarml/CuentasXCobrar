@@ -1,8 +1,15 @@
+Fecha ultimo commit: 28/04/2016
+Commit: 93e8aad30d7efb6db662099e8674585423579f5f
+Nombre commit: Extraida la leyenda al archivo de configuracion
+Se agrego la leyenda al ticket del cobro.
+Se agrego como referencia del corte de caja el nombre del usuario.
+Version: 1.0
 
+---------------------------------------------
 Fecha ultimo commit: 20/10/2015
 Commit: 8e2f53ae0eaf29412f3fb5ae7bee219a04e0a0e9
 Nombre commit: Agregada la imagen del loading descargada
-(Se agrego la gg del corte de caja)
+(Se agrego el corte de caja)
 Version: 0.5
 
 ---------------------------------------------
